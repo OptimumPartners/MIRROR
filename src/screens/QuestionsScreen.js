@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { colors } from '../assets/colors/colors';
-import CustomLongInput from '../components/CustomLongInput';
-import CustomShortInput from '../components/CustomShortInput';
+import React, { useState, useEffect } from "react";
+import { 
+    View, 
+    StyleSheet, 
+    Text 
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
 
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
+import { colors } from "../../assets/colors/colors";
 
-import { client } from "../client"
+import CustomLongInput from "../components/CustomLongInput";
+import CustomShortInput from "../components/CustomShortInput";
 
-function QuestionsScreen({ navigation }) {
+import { client } from "../API/client";
 
+function QuestionsScreen() {
 
-    const [geneticResults, setGeneticResults] = useState([])
+    const navigation = useNavigation();
 
+    const [geneticResults, setGeneticResults] = useState([]);
 
     useEffect(() => {
         client.getEntries()
-            .then((response) =>
-                setGeneticResults(response.items.find((item) => item.fields.geneticResult).fields.geneticResult))
-            .catch((err) => console.log(err))
-    }, [])
+            .then((response) => setGeneticResults(response.items.find((item) => item.fields.geneticResult).fields.geneticResult))
+            .catch((err) => console.log(err));
+    }, []);
 
     const answers = [
         "Yes",
         "No",
-    ]
+    ];
 
-    const [geneticResult, setGeneticResult] = useState()
+    const [geneticResult, setGeneticResult] = useState();
 
     const [showResults, setShowResults] = useState(false);
 
@@ -47,22 +52,22 @@ function QuestionsScreen({ navigation }) {
                     age,
                     answerOne,
                     answerTwo,
-                }
-            )
+                },
+            );
         }
-    }, [answerOne, answerTwo, geneticResult, age])
+    }, [answerOne, answerTwo, geneticResult, age]);
 
     const handleArrowPress = () => {
         setShowResults(!showResults);
-    }
+    };
 
     const handleShowAnswersOne = () => {
         setShowAnswersOne(!showAnswersOne);
-    }
+    };
 
     const handleShowAnswersTwo = () => {
         setShowAnswersTwo(!showAnswersTwo);
-    }
+    };
 
     return (
         <KeyboardAwareScrollView
@@ -71,21 +76,24 @@ function QuestionsScreen({ navigation }) {
             <View style={styles.container}>
                 <View>
                     <Text style={styles.article}>
-                        You are here to discuss your increased risk of <Text style={styles.boldArticle}>ovarian cancer</Text>.
+            You are here to discuss your increased risk of
+                        {" "}
+                        <Text style={styles.boldArticle}>ovarian cancer</Text>
+            .
                     </Text>
                     <Text style={styles.article}>
-                        We will discuss next steps to reduce your risk,
-                        but first need some information about you.
+            We will discuss next steps to reduce your risk,
+            but first need some information about you.
                     </Text>
                 </View>
                 <View>
                     <View style={styles.questionInRow}>
                         <Text style={styles.questionTitle}>
-                            Genetic Result
+              Genetic Result
                         </Text>
                         <CustomLongInput
                             value={geneticResult}
-                            arrowOption={true}
+                            arrowOption
                             options={geneticResults}
                             showOptions={showResults}
                             handleArrowPress={handleArrowPress}
@@ -94,7 +102,7 @@ function QuestionsScreen({ navigation }) {
                     </View>
                     <View style={styles.questionInRow}>
                         <Text style={styles.questionTitle}>
-                            Age
+              Age
                         </Text>
                         <CustomLongInput
                             handleInputValueUpdate={setAge}
@@ -102,7 +110,7 @@ function QuestionsScreen({ navigation }) {
                     </View>
                     <View style={styles.questionInColumn}>
                         <Text style={styles.questionTitle}>
-                            Do you or have you had breast cancer?
+              Do you or have you had breast cancer?
                         </Text>
                         <CustomShortInput
                             value={answerOne}
@@ -114,7 +122,7 @@ function QuestionsScreen({ navigation }) {
                     </View>
                     <View style={styles.questionInColumn}>
                         <Text style={styles.questionTitle}>
-                            Do you or have you had family members with ovarian cancer?
+              Do you or have you had family members with ovarian cancer?
                         </Text>
                         <CustomShortInput
                             value={answerTwo}
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         color: colors.black,
         marginVertical: 5,
-    }
-})
+    },
+});
 
 export default QuestionsScreen;

@@ -1,41 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, ScrollView, TouchableWithoutFeedback, Linking, TouchableOpacity } from 'react-native';
-import { colors } from '../assets/colors/colors';
-
-import { client } from "../client";
-
+import React, { useState, useEffect } from "react";
+import {
+    View, 
+    StyleSheet, 
+    Text, 
+    Image, 
+    ScrollView, 
+    TouchableWithoutFeedback, 
+    Linking, 
+    TouchableOpacity,
+} from "react-native";
 import IconO from "react-native-vector-icons/Octicons";
+import { colors } from "../../assets/colors/colors";
 
-import InfoCirlcle from '../components/InfoCirlcle';
-import CustomModal from '../components/CustomModal';
+import { client } from "../API/client";
+
+import InfoCirlcle from "../components/InfoCirlcle";
+import CustomModal from "../components/CustomModal";
 
 function SurgeryTab({ }) {
-
     const [surgeries, setSurgeries] = useState([]);
     const [details, setDetailes] = useState([]);
 
+    const [showModal, setShowModal] = useState(false);
 
-    const [showModal, setShowModal] = useState(false)
-
-    const url = "https://www.mskcc.org/cancer-care/patient-education/about-your-robotic-assisted-laparoscopic-hysterectomy"
+    const url = "https://www.mskcc.org/cancer-care/patient-education/about-your-robotic-assisted-laparoscopic-hysterectomy";
 
     useEffect(() => {
         client.getEntries()
             .then((response) => {
                 setSurgeries(response.items.find((item) => item.fields.surgeries).fields.surgeries);
-                setDetailes(response.items.find((item) => item.fields.surgeryDetails).fields.surgeryDetails)
+                setDetailes(response.items.find((item) => item.fields.surgeryDetails).fields.surgeryDetails);
             })
             .catch((err) => {
-                console.log(err)
-            })
-    }, [])
+                console.log(err);
+            });
+    }, []);
 
     const handleHyperLinkPress = () => {
         if (Linking.canOpenURL(url)) {
-            Linking.openURL(url)
+            Linking.openURL(url);
         }
-    }
-
+    };
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -45,70 +50,72 @@ function SurgeryTab({ }) {
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Image
-                            source={require("../assets/images/surgery.png")}
+                            source={require("../../assets/images/surgery.png")}
                         />
                         <Text style={styles.headerTitle}>
-                            Gynecologic Surgery
+              Gynecologic Surgery
                         </Text>
                     </View>
 
                     <View style={styles.banner}>
                         <Text style={styles.bannerTitle}>
-                            There are different types of surgeries
-                            to reduce your risk for ovarian cancer.
+              There are different types of surgeries
+              to reduce your risk for ovarian cancer.
                         </Text>
-                        {surgeries.map((item, index) =>
+                        {surgeries.map((item, index) => (
                             <View key={index}>
                                 <View style={styles.surgeriesContainer}>
                                     <IconO
-                                        name={"dot-fill"}
+                                        name="dot-fill"
                                         style={styles.blackDot}
                                     />
                                     <Text style={styles.surgeryTypes}>
                                         {item.type}
-                                        {item.info &&
-                                            <InfoCirlcle
-                                                onPress={() => setShowModal(!showModal)}
-                                            />
-                                        }
+                                        {item.info
+                                            && (
+                                                <InfoCirlcle
+                                                    onPress={() => setShowModal(!showModal)}
+                                                />
+                                            )}
                                     </Text>
                                 </View>
-                                {showModal && item.info &&
-                                    <View style={{ zIndex: 1000 }}>
-                                        <CustomModal
-                                            article={item.info}
-                                        />
-                                    </View>
-                                }
+                                {showModal && item.info
+                                    && (
+                                        <View style={{ zIndex: 1000 }}>
+                                            <CustomModal
+                                                article={item.info}
+                                            />
+                                        </View>
+                                    )}
                             </View>
-                        )}
+                        ))}
                     </View>
                     <View style={styles.commonSurgeries}>
                         <Text style={styles.commonSurgeriesTitle}>
-                            These surgeries are most commonly performed laparoscopically
-                            (through small incisions)
+              These surgeries are most commonly performed laparoscopically
+              (through small incisions)
                         </Text>
                         <Image
-                            source={require("../assets/images/laparoscopic.png")}
+                            source={require("../../assets/images/laparoscopic.png")}
                             style={styles.laparoscopic}
                         />
                     </View>
                     <View>
-                        {details.map((detail, index) =>
+                        {details.map((detail, index) => (
                             <View key={index} style={styles.commonSurgeryBox}>
                                 <IconO
-                                    name={"dot-fill"}
+                                    name="dot-fill"
                                     style={styles.blackDot}
                                 />
                                 <Text style={styles.commonSurgery}>
                                     {detail}
                                 </Text>
                             </View>
-                        )}
+                        ))}
                     </View>
                     <View style={styles.footer}>
                         <Text style={styles.footerTitle}>
-                            Read More at
+              Read More at
                         </Text>
                         <TouchableOpacity onPress={() => handleHyperLinkPress()}>
                             <Text style={styles.link}> mskcc.org </Text>
@@ -166,7 +173,7 @@ const styles = StyleSheet.create({
     },
     commonSurgery: {
         fontSize: 18,
-        paddingLeft: 20
+        paddingLeft: 20,
     },
     commonSurgeryBox: {
         flexDirection: "row",
@@ -191,6 +198,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textDecorationLine: "underline",
     },
-})
+});
 
 export default SurgeryTab;

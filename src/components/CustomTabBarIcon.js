@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Image } from "react-native";
 
 function CustomTabBarIcon({ imgSource }) {
     return (
@@ -7,7 +7,7 @@ function CustomTabBarIcon({ imgSource }) {
             <Image
                 style={styles.img}
                 source={imgSource}
-                resizeMode={"cover"}
+                resizeMode="cover"
             />
         </View>
     );
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     img: {
         width: 40,
         height: 40,
-    }
-})
+    },
+});
 
 export default CustomTabBarIcon;

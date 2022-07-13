@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { colors } from '../assets/colors/colors';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { colors } from "../../assets/colors/colors";
 
-function CustomModal({ title, article }) {
+function CustomModal({ article }) {
     return (
         <View style={styles.container}>
             <Text style={styles.modalContent}>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         color: colors.black,
-    }
-})
+    },
+});
 
 export default CustomModal;

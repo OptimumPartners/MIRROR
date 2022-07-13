@@ -1,43 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback, unstable_enableLogBox } from 'react-native';
-import { colors } from '../assets/colors/colors';
+import React, { useEffect, useState } from "react";
+import {
+    View, 
+    StyleSheet, 
+    Text, 
+    TouchableWithoutFeedback,
+} from "react-native";
+
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import IconAD from "react-native-vector-icons/AntDesign";
 import IconO from "react-native-vector-icons/Octicons";
-import TripleOptionBox from '../components/TripleOptionBox';
-import CustomModal from '../components/CustomModal';
-import InfoCirlcle from '../components/InfoCirlcle';
 
-import { client } from "../client"
-
-function AdditionalQuestionsScreen({ navigation, route }) {
+import { colors } from "../../assets/colors/colors";
 
 
-    const [dropDownMenu, setDropDownMenu] = useState([])
-    const [options, setOptions] = useState([])
+import TripleOptionBox from "../components/TripleOptionBox";
+import CustomModal from "../components/CustomModal";
+import InfoCirlcle from "../components/InfoCirlcle";
+
+import { client } from "../API/client";
+
+function AdditionalQuestionsScreen() {
+
+    const navigation = useNavigation();
+    const route = useRoute();
+
+    const [dropDownMenu, setDropDownMenu] = useState([]);
+    const [options, setOptions] = useState([]);
 
     useEffect(() => {
         client.getEntries()
             .then((response) => {
-                setDropDownMenu(response.items.find((item) => item.fields.dropDownMenu).fields.dropDownMenu)
-                setOptions(response.items.find((item) => item.fields.options).fields.options)
+                setDropDownMenu(response.items.find(
+                    (item) => item.fields.dropDownMenu,
+                ).fields.dropDownMenu);
+                setOptions(response.items.find(
+                    (item) => item.fields.options,
+                ).fields.options);
             })
-            .catch((err) => console.log(err))
-    }, [])
+            .catch((err) => console.log(err));
+    }, []);
 
     const [showInfo, setShowInfo] = useState(false);
-    const [info, setInfo] = useState("")
-
+    const [info, setInfo] = useState("");
 
     const [fertility, setFertility] = useState("");
     const [menopause, setMenopause] = useState("");
     const [hrt, setHrt] = useState("");
 
     const handleInfoPress = (element) => {
-        setShowInfo(!showInfo)
-        setInfo(element.info)
-    }
-
+        setShowInfo(!showInfo);
+        setInfo(element.info);
+    };
 
     return (
         <TouchableWithoutFeedback
@@ -49,13 +63,13 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                     setShowInfo(!showInfo);
                 } else if ((fertility && menopause && hrt)) {
                     if (fertility === "Unsure") {
-                        setFertility("Yes")
+                        setFertility("Yes");
                     }
                     if (menopause === "Unsure") {
-                        setMenopause("No")
+                        setMenopause("No");
                     }
                     if (hrt === "Unsure") {
-                        setHrt("No")
+                        setHrt("No");
                     }
                     return navigation.navigate(
                         "DashboardScreen",
@@ -64,32 +78,32 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                             menopause,
                             hrt,
                             ...route.params.data,
-                        }
-                    )
+                        },
+                    );
                 }
+                return null;
             }}
         >
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>
-                        Additional questions:
+                        {/* {' '} */}
+            Additional questions:
                     </Text>
-                    <View style={styles.banner} >
+                    <View style={styles.banner}>
                         <Text style={styles.headerSubText}>
-                            There are multiple options for surgical management.
-                            The decision is complex and depends on your:
+              There are multiple options for surgical management.
+              The decision is complex and depends on your:
                         </Text>
-
-
                         <View style={styles.rowedBoxContainer}>
-                            {options.map((option, index) =>
+                            {options.map((option, index) => (
                                 <View
-                                    key={index}
+                                    key={index[index]}
                                     style={styles.rowedBox}
                                 >
                                     <Text style={styles.rowedBoxText}>
                                         <IconAD
-                                            name={"minus"}
+                                            name="minus"
                                             size={14}
                                             color={colors.black}
                                             style={styles.rowedBoxIcon}
@@ -97,11 +111,10 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                                         {option}
                                     </Text>
                                 </View>
-                            )}
+                            ))}
                         </View>
-
                         <View>
-                            {dropDownMenu.map((element, index) =>
+                            {dropDownMenu.map((element, index) => (
                                 <>
                                     <View
                                         key={index}
@@ -109,7 +122,7 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                                     >
                                         <View style={styles.rowedBox}>
                                             <IconO
-                                                name={"dot-fill"}
+                                                name="dot-fill"
                                                 color={colors.black}
                                                 style={styles.blackDot}
                                             />
@@ -123,26 +136,26 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                                                 defaultAnswer={element.answer}
                                                 updateAnswer={(answer) => element.answer = answer}
                                             />
-
                                             {element.info !== ""
                                                 ? <InfoCirlcle onPress={() => handleInfoPress(element)} />
-                                                : <View style={styles.hiddenSpacing} />
-                                            }
+                                                : <View style={styles.hiddenSpacing} />}
                                         </View>
                                     </View>
-                                    {showInfo &&
-                                        <CustomModal
-                                            key={Math.random()}
-                                            article={info}
-                                        />
+                                    {showInfo
+                    && (
+                        <CustomModal
+                            key={Math.random()}
+                            article={info}
+                        />
+                    )
                                     }
                                 </>
-                            )}
+                            ))}
                         </View>
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback >
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -208,7 +221,7 @@ const styles = StyleSheet.create({
     },
     infoIcon: {
         paddingHorizontal: 3,
-    }
-})
+    },
+});
 
 export default AdditionalQuestionsScreen;

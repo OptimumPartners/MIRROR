@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
-import { colors } from '../assets/colors/colors';
+import { 
+    View, 
+    StyleSheet,
+    Text, 
+    Image, 
+    ScrollView 
+} from 'react-native';
+import { colors } from '../../assets/colors/colors';
 
 import IconAD from "react-native-vector-icons/AntDesign";
 
-import { client } from "../client"
+import { client } from "../API/client"
 
 function AnatomyTab({ }) {
 
@@ -21,7 +27,7 @@ function AnatomyTab({ }) {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Image
-                        source={require("../assets/images/anatomy.png")}
+                        source={require("../../assets/images/anatomy.png")}
                     />
                     <Text style={styles.headerTitle}>
                         Anatomy Review
@@ -30,7 +36,7 @@ function AnatomyTab({ }) {
                 </View>
                 <View>
                     <Image
-                        source={require("../assets/images/uterus.png")}
+                        source={require("../../assets/images/uterus.png")}
                         style={styles.uterus}
                         resizeMode={"cover"}
                     />
@@ -72,7 +78,7 @@ function AnatomyTab({ }) {
                     </View>
                     <View>
                         <Image
-                            source={require("../assets/images/anatomy2.png")}
+                            source={require("../../assets/images/anatomy2.png")}
                             style={styles.uterus}
                             resizeMode={"cover"}
                         />
@@ -114,7 +120,6 @@ const styles = StyleSheet.create({
     },
     uterus: {
         alignSelf: "center",
-        // height: 250,
         width: 250
     },
     uterusPoint: {

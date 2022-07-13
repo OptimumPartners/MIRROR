@@ -1,8 +1,7 @@
-import React from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import { colors } from '../assets/colors/colors';
-
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, TextInput, Text } from "react-native";
 import IconFA from "react-native-vector-icons/FontAwesome";
+import { colors } from "../../assets/colors/colors";
 
 IconFA.loadFont();
 
@@ -15,49 +14,50 @@ function CustomLongInput({
     handleOptionChange,
     handleInputValueUpdate,
 }) {
-
     return (
         <View style={styles.container}>
-            {arrowOption ?
-                <View style={styles.choosenOption}>
-                    <Text style={styles.optionValue}>
-                        {value}
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.optionArrow}
-                        onPress={() => handleArrowPress()}
-                    >
-                        <IconFA
-                            name='angle-down'
-                            size={25}
-                            color={colors.black}
-                        />
-                    </TouchableOpacity>
-                </View>
-                :
-                <TextInput
-                    keyboardType='numeric'
-                    style={styles.optionInput}
-                    onChangeText={handleInputValueUpdate}
-                />
-            }
+            {arrowOption
+                ? (
+                    <View style={styles.choosenOption}>
+                        <Text style={styles.optionValue}>
+                            {value}
+                        </Text>
+                        <TouchableOpacity
+                            style={styles.optionArrow}
+                            onPress={() => handleArrowPress()}
+                        >
+                            <IconFA
+                                name="angle-down"
+                                size={25}
+                                color={colors.black}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                )
+                : (
+                    <TextInput
+                        keyboardType="numeric"
+                        style={styles.optionInput}
+                        onChangeText={handleInputValueUpdate}
+                    />
+                )}
             <View>
-                {showOptions &&
-                    options.map((option, k) =>
+                {showOptions
+                    && options.map((option, k) => (
                         <TouchableOpacity
                             key={k}
                             onPress={() => {
-                                handleOptionChange(option)
-                                handleArrowPress()
+                                handleOptionChange(option);
+                                handleArrowPress();
                             }}
                         >
                             <Text style={styles.optionValue}>
                                 {option}
                             </Text>
                         </TouchableOpacity>
-                    )}
+                    ))}
             </View>
-        </View >
+        </View>
     );
 }
 
@@ -92,6 +92,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         paddingVertical: 5,
     },
-})
+});
 
 export default CustomLongInput;

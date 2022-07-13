@@ -1,68 +1,72 @@
-import React from 'react';
-import { View, StyleSheet, Text, Image, Linking } from 'react-native';
+import React from "react";
+import {
+    View, 
+    StyleSheet, 
+    Text, 
+    Image, 
+    Linking,
+} from "react-native";
 
-import IconO from 'react-native-vector-icons/Octicons';
+import IconO from "react-native-vector-icons/Octicons";
 
 const url = "https://www.google.com/";
 function SelfReflectionScreen({ }) {
-
     const questions = [
         "How worried are you about receiving a cancer diagnosis?",
         "How important is fertility to you?",
         "How do you feel about going into menopause?",
         "Are you comfortable taking medication to manage menopause?",
         "How concerned are you about undergoing surgery and anesthesia?",
-    ]
+    ];
 
     const handleUrlPress = () => {
         if (Linking.canOpenURL(url)) {
             Linking.openURL(url);
         }
-        return;
-    }
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Image
-                    source={require("../assets/images/selfReflectionLogo.png")}
+                    source={require("../../assets/images/selfReflectionLogo.png")}
                 />
                 <Text style={styles.title}>
-                    Self-Reflection
+          Self-Reflection
                 </Text>
             </View>
             <Text style={styles.subTitle}>
-                How do I choose which option is right for me?
+        How do I choose which option is right for me?
             </Text>
             <View style={styles.content}>
                 <Text style={styles.contentTitle}>
-                    Take a moment to consider your risk profile and
-                    values by asking yourself the following questions:
+          Take a moment to consider your risk profile and
+          values by asking yourself the following questions:
                 </Text>
-                {questions.map((item, index) =>
+                {questions.map((item, index) => (
                     <View
                         key={index}
                         style={styles.questionBox}
                     >
                         <IconO
-                            name={"dot-fill"}
+                            name="dot-fill"
                             style={styles.blackDot}
                         />
                         <Text style={styles.question}>
                             {item}
                         </Text>
                     </View>
-                )}
+                ))}
             </View>
             <View style={styles.footer}>
                 <Text style={styles.footerTitle}>
-                    If you are interested in hearing
-                    about the experiences of others in your position,
+          If you are interested in hearing
+          about the experiences of others in your position,
                     <Text
                         style={styles.link}
                         onPress={() => handleUrlPress()}
                     >
-                        click here
+            click here
                     </Text>
                 </Text>
             </View>
@@ -116,6 +120,6 @@ const styles = StyleSheet.create({
     link: {
         textDecorationLine: "underline",
     },
-})
+});
 
 export default SelfReflectionScreen;

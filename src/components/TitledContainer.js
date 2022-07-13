@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import { colors } from '../assets/colors/colors';
-import InfoCirlcle from './InfoCirlcle';
+import React from "react";
+import { useState } from "react";
 
-import CustomModal from '../components/CustomModal';
+import { 
+    StyleSheet,
+    View,
+    Text
+} from "react-native";
 
+import { colors } from "../../assets/colors/colors";
 
-function TitledContainer({ title, pro, con, showInfo, setShowInfo }) {
+import InfoCirlcle from "../components/InfoCirlcle";
+
+function TitledContainer({
+    title, pro, con, showInfo, setShowInfo,
+}) {
     const [info, setInfo] = useState("");
-
 
     const handleInfoPress = (article) => {
         setShowInfo(!showInfo);
         setInfo(article);
-    }
+    };
 
     return (
         <View style={styles.container}>
@@ -25,10 +31,10 @@ function TitledContainer({ title, pro, con, showInfo, setShowInfo }) {
             <View style={styles.content}>
                 <View style={styles.contentLeft}>
                     <Text style={styles.underLinedTitle}>
-                        PRO
+            PRO
                     </Text>
                     <View>
-                        {pro.map((item, index) =>
+                        {pro.map((item, index) => (
                             <View
                                 key={index}
                                 style={styles.riskBox}
@@ -36,42 +42,42 @@ function TitledContainer({ title, pro, con, showInfo, setShowInfo }) {
                                 <Text style={styles.risks}>
                                     {item.risk}
                                 </Text>
-                                {item.info &&
-                                    <View style={styles.infoCircle}>
-                                        <InfoCirlcle
-                                            size={8}
-                                            key={index}
-                                            onPress={() => handleInfoPress(item.info)}
-                                        />
-                                    </View>
-                                }
+                                {item.info
+                                    && (
+                                        <View style={styles.infoCircle}>
+                                            <InfoCirlcle
+                                                size={8}
+                                                key={index}
+                                                onPress={() => handleInfoPress(item.info)}
+                                            />
+                                        </View>
+                                    )}
                             </View>
-                        )}
+                        ))}
                     </View>
                 </View>
                 <View style={styles.contentRight}>
                     <Text style={styles.underLinedTitle}>
-                        CON
+            CON
                     </Text>
                     <View>
-                        {con.map((item, index) =>
-                            <>
-                                <Text
-                                    key={index}
-                                    style={styles.risks}
-                                >
-                                    {item.risk}
-                                </Text>
-                            </>
-                        )}
+                        {con.map((item, index) => (
+                            <Text
+                                key={index}
+                                style={styles.risks}
+                            >
+                                {item.risk}
+                            </Text>
+                        ))}
                     </View>
                 </View>
-                {showInfo &&
-                    <CustomModal
-                        key={Math.random()}
-                        article={info}
-                    />
-                }
+                {showInfo
+                    && (
+                        <CustomModal
+                            key={Math.random()}
+                            article={info}
+                        />
+                    )}
             </View>
         </View>
     );
@@ -97,11 +103,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 10,
-        flex: 1
+        flex: 1,
     },
     contentLeft: {
         flex: 0.5,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
     },
     contentRight: {
         flex: 0.4,
@@ -122,6 +128,6 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
 
-})
+});
 
 export default TitledContainer;

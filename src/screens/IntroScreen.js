@@ -1,41 +1,49 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
+import React from "react";
+import {
+    View,
+    StyleSheet, 
+    Text, 
+    TouchableWithoutFeedback,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { colors } from "../../assets/colors/colors";
 
-import { colors } from '../assets/colors/colors';
+import HyperLinkBox from "../components/HyperLinkBox";
 
-import HyperLinkBox from '../components/HyperLinkBox';
+function IntroScreen() {
 
-function IntroScreen({ navigation }) {
+    const navigation = useNavigation();
+
     return (
         <TouchableWithoutFeedback onPress={() => navigation.navigate("QuestionsScreen")}>
             <View style={styles.container}>
                 <View>
                     <Text style={styles.articleTitle}>
-                        Welcome to MIRROR
+            Welcome to MIRROR
                     </Text>
                 </View>
                 <View style={styles.sections}>
                     <Text style={styles.section}>
-                        This tool is intended for patients
-                        who have had genetic counseling and
-                        are coming to see a gynecologic surgeon.
+            This tool is intended for patients
+            who have had genetic counseling and
+            are coming to see a gynecologic surgeon.
                     </Text>
                     <Text style={styles.section}>
-                        If you have not yet had genetic counseling,
-                        you can find a genetic counselor at:
+            If you have not yet had genetic counseling,
+            you can find a genetic counselor at:
                         <HyperLinkBox
-                            title={" nsgc.org"}
-                            url={"https://www.nsgc.org/"}
+                            title=" nsgc.org"
+                            url="https://www.nsgc.org/"
                         />
-                        .
+            .
                     </Text>
                     <Text style={styles.section}>
-                        Recommendations are based on the guidelines of the
+            Recommendations are based on the guidelines of the
                         <HyperLinkBox
-                            title={" NCCN "}
-                            url={"https://www.nccn.org/login?ReturnURL=https://www.nccn.org/professionals/physician_gls/pdf/genetics_bop.pdf"}
+                            title=" NCCN "
+                            url="https://www.nccn.org/login?ReturnURL=https://www.nccn.org/professionals/physician_gls/pdf/genetics_bop.pdf"
                         />
-                        and personalized based on your preferences.
+            and personalized based on your preferences.
                     </Text>
                 </View>
             </View>
@@ -60,6 +68,6 @@ const styles = StyleSheet.create({
         fontSize: 23,
         paddingVertical: 10,
     },
-})
+});
 
 export default IntroScreen;

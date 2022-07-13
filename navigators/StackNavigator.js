@@ -1,18 +1,17 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import IntroScreen from "../screens/IntroScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
-import QuestionsScreen from "../screens/QuestionsScreen";
-import StatisticsScreen from "../screens/StatisticsScreen";
-import AnatomyIntroScreen from "../screens/AnatomyIntroScreen";
-import AnatomyReviewScreen from "../screens/AnatomyReviewScreen";
-import AdditionalQuestionsScreen from "../screens/AdditionalQuestionsScreen";
-import DashboardScreen from "../screens/DashboardScreen";
-import SelfReflectionScreen from "../components/SelfReflectionScreen";
+import AdditionalQuestionsScreen from "../src/screens/AdditionalQuestionsScreen";
+import AnatomyIntroScreen from "../src/screens/AnatomyIntroScreen";
+import AnatomyReviewScreen from "../src/screens/AnatomyReviewScreen";
+import DashboardScreen from "../src/screens/DashboardScreen";
+import IntroScreen from "../src/screens/IntroScreen";
+import QuestionsScreen from "../src/screens/QuestionsScreen";
+import SelfReflectionScreen from "../src/screens/SelfReflectionScreen";
+import StatisticsScreen from "../src/screens/StatisticsScreen";
+import WelcomeScreen from "../src/screens/WelcomeScreen";
 
 function StackNavigator() {
-
     const Stack = createNativeStackNavigator()
 
     return (

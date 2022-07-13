@@ -1,13 +1,14 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-
-import { colors } from '../assets/colors/colors';
+import React from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import IconFA from "react-native-vector-icons/FontAwesome";
+import { colors } from "../../assets/colors/colors";
 
 IconFA.loadFont();
 
-function CustomShortInput({ value, showAnswers, options, handleShowAnswers, handleOptionChange }) {
+function CustomShortInput({
+    value, showAnswers, options, handleShowAnswers, handleOptionChange,
+}) {
     return (
         <View style={styles.container}>
             <View style={styles.choosenOption}>
@@ -19,27 +20,27 @@ function CustomShortInput({ value, showAnswers, options, handleShowAnswers, hand
                     onPress={() => handleShowAnswers()}
                 >
                     <IconFA
-                        name='angle-down'
+                        name="angle-down"
                         size={25}
                         color={colors.black}
                     />
                 </TouchableOpacity>
             </View>
             <View>
-                {showAnswers &&
-                    options.map((option, k) =>
+                {showAnswers
+                    && options.map((option, k) => (
                         <TouchableOpacity
                             key={k}
                             onPress={() => {
-                                handleOptionChange(option)
-                                handleShowAnswers()
+                                handleOptionChange(option);
+                                handleShowAnswers();
                             }}
                         >
                             <Text style={styles.optionValue}>
                                 {option}
                             </Text>
                         </TouchableOpacity>
-                    )}
+                    ))}
             </View>
         </View>
     );
@@ -71,6 +72,6 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         paddingLeft: 10,
     },
-})
+});
 
 export default CustomShortInput;

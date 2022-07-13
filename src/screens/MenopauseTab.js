@@ -1,46 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, Linking, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import {
+    View,
+    StyleSheet, 
+    Text, 
+    Image, 
+    Linking, 
+    TouchableWithoutFeedback, 
+    TouchableOpacity,
+} from "react-native";
 
-import { colors } from '../assets/colors/colors';
+import IconO from "react-native-vector-icons/Octicons";
+import { colors } from "../../assets/colors/colors";
 
-import IconO from 'react-native-vector-icons/Octicons';
-import InfoCirlcle from '../components/InfoCirlcle';
-import CustomModal from '../components/CustomModal';
+import InfoCirlcle from "../components/InfoCirlcle";
+import CustomModal from "../components/CustomModal";
 
-
-import { client } from "../client"
-
+import { client } from "../API/client";
 
 function MenopauseTab({ }) {
     const url = "https://www.menopause.org/for-women";
 
     const [keyPoints, setKeyPoints] = useState([]);
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         client.getEntries()
             .then((response) => setKeyPoints(response.items.find((item) => item.fields.keyPoints).fields.keyPoints))
-            .catch((err) => console.log(err))
-    }, [])
-
+            .catch((err) => console.log(err));
+    }, []);
 
     const handleUrlPress = () => {
         if (Linking.canOpenURL(url)) {
-            Linking.openURL(url)
+            Linking.openURL(url);
         }
-        return;
-    }
+    };
 
     const handleShowModalPress = () => {
         setShowModal(!showModal);
-    }
+    };
 
     const handleScreenPress = () => {
         if (showModal) {
             setShowModal(!showModal);
-            return;
         }
-    }
+    };
 
     return (
         <TouchableWithoutFeedback
@@ -49,71 +52,73 @@ function MenopauseTab({ }) {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Image
-                        source={require("../assets/images/menopause.png")}
+                        source={require("../../assets/images/menopause.png")}
                     />
                     <Text style={styles.headerTitle}>
-                        Menopause and Hormone Therapy
+            Menopause and Hormone Therapy
                     </Text>
                 </View>
 
                 <View style={styles.banner}>
                     <Text style={styles.bannerTitle}>
-                        {keyPoints.length} Key Points:
+                        {keyPoints.length}
+                        {" "}
+            Key Points:
                     </Text>
 
-
-                    {keyPoints.map((keyPoint, index) =>
+                    {keyPoints.map((keyPoint, index) => (
                         <View key={index} style={styles.keyPointContainer}>
                             <View style={styles.keyPointBox}>
                                 <Text style={styles.keyPointIndex}>
-                                    {++index}.
+                                    {++index}
+                  .
                                 </Text>
                                 <Text style={styles.keyPoint}>
                                     {keyPoint.keyPoint}
-                                    {keyPoint.info &&
-                                        <InfoCirlcle
-                                            onPress={() => handleShowModalPress()}
-                                        />
-                                    }
+                                    {keyPoint.info
+                                        && (
+                                            <InfoCirlcle
+                                                onPress={() => handleShowModalPress()}
+                                            />
+                                        )}
                                 </Text>
                             </View>
                             <View>
-                                {keyPoint.subpoints &&
-                                    keyPoint.subpoints.map((subpoint, index) =>
+                                {keyPoint.subpoints
+                                    && keyPoint.subpoints.map((subpoint, index) => (
                                         <View
                                             key={index}
                                             style={styles.subpointBox}
                                         >
                                             <IconO
-                                                name={"dot-fill"}
+                                                name="dot-fill"
                                                 style={styles.blackDot}
                                             />
                                             <Text>
                                                 {subpoint}
                                             </Text>
                                         </View>
-                                    )
-                                }
+                                    ))}
                             </View>
-                            {showModal && keyPoint.info &&
-                                <CustomModal
-                                    article={keyPoint.info}
-                                />
-                            }
+                            {showModal && keyPoint.info
+                                && (
+                                    <CustomModal
+                                        article={keyPoint.info}
+                                    />
+                                )}
                         </View>
-
-                    )}
+                    ))}
                 </View>
                 <View style={styles.footer}>
                     <Text style={styles.footerTitle}>
-                        Read More at
+            Read More at
                     </Text>
                     <TouchableOpacity onPress={() => handleUrlPress()}>
                         <Text style={styles.link}> menopause.org </Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        </TouchableWithoutFeedback >
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -158,7 +163,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
     },
     footerTitle: {
         fontSize: 18,
@@ -171,6 +176,6 @@ const styles = StyleSheet.create({
         textDecorationLine: "underline",
     },
 
-})
+});
 
 export default MenopauseTab;

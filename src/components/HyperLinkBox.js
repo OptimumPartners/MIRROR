@@ -1,7 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, Text, Linking } from 'react-native';
-
-import { colors } from '../assets/colors/colors';
+import React from "react";
+import { StyleSheet, Linking, Text } from "react-native";
+import { colors } from "../../assets/colors/colors";
 
 function HyperLinkBox({ title, url }) {
     return (
@@ -19,6 +18,6 @@ const styles = StyleSheet.create({
         color: colors.hyperLinkBlue,
         textDecorationLine: "underline",
     },
-})
+});
 
 export default HyperLinkBox;

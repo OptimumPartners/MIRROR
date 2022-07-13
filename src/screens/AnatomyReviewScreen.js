@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
     View,
     StyleSheet,
@@ -6,29 +6,29 @@ import {
     Image,
     ScrollView,
     TouchableOpacity,
-} from 'react-native';
-import { colors } from '../assets/colors/colors';
+} from "react-native";
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import IconAD from "react-native-vector-icons/AntDesign";
 import IconO from "react-native-vector-icons/Octicons";
+import { colors } from "../../assets/colors/colors";
+import { client } from "../API/client";
 
-import { client } from "../client"
+function AnatomyReviewScreen() {
+    const navigation = useNavigation();
+    const route = useRoute();
 
-function AnatomyReviewScreen({ navigation, route }) {
-
-    const [symptomas, setSymptomas] = useState([])
-    const [basics, setBasics] = useState([])
-
+    const [symptomas, setSymptomas] = useState([]);
+    const [basics, setBasics] = useState([]);
 
     useEffect(() => {
         client.getEntries()
             .then((response) => {
-                setSymptomas(response.items.find((item) => item.fields.symptomas).fields.symptomas)
-                setBasics(response.items.find((item) => item.fields.basics).fields.basics)
+                setSymptomas(response.items.find((item) => item.fields.symptomas).fields.symptomas);
+                setBasics(response.items.find((item) => item.fields.basics).fields.basics);
             })
-            .catch((err) => console.log(err))
-    }, [])
-
+            .catch((err) => console.log(err));
+    }, []);
 
     return (
         <ScrollView
@@ -37,25 +37,25 @@ function AnatomyReviewScreen({ navigation, route }) {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>
-                        Anatomy Review
+            Anatomy Review
                     </Text>
                     <Image
-                        source={require("../assets/images/uterus.png")}
+                        source={require("../../assets/images/uterus.png")}
                         style={styles.uterusImage}
                     />
                 </View>
                 <View style={styles.uterusContentContainer}>
                     <Text style={styles.boldTitle}>
-                        Uterus:
+            Uterus:
                     </Text>
                     <View style={styles.symptomsContaier}>
-                        {symptomas.map((symptom, index) =>
+                        {symptomas.map((symptom, index) => (
                             <View
                                 style={styles.rowedBox}
                                 key={index}
                             >
                                 <IconAD
-                                    name='minus'
+                                    name="minus"
                                     color={colors.black}
                                     style={styles.iconMore}
                                 />
@@ -63,35 +63,39 @@ function AnatomyReviewScreen({ navigation, route }) {
                                     {symptom}
                                 </Text>
                             </View>
-                        )}
+                        ))}
                     </View>
                     <View style={styles.sectionContainer}>
                         <Text style={styles.notBoldSubtitle}>
                             <Text style={styles.boldTitle}>
-                                Fallopian tube:
-                            </Text>  Transport of egg and sperm,
-                            no hormonal function
+                Fallopian tube:
+                            </Text>
+                            {" "}
+              Transport of egg and sperm,
+              no hormonal function
                         </Text>
                     </View>
                     <View style={styles.sectionContainer}>
                         <Text style={styles.notBoldSubtitle}>
                             <Text style={styles.boldTitle}>
-                                Ovary:
-                            </Text>  Egg and hormone production
+                Ovary:
+                            </Text>
+                            {" "}
+              Egg and hormone production
                         </Text>
                     </View>
                 </View>
                 <View style={styles.cancerBasics}>
                     <Text style={styles.largeText}>
-                        Ovarian Cancer: The Basics
+            Ovarian Cancer: The Basics
                     </Text>
-                    {basics.map((text, index) =>
+                    {basics.map((text, index) => (
                         <View
                             style={styles.rowedBox}
                             key={index}
                         >
                             <IconO
-                                name={"dot-fill"}
+                                name="dot-fill"
                                 color={colors.black}
                                 style={styles.blackDot}
                             />
@@ -99,20 +103,18 @@ function AnatomyReviewScreen({ navigation, route }) {
                                 {text}
                             </Text>
                         </View>
-                    )}
+                    ))}
                 </View>
                 <View style={styles.backToYourStory}>
                     <Text style={styles.backToYourStoryText}>Now, back to your story   </Text>
                     <TouchableOpacity
-                        onPress={() =>
-                            navigation.navigate(
-                                "AdditionalQuestionsScreen",
-                                route.params,
-                            )
-                        }
+                        onPress={() => navigation.navigate(
+                            "AdditionalQuestionsScreen",
+                            route.params,
+                        )}
                     >
                         <IconAD
-                            name={"forward"}
+                            name="forward"
                             size={20}
                             color={colors.black}
                         />
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     backToYourStoryText: {
         fontSize: 20,
         fontWeight: "500",
-    }
-})
+    },
+});
 
 export default AnatomyReviewScreen;
