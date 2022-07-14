@@ -6,13 +6,15 @@ import {
     Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { screenNames } from "../../navigators/screenNames";
+
 import { colors } from "../../assets/colors/colors";
 
 function WelcomeScreen() {
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate("IntroScreen");
+            navigate(screenNames.INTRO_SCREEN);
         }, 2000);
     }, []);
 

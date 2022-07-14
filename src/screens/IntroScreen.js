@@ -5,17 +5,18 @@ import {
     Text, 
     TouchableWithoutFeedback,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, validatePathConfig } from "@react-navigation/native";
+import { screenNames } from "../../navigators/screenNames";
+
 import { colors } from "../../assets/colors/colors";
 
 import HyperLinkBox from "../components/HyperLinkBox";
 
 function IntroScreen() {
-
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
 
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("QuestionsScreen")}>
+        <TouchableWithoutFeedback onPress={() => navigate(screenNames.QUESTIONS_SCREEN)}>
             <View style={styles.container}>
                 <View>
                     <Text style={styles.articleTitle}>

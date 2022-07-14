@@ -7,6 +7,7 @@ import {
     Image,
 } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { screenNames } from "../../navigators/screenNames";
 
 import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
 
@@ -15,15 +16,11 @@ import IconO from "react-native-vector-icons/Octicons";
 import { colors } from "../../assets/colors/colors";
 import { client } from "../API/client";
 
-IconAD.loadFont();
-IconO.loadFont();
-
 function StatisticsScreen() {
-    const navigation = useNavigation();
-    const route = useRoute();
+    const { navigate } = useNavigation();
+    const { params } = useRoute();
 
     const [riskList, setRiskList] = useState([]);
-    const data = route.params;
 
     useEffect(() => {
         client.getEntries()
@@ -34,7 +31,7 @@ function StatisticsScreen() {
     const reasons = [
         "As you age, your risk for ovarian cancer increases.",
         "Recommended age for risk-reducing surgery is based on the age when your risk (based on your mutation) is higher than the risk of the general population.",
-        data.answerTwo === "Yes" && "The age of recommended surgery may also be changed based on the age of your family member(s) with ovarian cancer.",
+        params.answerTwo === "Yes" && "The age of recommended surgery may also be changed based on the age of your family member(s) with ovarian cancer.",
     ];
 
     const images = {
@@ -48,10 +45,10 @@ function StatisticsScreen() {
             contentContainerStyle={styles.outerContainer}
         >
             <TouchableWithoutFeedback
-                onPress={() => navigation.navigate(
-                    "AnatomyIntroScreen",
+                onPress={() => navigate(
+                    screenNames.ANATOMY_INTRO_SCREEN,
                     {
-                        data,
+                        params,
                     },
                 )}
             >
@@ -89,13 +86,13 @@ function StatisticsScreen() {
                     <View style={styles.statisticsImageContainer}>
                         <Image
                             source={
-                                data.geneticResult === "Lynch"
+                                params.geneticResult === "Lynch"
                                     ? images.lynch
                                     : images.other
                             }
                         />
                     </View>
-                    {data.geneticResult !== "Lynch"
+                    {params.geneticResult !== "Lynch"
                         && (
                             <View style={styles.doesAgeMatter}>
                                 <Text style={styles.bannerUnderLinedTitle}>

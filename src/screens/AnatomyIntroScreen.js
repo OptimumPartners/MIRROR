@@ -6,18 +6,19 @@ import {
     TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { screenNames } from "../../navigators/screenNames";
 import { colors } from "../../assets/colors/colors";
 
 function AnatomyIntroScreen() {
 
-    const navigation = useNavigation();
-    const route = useRoute();
+    const { navigate } = useNavigation();
+    const { params } = useRoute();
 
     return (
         <TouchableWithoutFeedback
-            onPress={() => navigation.navigate(
-                "AnatomyReviewScreen",
-                route.params,
+            onPress={() => navigate(
+                screenNames.ANATOMY_REVIEW_SCREEN,
+                params,
             )}
         >
             <View style={styles.container}>

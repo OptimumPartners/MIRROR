@@ -14,20 +14,21 @@ import FertilityTab from '../src/screens/FertilityTab';
 import CustomTabBarIcon from '../src/components/CustomTabBarIcon';
 import WhereYouAreTab from '../src/screens/WhereYouAreTab';
 
+import { tabNames } from './tabNames';
+
 function TabNavigator({ answers }) {
   const Tab = createBottomTabNavigator();
 
   return (
     <Tab.Navigator
-      initialRouteName="WhereYouAreTab"
+      initialRouteName={tabNames.WHERE_ARE_YOU_TAB}
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBarStyle,
       }}
     >
       <Tab.Screen
-        initialParams={{ answers }}
-        name="IAmNotReady"
+        name={tabNames.I_AM_NOT_READY_TAB}
         component={NotReadyTab}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -40,11 +41,11 @@ function TabNavigator({ answers }) {
         }}
       />
       <Tab.Screen
-        name="MenopuaseTab"
+        name={tabNames.MENOPAUSE_TAB}
         component={MenopauseTab}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
-          tabBarLabel: 'Menopuase',
+          tabBarLabel: 'Menopause',
           tabBarIcon: () => (
             <CustomTabBarIcon
               imgSource={require('../assets/images/menopause.png')}
@@ -53,7 +54,7 @@ function TabNavigator({ answers }) {
         }}
       />
       <Tab.Screen
-        name="SurgeryTab"
+        name={tabNames.SURGERY_TAB}
         component={SurgeryTab}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -66,7 +67,7 @@ function TabNavigator({ answers }) {
         }}
       />
       <Tab.Screen
-        name="OvarianCancerTab"
+        name={tabNames.OVARIAN_CANCER_TAB}
         component={OvarianCancerTab}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -79,7 +80,7 @@ function TabNavigator({ answers }) {
         }}
       />
       <Tab.Screen
-        name="FertilityTab"
+        name={tabNames.FERTILITY_TAB}
         component={FertilityTab}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -92,7 +93,7 @@ function TabNavigator({ answers }) {
         }}
       />
       <Tab.Screen
-        name="AnatomyTab"
+        name={tabNames.ANATOMY_TAB}
         component={AnatomyTab}
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -105,7 +106,8 @@ function TabNavigator({ answers }) {
         }}
       />
       <Tab.Screen
-        name="WhereYouAreTab"
+        initialParams={ answers}
+        name={tabNames.WHERE_ARE_YOU_TAB}
         component={WhereYouAreTab}
         options={{
           tabBarItemStyle: {

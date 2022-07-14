@@ -20,9 +20,9 @@ function TripleOptionBox({ defaultAnswer, updateAnswer }) {
         <Text style={styles.option}>
           {answer}
         </Text>
-        {showMenu && options.map((option) => (
+        {showMenu && options.map((option, index) => (
           <TouchableOpacity
-            key={option.id}// ??
+            key={option + index * index}
             onPress={() => {
               updateAnswer(option);
               setAnswer(option);

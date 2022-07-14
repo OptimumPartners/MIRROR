@@ -428,7 +428,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		00E356F61AD99517003FC87E /* Debug */ = {
+		00E356F61AD99517003FC87E /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-MIRROR-MIRRORTests.debug.xcconfig */;
 			buildSettings = {
@@ -453,9 +453,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MIRROR.app/MIRROR";
 			};
-			name = Debug;
+			name = "Dev Debug";
 		};
-		00E356F71AD99517003FC87E /* Release */ = {
+		00E356F71AD99517003FC87E /* Dev Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-MIRROR-MIRRORTests.release.xcconfig */;
 			buildSettings = {
@@ -477,9 +477,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MIRROR.app/MIRROR";
 			};
-			name = Release;
+			name = "Dev Release";
 		};
-		13B07F941A680F5B00A75B9A /* Debug */ = {
+		13B07F941A680F5B00A75B9A /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-MIRROR.debug.xcconfig */;
 			buildSettings = {
@@ -503,9 +503,9 @@
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Debug;
+			name = "Dev Debug";
 		};
-		13B07F951A680F5B00A75B9A /* Release */ = {
+		13B07F951A680F5B00A75B9A /* Dev Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-MIRROR.release.xcconfig */;
 			buildSettings = {
@@ -527,9 +527,9 @@
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Release;
+			name = "Dev Release";
 		};
-		83CBBA201A601CBA00E9B192 /* Debug */ = {
+		83CBBA201A601CBA00E9B192 /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -599,9 +599,9 @@
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
-			name = Debug;
+			name = "Dev Debug";
 		};
-		83CBBA211A601CBA00E9B192 /* Release */ = {
+		83CBBA211A601CBA00E9B192 /* Dev Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -664,7 +664,7 @@
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = "Dev Release";
 		};
 /* End XCBuildConfiguration section */
 
@@ -672,29 +672,29 @@
 		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "MIRRORTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				00E356F61AD99517003FC87E /* Debug */,
-				00E356F71AD99517003FC87E /* Release */,
+				00E356F61AD99517003FC87E /* Dev Debug */,
+				00E356F71AD99517003FC87E /* Dev Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Dev Release";
 		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MIRROR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				13B07F941A680F5B00A75B9A /* Debug */,
-				13B07F951A680F5B00A75B9A /* Release */,
+				13B07F941A680F5B00A75B9A /* Dev Debug */,
+				13B07F951A680F5B00A75B9A /* Dev Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Dev Release";
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "MIRROR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				83CBBA201A601CBA00E9B192 /* Debug */,
-				83CBBA211A601CBA00E9B192 /* Release */,
+				83CBBA201A601CBA00E9B192 /* Dev Debug */,
+				83CBBA211A601CBA00E9B192 /* Dev Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Dev Release";
 		};
 /* End XCConfigurationList section */
 	};

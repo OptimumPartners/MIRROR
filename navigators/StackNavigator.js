@@ -11,6 +11,8 @@ import SelfReflectionScreen from "../src/screens/SelfReflectionScreen";
 import StatisticsScreen from "../src/screens/StatisticsScreen";
 import WelcomeScreen from "../src/screens/WelcomeScreen";
 
+import { screenNames } from "./screenNames";
+
 function StackNavigator() {
     const Stack = createNativeStackNavigator()
 
@@ -21,39 +23,39 @@ function StackNavigator() {
             }}
         >
             <Stack.Screen
-                name="WelcomeScreen"
+                name={screenNames.WELCOME_SCREEN}
                 component={WelcomeScreen}
             />
             <Stack.Screen
-                name="IntroScreen"
+                name={screenNames.INTRO_SCREEN}
                 component={IntroScreen}
             />
             <Stack.Screen
-                name="QuestionsScreen"
+                name={screenNames.QUESTIONS_SCREEN}
                 component={QuestionsScreen}
             />
             <Stack.Screen
-                name="StatisticsScreen"
+                name={screenNames.STATISTICS_SCREEN}
                 component={StatisticsScreen}
             />
             <Stack.Screen
-                name="AnatomyIntroScreen"
+                name={screenNames.ANATOMY_INTRO_SCREEN}
                 component={AnatomyIntroScreen}
             />
             <Stack.Screen
-                name="AnatomyReviewScreen"
+                name={screenNames.ANATOMY_REVIEW_SCREEN}
                 component={AnatomyReviewScreen}
             />
             <Stack.Screen
-                name="AdditionalQuestionsScreen"
+                name={screenNames.ADDITIONAL_QUESTIONS_SCREEN}
                 component={AdditionalQuestionsScreen}
             />
             <Stack.Screen
-                name="DashboardScreen"
+                name={screenNames.DASHBOARD_SCREEN}
                 component={DashboardScreen}
             />
             <Stack.Screen
-                name="SelfRelectionScreen"
+                name={screenNames.SELF_REFLECTION_SCREEN}
                 component={SelfReflectionScreen}
             />
         </Stack.Navigator>

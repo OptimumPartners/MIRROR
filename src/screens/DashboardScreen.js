@@ -1,9 +1,11 @@
 import React from "react";
 import TabNavigator from "../../navigators/TabNavigator";
 
-function DashboardScreen({ route }) {
+import { useRoute } from "@react-navigation/native";
+function DashboardScreen() {
+    const { params } = useRoute()
     return (
-        <TabNavigator answers={route.params} />
+        <TabNavigator answers={params} />
     );
 }
 

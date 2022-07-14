@@ -19,11 +19,12 @@ import CustomModal from "../components/CustomModal";
 import InfoCirlcle from "../components/InfoCirlcle";
 
 import { client } from "../API/client";
+import { screenNames } from "../../navigators/screenNames";
 
 function AdditionalQuestionsScreen() {
 
-    const navigation = useNavigation();
-    const route = useRoute();
+    const { navigate } = useNavigation();
+    const { params } = useRoute();
 
     const [dropDownMenu, setDropDownMenu] = useState([]);
     const [options, setOptions] = useState([]);
@@ -71,13 +72,13 @@ function AdditionalQuestionsScreen() {
                     if (hrt === "Unsure") {
                         setHrt("No");
                     }
-                    return navigation.navigate(
-                        "DashboardScreen",
+                    return navigate(
+                        screenNames.DASHBOARD_SCREEN,
                         {
                             fertility,
                             menopause,
                             hrt,
-                            ...route.params.data,
+                            ...params.params,
                         },
                     );
                 }
@@ -87,7 +88,6 @@ function AdditionalQuestionsScreen() {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>
-                        {/* {' '} */}
             Additional questions:
                     </Text>
                     <View style={styles.banner}>
@@ -98,7 +98,7 @@ function AdditionalQuestionsScreen() {
                         <View style={styles.rowedBoxContainer}>
                             {options.map((option, index) => (
                                 <View
-                                    key={index[index]}
+                                    key={index ** 2}
                                     style={styles.rowedBox}
                                 >
                                     <Text style={styles.rowedBoxText}>
@@ -115,9 +115,8 @@ function AdditionalQuestionsScreen() {
                         </View>
                         <View>
                             {dropDownMenu.map((element, index) => (
-                                <>
+                                <View key={index ** 3}>
                                     <View
-                                        key={index}
                                         style={styles.questionContainer}
                                     >
                                         <View style={styles.rowedBox}>
@@ -144,12 +143,12 @@ function AdditionalQuestionsScreen() {
                                     {showInfo
                     && (
                         <CustomModal
-                            key={Math.random()}
+                            key={index ** 4}
                             article={info}
                         />
                     )
                                     }
-                                </>
+                                </View>
                             ))}
                         </View>
                     </View>

@@ -5,6 +5,8 @@ import {
     Text 
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { screenNames } from "../../navigators/screenNames";
+
 import { KeyboardAwareScrollView } from "@codler/react-native-keyboard-aware-scroll-view";
 
 import { colors } from "../../assets/colors/colors";
@@ -16,7 +18,7 @@ import { client } from "../API/client";
 
 function QuestionsScreen() {
 
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
 
     const [geneticResults, setGeneticResults] = useState([]);
 
@@ -45,8 +47,8 @@ function QuestionsScreen() {
 
     useEffect(() => {
         if (answerOne && answerTwo && geneticResult && age > 0) {
-            navigation.navigate(
-                "StatisticsScreen",
+            navigate(
+                screenNames.STATISTICS_SCREEN,
                 {
                     geneticResult,
                     age,

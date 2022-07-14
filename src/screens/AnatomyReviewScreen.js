@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { screenNames } from "../../navigators/screenNames";
 
 import IconAD from "react-native-vector-icons/AntDesign";
 import IconO from "react-native-vector-icons/Octicons";
@@ -15,8 +16,8 @@ import { colors } from "../../assets/colors/colors";
 import { client } from "../API/client";
 
 function AnatomyReviewScreen() {
-    const navigation = useNavigation();
-    const route = useRoute();
+    const { navigate } = useNavigation();
+    const { params } = useRoute();
 
     const [symptomas, setSymptomas] = useState([]);
     const [basics, setBasics] = useState([]);
@@ -108,9 +109,9 @@ function AnatomyReviewScreen() {
                 <View style={styles.backToYourStory}>
                     <Text style={styles.backToYourStoryText}>Now, back to your story   </Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate(
-                            "AdditionalQuestionsScreen",
-                            route.params,
+                        onPress={() => navigate(
+                            screenNames.ADDITIONAL_QUESTIONS_SCREEN,
+                            params,
                         )}
                     >
                         <IconAD

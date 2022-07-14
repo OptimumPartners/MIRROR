@@ -7,6 +7,8 @@ import {
     Linking, 
     ScrollView,
 } from "react-native";
+
+import { useRoute } from "@react-navigation/native"
 import IconO from "react-native-vector-icons/Octicons";
 import { colors } from "../../assets/colors/colors";
 
@@ -14,7 +16,9 @@ import { client } from "../API/client";
 
 const nccnUrl = "https://www.nccn.org/login?ReturnURL=https://www.nccn.org/professionals/physician_gls/pdf/genetics_bop.pdf";
 
-function NotReadyTab({ }) {
+function NotReadyTab() {
+
+    // const {params} = useRoute()
     const [recommendations, setRecommendations] = useState([]);
 
     useEffect(() => {

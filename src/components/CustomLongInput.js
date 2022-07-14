@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, TextInput, Text } from "react-nativ
 import IconFA from "react-native-vector-icons/FontAwesome";
 import { colors } from "../../assets/colors/colors";
 
-IconFA.loadFont();
+import { commonStyles } from "../styles/commonStyles"
 
 function CustomLongInput({
     value,
@@ -19,11 +19,11 @@ function CustomLongInput({
             {arrowOption
                 ? (
                     <View style={styles.choosenOption}>
-                        <Text style={styles.optionValue}>
+                        <Text style={commonStyles.optionValue}>
                             {value}
                         </Text>
                         <TouchableOpacity
-                            style={styles.optionArrow}
+                            style={commonStyles.optionArrow}
                             onPress={() => handleArrowPress()}
                         >
                             <IconFA
@@ -71,21 +71,6 @@ const styles = StyleSheet.create({
     choosenOption: {
         flexDirection: "row",
         justifyContent: "space-between",
-    },
-    optionArrow: {
-        borderBottomWidth: 2,
-        borderLeftColor: colors.black,
-        borderLeftStyle: "solid",
-        borderLeftWidth: 2,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-    },
-    optionValue: {
-        alignSelf: "flex-start",
-        color: colors.black,
-        fontSize: 20,
-        fontWeight: "500",
-        paddingLeft: 10,
     },
     optionInput: {
         fontSize: 20,

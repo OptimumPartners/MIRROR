@@ -10,7 +10,8 @@ import {
 import IconO from "react-native-vector-icons/Octicons";
 
 const url = "https://www.google.com/";
-function SelfReflectionScreen({ }) {
+
+function SelfReflectionScreen() {
     const questions = [
         "How worried are you about receiving a cancer diagnosis?",
         "How important is fertility to you?",
