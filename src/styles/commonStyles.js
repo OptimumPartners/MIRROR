@@ -1,3 +1,5 @@
+import { colors } from "../../assets/colors/colors"
+
 export const commonStyles = {
     optionArrow: {
         borderBottomWidth: 2,
