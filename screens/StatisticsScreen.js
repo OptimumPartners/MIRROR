@@ -1,66 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { colors } from '../assets/colors/colors';
-
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
-
-import IconAD from 'react-native-vector-icons/AntDesign';
 import IconO from "react-native-vector-icons/Octicons";
-import { client } from '../client';
-
-
-IconAD.loadFont();
-IconO.loadFont();
+import { LEARN_YOUR_RISK_ENTRY_ID } from '../env/env.json'
+import { getContentfulData } from '../client';
+import Container from '../components/shared/Container';
+import VerticalLine from '../components/shared/VerticalLine';
+import TimeLine from '../components/shared/TimeLine';
+import DropDown from '../components/shared/DropDown';
+import Footer from '../components/shared/Footer';
+import routes from '../navigators/routes';
+import { Questions } from '../contexts/QuestionContext';
 
 function StatisticsScreen({ navigation, route }) {
+    const [params, setParams] = useState(route.params);
+    const [data, setData] = useState({})
 
-    const [riskList, setRiskList] = useState([])
-    const data = route.params
+    const { value, setValue } = useContext(Questions)
 
     useEffect(() => {
-        client.getEntries()
-            .then((res) => setRiskList(res.items.find((item) => item.fields.risks).fields.risks))
-            .catch((err) => console.log(err))
-    }, [])
+        getData()
+    }, []);
 
-    const reasons = [
-        "As you age, your risk for ovarian cancer increases.",
-        "Recommended age for risk-reducing surgery is based on the age when your risk (based on your mutation) is higher than the risk of the general population.",
-        data.answerTwo === "Yes" && "The age of recommended surgery may also be changed based on the age of your family member(s) with ovarian cancer.",
-    ]
-
-    const images = {
-        lynch: require("/Users/adminstrator/Desktop/MIRROR/assets/images/statistics2.png"),
-        other: require("../assets/images/statistics.png"),
+    const getData = async () => {
+        const data = await getContentfulData(LEARN_YOUR_RISK_ENTRY_ID);
+        setData(data)
     }
 
-    return (
-        <KeyboardAwareScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.outerContainer}
-        >
-            <TouchableWithoutFeedback
-                onPress={() =>
-                    navigation.navigate(
-                        "AnatomyIntroScreen",
-                        {
-                            data,
-                        }
-                    )}
-            >
-                <View style={styles.container}>
-                    <View style={styles.banner}>
-                        <Text style={styles.bannerRiskDescription}>
-                            Removal of your ovaries and tubes
-                            will substantially reduce your risk of ovarian cancer.
-                        </Text>
-                        <Text style={styles.bannerUnderLinedTitle}>
-                            Understanding Your Risk
-                        </Text>
-                        <View>
-                            {riskList.map((risk, index) => {
-                                if (risk) {
-                                    return (
+    const onSelect = (value, dataName) => {
+        const newData = { ...params };
+        newData[dataName] = value
+        setParams(newData)
+    }
+
+    return data.description && (
+        <ScrollView>
+            <Container style={styles.container}>
+
+                <TimeLine currentStep={data.step} />
+                <View style={styles.header}>
+                    {value.map((question, index) => (<>
+                        <DropDown
+                            key={question.key}
+                            label={question.label}
+                            value={params[question.key]}
+                            options={question.values}
+                            onSelect={(value) => onSelect(value, question.key)}
+                            dropDownHeader={question.header}
+                        />
+                        {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
+                    </>
+                    ))}
+
+                </View>
+
+                <VerticalLine style={styles.verticalLine} />
+
+                <View style={styles.bodyContainer}>
+                    <View style={styles.statistics}>
+                        <View style={styles.statisticsImageContainer}>
+                            <Image source={require("../assets/images/statistics.png")} />
+                            <Text style={styles.statisticsDescription}>Before surgery</Text>
+                        </View>
+
+                        <View style={styles.statisticsImageContainer}>
+                            <Image source={require("../assets/images/statistics2.png")} />
+                            <Text style={styles.statisticsDescription}>After removal of tubes and ovaries</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.resultContainer}>
+
+                        <View style={styles.banner}>
+                            <Text style={styles.bannerRiskDescription}>{data.description}</Text>
+
+                            <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
+                            <View style={styles.resultPoints}>
+                                {[...data.risks, params.ovarianCancer === "Yes" && data.familyHistoryRisk].map((risk, index) => (
+                                    <View
+                                        key={index}
+                                        style={styles.textFragmentContainer}
+                                    >
+                                        <IconO
+                                            name={"dot-fill"}
+                                            color={colors.black}
+                                            style={styles.blackDot}
+                                        />
+                                        <Text style={styles.fragment}>
+                                            {risk}
+                                        </Text>
+                                    </View>
+                                ))}
+                            </View>
+                        </View>
+
+                        {params.geneticResult !== "Lynch" &&
+                            <View style={styles.doesAgeMatter}>
+                                <Text style={styles.bannerUnderLinedTitle}>{data.ageInfoTitle}</Text>
+
+                                <View style={styles.resultPoints}>
+                                    {data.ageInfo.map((reason, index) => (
                                         <View
                                             key={index}
                                             style={styles.textFragmentContainer}
@@ -70,56 +109,30 @@ function StatisticsScreen({ navigation, route }) {
                                                 color={colors.black}
                                                 style={styles.blackDot}
                                             />
+
                                             <Text style={styles.fragment}>
-                                                {risk}
+                                                {reason}
                                             </Text>
+
                                         </View>
-                                    )
-                                }
-                            })}
-                        </View>
-                    </View>
-                    <View style={styles.statisticsImageContainer}>
-                        <Image
-                            source={
-                                data.geneticResult === "Lynch"
-                                    ? images.lynch
-                                    : images.other
-                            }
-                        />
-                    </View>
-                    {data.geneticResult !== "Lynch" &&
-                        <View style={styles.doesAgeMatter}>
-                            <Text style={styles.bannerUnderLinedTitle}>
-                                Does Age Matter?
-                            </Text>
-                            <View>
-                                {reasons.map((reason, index) => {
-                                    if (reason) {
-                                        return (
-                                            <View
-                                                key={index}
-                                                style={styles.textFragmentContainer}
-                                            >
-                                                <IconO
-                                                    name={"dot-fill"}
-                                                    color={colors.black}
-                                                    style={styles.blackDot}
-                                                />
-                                                <Text style={styles.fragment}>
-                                                    {reason}
-                                                </Text>
-                                            </View>
-                                        )
-                                    }
-                                })}
+                                    ))}
+                                </View>
                             </View>
-                        </View>
-                    }
+                        }
+                    </View>
                 </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAwareScrollView >
+                <Footer style={styles.footer}
+                    goBack={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
+                    goTo={() =>
+                        navigation.navigate(
+                            routes.ANATOMY_REVIEW_SCREEN,
+                            { ...params }
+                        )}
+                />
+            </Container>
+        </ScrollView >
     );
+
 }
 
 const styles = StyleSheet.create({
@@ -127,9 +140,34 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     container: {
-        backgroundColor: colors.white,
-        flex: 1,
-        paddingVertical: 20,
+        alignItems: 'flex-end'
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        marginRight: '3.7%',
+        width: '69%',
+        zIndex: 1
+    },
+    horizontalLine: {
+        borderColor: colors.lightGray,
+        borderWidth: 1,
+        height: 51,
+        marginHorizontal: 24
+    },
+    verticalLine: {
+        marginRight: '3.7%',
+        marginVertical: 24,
+        width: '69%',
+    },
+    bodyContainer: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'flex-start',
+        width: '100%',
+    },
+    resultContainer: {
+        marginRight: '5.6%',
+        width: '45.9%',
     },
     baseLine: {
         backgroundColor: colors.white,
@@ -175,17 +213,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     bannerRiskDescription: {
-        color: colors.black,
-        fontSize: 22,
-        fontWeight: "500",
-        paddingVertical: 5,
-    },
-    bannerUnderLinedTitle: {
-        color: colors.black,
+        color: colors.primaryText,
         fontSize: 24,
         fontWeight: "500",
-        paddingBottom: 5,
-        textDecorationLine: "underline",
+    },
+    bannerUnderLinedTitle: {
+        color: colors.darkGray,
+        fontSize: 14,
+        fontWeight: "600",
+        marginTop: 24
+    },
+    resultPoints: {
+        marginTop: 16
     },
     doesAgeMatter: {
         paddingHorizontal: 20,
@@ -201,9 +240,25 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingLeft: 10,
     },
-    statisticsImageContainer: {
-        alignItems: "center"
+    statistics: {
+        marginRight: '7.7%',
     },
+    statisticsImageContainer: {
+        marginBottom: 32
+    },
+    statisticsDescription: {
+        color: colors.darkGray,
+        fontSize: 14,
+        fontWeight: '600',
+        fontStyle: 'italic',
+        marginTop: 11,
+        textAlign: 'center',
+        width: 158,
+    },
+    footer: {
+        width: '45.6%',
+        alignSelf: 'center'
+    }
 })
 
 export default StatisticsScreen;

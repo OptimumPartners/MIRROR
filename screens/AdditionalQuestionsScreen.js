@@ -1,213 +1,183 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback, unstable_enableLogBox } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { colors } from '../assets/colors/colors';
+import { ADDITIONAL_QUESTIONS_ENTRY_ID } from '../env/env.json'
 
-import IconAD from "react-native-vector-icons/AntDesign";
 import IconO from "react-native-vector-icons/Octicons";
-import TripleOptionBox from '../components/TripleOptionBox';
-import CustomModal from '../components/CustomModal';
-import InfoCirlcle from '../components/InfoCirlcle';
-
-import { client } from "../client"
+import { getContentfulData } from "../client"
+import Container from '../components/shared/Container';
+import Checkbox from '../components/shared/Checkbox';
+import VerticalLine from '../components/shared/VerticalLine';
+import Footer from '../components/shared/Footer';
+import TimeLine from '../components/shared/TimeLine';
+import routes from '../navigators/routes';
+import { Questions } from '../contexts/QuestionContext';
 
 function AdditionalQuestionsScreen({ navigation, route }) {
+    const [data, setData] = useState({})
+    const [answers, setAnswers] = useState({ pregnant: '', menopause: '', HRT: '' })
 
-
-    const [dropDownMenu, setDropDownMenu] = useState([])
-    const [options, setOptions] = useState([])
+    const { value, setValue } = useContext(Questions)
 
     useEffect(() => {
-        client.getEntries()
-            .then((response) => {
-                setDropDownMenu(response.items.find((item) => item.fields.dropDownMenu).fields.dropDownMenu)
-                setOptions(response.items.find((item) => item.fields.options).fields.options)
-            })
-            .catch((err) => console.log(err))
+        getData()
     }, [])
 
-    const [showInfo, setShowInfo] = useState(false);
-    const [info, setInfo] = useState("")
+    const getData = async () => {
+        const data = await getContentfulData(ADDITIONAL_QUESTIONS_ENTRY_ID);
+        setData(data)
+        setValue([...value, ...data.questions])
+    }
 
-
-    const [fertility, setFertility] = useState("");
-    const [menopause, setMenopause] = useState("");
-    const [hrt, setHrt] = useState("");
-
-    const handleInfoPress = (element) => {
-        setShowInfo(!showInfo)
-        setInfo(element.info)
+    const handleSetAnswers = (key, answer) => {
+        const answersObject = { ...answers };
+        answersObject[key] = answer
+        setAnswers(answersObject)
     }
 
 
-    return (
-        <TouchableWithoutFeedback
-            onPress={() => {
-                setFertility(dropDownMenu[0].answer);
-                setMenopause(dropDownMenu[1].answer);
-                setHrt(dropDownMenu[2].answer);
-                if (showInfo) {
-                    setShowInfo(!showInfo);
-                } else if ((fertility && menopause && hrt)) {
-                    if (fertility === "Unsure") {
-                        setFertility("Yes")
-                    }
-                    if (menopause === "Unsure") {
-                        setMenopause("No")
-                    }
-                    if (hrt === "Unsure") {
-                        setHrt("No")
-                    }
-                    return navigation.navigate(
-                        "DashboardScreen",
-                        {
-                            fertility,
-                            menopause,
-                            hrt,
-                            ...route.params.data,
-                        }
-                    )
-                }
-            }}
-        >
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>
-                        Additional questions:
-                    </Text>
-                    <View style={styles.banner} >
-                        <Text style={styles.headerSubText}>
-                            There are multiple options for surgical management.
-                            The decision is complex and depends on your:
-                        </Text>
+    return data.title && (
+        <Container>
+            <TimeLine currentStep={data.step} />
+            <ScrollView style={styles.scrollView}>
+                <View style={styles.container}>
+                    <View style={styles.partsContainers}>
+                        <Text style={styles.headerText}>{data.title}</Text>
 
+                        <Text style={styles.subject}>{data.subject}</Text>
 
-                        <View style={styles.rowedBoxContainer}>
-                            {options.map((option, index) =>
-                                <View
-                                    key={index}
-                                    style={styles.rowedBox}
-                                >
-                                    <Text style={styles.rowedBoxText}>
-                                        <IconAD
-                                            name={"minus"}
-                                            size={14}
-                                            color={colors.black}
-                                            style={styles.rowedBoxIcon}
+                        <Text style={styles.decisionTitle}>{data.decisionMaking.title}</Text>
+
+                        {data.decisionMaking.decisions.map((decision, index) =>
+                            <View
+                                key={index}
+                                style={styles.decision}
+                            >
+                                <IconO
+                                    name={"dot-fill"}
+                                    color={colors.primaryText}
+                                    size={10}
+                                    style={styles.blackDot}
+                                />
+                                <Text style={styles.decisionText}>
+                                    {decision}
+                                </Text>
+                            </View>
+                        )}
+                    </View>
+
+                    <VerticalLine style={styles.VerticalLine} />
+
+                    <View style={[styles.partsContainers, styles.questionsContainer]}>
+                        {data.questions.map(question => (
+                            <View style={styles.question} key={question.key}>
+                                <Text style={styles.questionText}>{question.question}</Text>
+                                <View style={styles.answersContainer}>
+                                    {question.values.map(answer => (
+                                        <Checkbox
+                                            key={`${answer}-${question.key}`}
+                                            labelStyle={styles.label}
+                                            label={answer}
+                                            onPress={() => handleSetAnswers(question.key, answer)}
+                                            checked={answers[question.key] === answer}
                                         />
-                                        {option}
-                                    </Text>
+                                    ))}
                                 </View>
-                            )}
-                        </View>
-
-                        <View>
-                            {dropDownMenu.map((element, index) =>
-                                <>
-                                    <View
-                                        key={index}
-                                        style={styles.questionContainer}
-                                    >
-                                        <View style={styles.rowedBox}>
-                                            <IconO
-                                                name={"dot-fill"}
-                                                color={colors.black}
-                                                style={styles.blackDot}
-                                            />
-                                            <Text style={styles.question}>
-                                                {element.question}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.questionRight}>
-                                            <TripleOptionBox
-                                                info={element.info}
-                                                defaultAnswer={element.answer}
-                                                updateAnswer={(answer) => element.answer = answer}
-                                            />
-
-                                            {element.info !== ""
-                                                ? <InfoCirlcle onPress={() => handleInfoPress(element)} />
-                                                : <View style={styles.hiddenSpacing} />
-                                            }
-                                        </View>
-                                    </View>
-                                    {showInfo &&
-                                        <CustomModal
-                                            key={Math.random()}
-                                            article={info}
-                                        />
-                                    }
-                                </>
-                            )}
-                        </View>
+                            </View>
+                        )
+                        )}
+                        <Footer
+                            style={styles.footer}
+                            goTo={() => navigation.navigate(
+                                routes.SURGICAL_OPTIONS,
+                                {
+                                    ...route.params,
+                                    ...answers
+                                })
+                            }
+                            goBack={() => {
+                                const questions = [...value]
+                                questions.splice(4, data.questions.length)
+                                console.log('questions:: ', questions, questions.length);
+                                setValue(questions)
+                                navigation.navigate(routes.ANATOMY_REVIEW_SCREEN)
+                            }}
+                            disabled={answers.pregnant && answers.menopause && answers.HRT}
+                        />
                     </View>
                 </View>
-            </View>
-        </TouchableWithoutFeedback >
+            </ScrollView>
+        </Container >
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: colors.white,
-        paddingHorizontal: 20,
+        alignSelf: 'flex-end',
+        width: '69%',
+        marginRight: '3.7%'
     },
-    header: {
-        flex: 1,
+    scrollView: {
+        width: '100%',
+    },
+    partsContainers: {
+        width: '100%',
     },
     headerText: {
+        fontSize: 10,
+        fontWeight: '600',
+        color: colors.darkGray,
+        marginBottom: 16
+    },
+    subject: {
+        color: colors.primaryText,
         fontSize: 24,
-        paddingVertical: 20,
+        fontWeight: '500',
+        marginBottom: 24,
     },
-    headerContentContainer: {
-        paddingHorizontal: 20,
+    decisionTitle: {
+        color: colors.primaryText,
+        fontSize: 14,
+        fontWeight: '500',
+        marginBottom: 3
     },
-    headerSubText: {
-        fontSize: 18,
+    decision: {
+        alignItems: 'center',
+        flexDirection: "row",
+        marginTop: 13
+    },
+    decisionText: {
+        color: colors.primaryText,
+        fontSize: 14,
         fontWeight: "500",
-        lineHeight: 25,
     },
-    banner: {
-        flex: 1,
+    VerticalLine: {
+        marginVertical: 40
     },
-    rowedBoxContainer: {
-        flex: 0.3,
-    },
-    rowedBox: {
-        flexDirection: "row",
-        flex: 0.8,
-    },
-    rowedBoxText: {
-        fontSize: 18,
-        fontWeight: "500",
-        lineHeight: 25,
-    },
-    questionContainer: {
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingVertical: 5,
-    },
-    questionRight: {
-        alignItems: "center",
-        flex: 0.7,
-        flexDirection: "row",
-        justifyContent: "space-around",
-    },
-    blackDot: {
-        paddingHorizontal: 5,
-        top: 2,
+    questionsContainer: {
+        width: '66%'
     },
     question: {
-        fontWeight: "500",
-        fontSize: 10,
+        marginBottom: 32
     },
-    hiddenSpacing: {
-        width: 10,
-        height: 10,
+    questionText: {
+        color: colors.primaryText,
+        fontSize: 14,
+        fontWeight: '700',
     },
-    infoIcon: {
-        paddingHorizontal: 3,
+    answersContainer: {
+        flexDirection: 'row',
+        marginTop: 19
+    },
+    label: {
+        marginRight: 28,
+        marginLeft: 7
+    },
+    blackDot: {
+        paddingHorizontal: 10,
+    },
+    footer: {
+        marginTop: 8
     }
 })
 

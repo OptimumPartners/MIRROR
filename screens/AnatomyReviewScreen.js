@@ -5,181 +5,209 @@ import {
     Text,
     Image,
     ScrollView,
-    TouchableOpacity,
 } from 'react-native';
+import { LEARN_YOUR_RISK_ANATOMY_ENTRY_ID } from '../env/env.json'
 import { colors } from '../assets/colors/colors';
-
-import IconAD from "react-native-vector-icons/AntDesign";
 import IconO from "react-native-vector-icons/Octicons";
-
-import { client } from "../client"
+import { getContentfulData } from "../client"
+import Container from '../components/shared/Container';
+import Footer from '../components/shared/Footer';
+import TimeLine from '../components/shared/TimeLine';
+import routes from '../navigators/routes';
 
 function AnatomyReviewScreen({ navigation, route }) {
-
-    const [symptomas, setSymptomas] = useState([])
-    const [basics, setBasics] = useState([])
-
+    const [data, setData] = useState({})
 
     useEffect(() => {
-        client.getEntries()
-            .then((response) => {
-                setSymptomas(response.items.find((item) => item.fields.symptomas).fields.symptomas)
-                setBasics(response.items.find((item) => item.fields.basics).fields.basics)
-            })
-            .catch((err) => console.log(err))
+        getData()
     }, [])
 
+    const getData = async () => {
+        const data = await getContentfulData(LEARN_YOUR_RISK_ANATOMY_ENTRY_ID);
+        console.log(data);
+        setData(data)
+    }
 
-    return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-        >
-            <View style={styles.container}>
+    return data.title && (
+        <Container >
+            <TimeLine currentStep={data.step} />
+            <ScrollView style={styles.container} >
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>
-                        Anatomy Review
-                    </Text>
-                    <Image
-                        source={require("../assets/images/uterus.png")}
-                        style={styles.uterusImage}
-                    />
-                </View>
-                <View style={styles.uterusContentContainer}>
-                    <Text style={styles.boldTitle}>
-                        Uterus:
-                    </Text>
-                    <View style={styles.symptomsContaier}>
-                        {symptomas.map((symptom, index) =>
+                    <Text style={styles.headerText} >{data.title}.</Text>
+
+                    <View style={styles.basics}>
+                        <Text style={styles.basicsTitle}>{data.basicsTitle}</Text>
+                        {data.basics.map((text, index) =>
                             <View
-                                style={styles.rowedBox}
+                                style={[styles.rowedBox, styles.headerBoxRows]}
                                 key={index}
                             >
-                                <IconAD
-                                    name='minus'
+                                <IconO
+                                    name={"dot-fill"}
                                     color={colors.black}
-                                    style={styles.iconMore}
+                                    size={10}
+                                    style={styles.blackDot}
                                 />
-                                <Text style={styles.symptom}>
-                                    {symptom}
+
+                                <Text style={styles.notBoldSubtitle}>
+                                    {text}
                                 </Text>
                             </View>
                         )}
                     </View>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.notBoldSubtitle}>
-                            <Text style={styles.boldTitle}>
-                                Fallopian tube:
-                            </Text>  Transport of egg and sperm,
-                            no hormonal function
-                        </Text>
-                    </View>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.notBoldSubtitle}>
-                            <Text style={styles.boldTitle}>
-                                Ovary:
-                            </Text>  Egg and hormone production
-                        </Text>
-                    </View>
                 </View>
-                <View style={styles.cancerBasics}>
-                    <Text style={styles.largeText}>
-                        Ovarian Cancer: The Basics
-                    </Text>
-                    {basics.map((text, index) =>
-                        <View
-                            style={styles.rowedBox}
-                            key={index}
-                        >
-                            <IconO
-                                name={"dot-fill"}
-                                color={colors.black}
-                                style={styles.blackDot}
-                            />
-                            <Text style={styles.notBoldSubtitle}>
-                                {text}
-                            </Text>
-                        </View>
-                    )}
-                </View>
-                <View style={styles.backToYourStory}>
-                    <Text style={styles.backToYourStoryText}>Now, back to your story   </Text>
-                    <TouchableOpacity
-                        onPress={() =>
-                            navigation.navigate(
-                                "AdditionalQuestionsScreen",
-                                route.params,
-                            )
-                        }
-                    >
-                        <IconAD
-                            name={"forward"}
-                            size={20}
-                            color={colors.black}
+
+                <View style={styles.uterusContentContainer}>
+                    <View style={styles.imageContainer}>
+                        <Text style={styles.anatomyTitle}>{data.anatomyTitle}</Text>
+
+                        <Image
+                            source={require("../assets/images/uterus.png")}
+                            style={styles.uterusImage}
                         />
-                    </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.anatomyDescription}>
+                        {data.anatomyParts.map((part, index) => (
+                            <View style={styles.anatomyPart} key={part.name}>
+                                <View style={styles.anatomyTitleContainer}>
+                                    <View style={styles.partNumberHolder}>
+                                        <Text style={styles.anatomyPartNumber}>{index + 1}</Text>
+                                    </View>
+
+                                    <Text style={styles.partName}>{part.name}</Text>
+                                </View>
+
+                                <View style={styles.symptomsContainer}>
+                                    {part.points.map((symptom) =>
+                                        <View
+                                            style={styles.rowedBox}
+                                            key={symptom}
+                                        >
+                                            {part.dots && < IconO
+                                                name={"dot-fill"}
+                                                color={colors.black}
+                                                style={styles.blackDot}
+                                                size={10}
+                                            />}
+
+                                            <Text style={styles.symptom}>
+                                                {symptom}
+                                            </Text>
+                                        </View>
+                                    )}
+                                </View>
+                            </View>
+                        ))}
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+                <Footer
+                    footerElementStyle={styles.footer}
+                    goTo={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN,{...route.params})}
+                    goBack={() => navigation.navigate(routes.STATISTICS_SCREEN)}
+                />
+            </ScrollView>
+        </Container>
+        // {/* </ScrollView> */}
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colors.white,
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 5,
+        alignSelf: 'flex-end',
+        marginRight: '3.7%',
+        width: '69%',
     },
     headerText: {
-        color: colors.black,
-        fontSize: 30,
-        paddingVertical: 20,
-        position: "absolute",
-        zIndex: 20,
+        color: colors.primaryText,
+        fontSize: 24,
+        fontWeight: '500'
     },
-    uterusImage: {
-        alignSelf: "center",
+    basics: {
+        backgroundColor: colors.lightestGray,
+        borderLeftColor: colors.purple,
+        borderLeftWidth: 4,
+        paddingLeft: 24,
+        marginTop: 40,
+        paddingVertical: 24,
+        width: '100%'
     },
-    uterusContentContainer: {
-        top: -25,
-    },
-    boldTitle: {
-        color: colors.black,
-        fontSize: 17,
-        fontWeight: "500",
+    basicsTitle: {
+        fontSize: 14,
+        fontWeight: '700',
+        color: colors.primaryText,
     },
     rowedBox: {
         flexDirection: "row",
+        marginTop: 13,
+        width:'99%'
     },
-    symptom: {
-        fontSize: 15,
-        lineHeight: 20,
-        paddingLeft: 10,
-    },
-    sectionContainer: {
-        paddingVertical: 10,
+    headerBoxRows: {
+        marginLeft: 8,
     },
     notBoldSubtitle: {
         color: colors.black,
-        fontSize: 17,
+        fontSize: 14,
     },
-    largeText: {
-        color: colors.black,
-        fontSize: 25,
-        paddingVertical: 20,
+    imageContainer: {
+        width: '43.4%',
+        marginRight: '5%'
+    },
+    anatomyTitleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    partNumberHolder: {
+        alignItems: 'center',
+        backgroundColor: colors.purple,
+        borderRadius: 10,
+        justifyContent: 'center',
+        marginRight: 8,
+        height: 20,
+        width: 20,
+    },
+    anatomyPartNumber: {
+        color: colors.white,
+        fontSize: 10,
+        fontWeight: '600'
+    },
+    anatomyTitle: {
+        color: colors.primaryText,
+        fontSize: 20,
+        fontWeight: '500',
+        marginBottom: 16
+    },
+    uterusImage: {
+        width: '100%'
+    },
+    anatomyDescription: {
+        width: '51.6%'
     },
     blackDot: {
-        paddingRight: 10,
+        alignSelf: 'center',
+        marginRight: 10,
     },
-    backToYourStory: {
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        paddingVertical: 10,
+    uterusContentContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 40,
+        width: '100%'
     },
-    backToYourStoryText: {
-        fontSize: 20,
-        fontWeight: "500",
+    anatomyPart: {
+        marginBottom: 32
+    },
+    partName: {
+        color: colors.darkGray,
+        fontSize: 12,
+        fontWeight: '600'
+    },
+    symptom: {
+        color: colors.primaryText,
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    footer: {
+        marginRight: "33.4%"
     }
 })
 

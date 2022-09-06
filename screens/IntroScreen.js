@@ -1,24 +1,37 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { WELCOMING_ENTRY_ID } from '../env/env.json'
 import { colors } from '../assets/colors/colors';
+import { getContentfulData } from '../client';
 
 import HyperLinkBox from '../components/HyperLinkBox';
+import Button from '../components/shared/Button';
+import Container from '../components/shared/Container';
+import VerticalLine from '../components/shared/VerticalLine';
+import routes from '../navigators/routes';
 
 function IntroScreen({ navigation }) {
+    const [data, setData] = useState({})
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = async () => {
+        setData(await getContentfulData(WELCOMING_ENTRY_ID))
+    }
+
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("QuestionsScreen")}>
+        <Container>
             <View style={styles.container}>
+
                 <View>
                     <Text style={styles.articleTitle}>
-                        Welcome to MIRROR
+                        {data.welcomeTitle}
                     </Text>
                 </View>
-                <View style={styles.sections}>
-                    <Text style={styles.section}>
-                        This tool is intended for patients
-                        who have had genetic counseling and
-                        are coming to see a gynecologic surgeon.
+                <View>
+                    <Text style={[styles.section, styles.introGraph]}>
+                        {data.welcomeGraph}
                     </Text>
                     <Text style={styles.section}>
                         If you have not yet had genetic counseling,
@@ -38,28 +51,51 @@ function IntroScreen({ navigation }) {
                         and personalized based on your preferences.
                     </Text>
                 </View>
+                <VerticalLine style={styles.verticalLine} />
+                <Button
+                    text="Let's Get Started"
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
+                />
             </View>
-        </TouchableWithoutFeedback>
+        </Container>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colors.white,
         flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 20,
+        marginTop: 56,
+        width: 492
     },
     articleTitle: {
-        color: colors.black,
-        fontSize: 48,
-        paddingBottom: 40,
+        color: colors.primaryText,
+        fontSize: 40,
+    },
+    introGraph: {
+        fontSize: 24,
     },
     section: {
-        color: colors.black,
-        fontSize: 23,
-        paddingVertical: 10,
+        color: colors.primaryText,
+        fontSize: 14,
+        fontWeight: '500',
+        paddingTop: 32,
     },
+    button: {
+        alignSelf: 'flex-end',
+        height: 48,
+        width: 184,
+    },
+    buttonText: {
+        color: colors.white,
+        fontWeight: '700',
+        fontSize: 14
+    },
+    verticalLine: {
+        marginVertical: 40
+    }
+
 })
 
 export default IntroScreen;

@@ -1,164 +1,209 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, StyleSheet, Text, TextInput } from 'react-native';
 import { colors } from '../assets/colors/colors';
-import CustomLongInput from '../components/CustomLongInput';
-import CustomShortInput from '../components/CustomShortInput';
+import Icon from 'react-native-vector-icons/Ionicons';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { BASIC_INFO_ENTRY_ID } from '../env/env.json'
 
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
-
-import { client } from "../client"
+import { getContentfulData } from '../client'
+import Container from '../components/shared/Container';
+import Checkbox from '../components/shared/Checkbox';
+import Footer from '../components/shared/Footer';
+import TimeLine from '../components/shared/TimeLine';
+import routes from '../navigators/routes';
+import { Questions } from '../contexts/QuestionContext';
 
 function QuestionsScreen({ navigation }) {
-
-
-    const [geneticResults, setGeneticResults] = useState([])
-
-
-    useEffect(() => {
-        client.getEntries()
-            .then((response) =>
-                setGeneticResults(response.items.find((item) => item.fields.geneticResult).fields.geneticResult))
-            .catch((err) => console.log(err))
-    }, [])
-
-    const answers = [
-        "Yes",
-        "No",
-    ]
-
-    const [geneticResult, setGeneticResult] = useState()
-
-    const [showResults, setShowResults] = useState(false);
-
-    const [answerOne, setAnswerOne] = useState();
-    const [showAnswersOne, setShowAnswersOne] = useState(false);
-
-    const [answerTwo, setAnswerTwo] = useState();
-    const [showAnswersTwo, setShowAnswersTwo] = useState(false);
-
+    const [geneticResults, setGeneticResults] = useState([]);
+    const [data, setData] = useState({})
+    const [showDropDown, setShowDropDown] = useState(false);
+    const [geneticResult, setGeneticResult] = useState('');
+    const [breastCancer, setBreastCancer] = useState('');
+    const [ovarianCancer, setOvarianCancer] = useState('')
     const [age, setAge] = useState(null);
 
+    const { value, setValue } = useContext(Questions)
+
     useEffect(() => {
-        if (answerOne && answerTwo && geneticResult && age > 0) {
-            navigation.navigate(
-                "StatisticsScreen",
-                {
-                    geneticResult,
-                    age,
-                    answerOne,
-                    answerTwo,
-                }
-            )
-        }
-    }, [answerOne, answerTwo, geneticResult, age])
+        getData()
+    }, []);
 
-    const handleArrowPress = () => {
-        setShowResults(!showResults);
+    const getData = async () => {
+        const data = await getContentfulData(BASIC_INFO_ENTRY_ID);
+        const geneticResults = data.geneticResults.values.map(result => ({ label: result, value: result }));
+        setGeneticResults(geneticResults)
+        setData(data)
+        setValue([data.geneticResults, data.age, data.breastCancerValues, data.ovarianCancerValues])
     }
 
-    const handleShowAnswersOne = () => {
-        setShowAnswersOne(!showAnswersOne);
+    const checkDisabled = () => {
+        const breastCancerCount = Object.keys(breastCancer).length
+        const ovarianCancerCount = Object.keys(ovarianCancer).length
+        return geneticResult && age && ovarianCancerCount && breastCancerCount
     }
 
-    const handleShowAnswersTwo = () => {
-        setShowAnswersTwo(!showAnswersTwo);
-    }
 
-    return (
-        <KeyboardAwareScrollView
-            showsVerticalScrollIndicator={false}
-        >
+    return data.title && (
+        <Container>
+            <TimeLine currentStep={data.step} />
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.article}>
-                        You are here to discuss your increased risk of <Text style={styles.boldArticle}>ovarian cancer</Text>.
-                    </Text>
-                    <Text style={styles.article}>
-                        We will discuss next steps to reduce your risk,
-                        but first need some information about you.
-                    </Text>
+                    <Text style={styles.headerArticle}>{data.title}</Text>
+                    <Text style={styles.article}>{data.description}</Text>
                 </View>
                 <View>
-                    <View style={styles.questionInRow}>
-                        <Text style={styles.questionTitle}>
-                            Genetic Result
-                        </Text>
-                        <CustomLongInput
-                            value={geneticResult}
-                            arrowOption={true}
-                            options={geneticResults}
-                            showOptions={showResults}
-                            handleArrowPress={handleArrowPress}
-                            handleOptionChange={setGeneticResult}
+                    <View style={[styles.questions, styles.dropDownQuestion]}>
+                        <Text style={styles.questionsTitle}>{data.geneticResults.question}</Text>
+
+                        <View style={styles.dropDownContainer}>
+                            <DropDownPicker
+                                open={showDropDown}
+                                value={geneticResult}
+                                items={geneticResults}
+                                setOpen={setShowDropDown}
+                                setValue={setGeneticResult}
+                                style={styles.pickerContainer}
+                                containerStyle={{ width: 460 }}
+                                placeholder={data.geneticResults.placeholder}
+                                placeholderStyle={styles.placeHolder}
+                            />
+
+                            <Icon name='information-circle-outline' size={21} color={colors.primaryText} />
+                        </View>
+                    </View>
+
+                    <View style={styles.questions}>
+                        <Text style={styles.questionsTitle}>{data.age.question}</Text>
+
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setAge}
+                            value={age}
+                            keyboardType='numeric'
+                            placeholder={data.age.placeholder}
+                            placeholderTextColor={colors.darkGray}
                         />
                     </View>
-                    <View style={styles.questionInRow}>
-                        <Text style={styles.questionTitle}>
-                            Age
-                        </Text>
-                        <CustomLongInput
-                            handleInputValueUpdate={setAge}
-                        />
+
+                    <View style={styles.questions}>
+                        <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
+
+                        <View style={styles.checkboxRow}>
+                            {data.breastCancerValues.values.map(value => (
+                                <Checkbox
+                                    key={value}
+                                    labelStyle={styles.checkbox}
+                                    label={value}
+                                    checked={breastCancer === value}
+                                    onPress={() => setBreastCancer(value)}
+                                />
+                            ))}
+                        </View>
                     </View>
-                    <View style={styles.questionInColumn}>
-                        <Text style={styles.questionTitle}>
-                            Do you or have you had breast cancer?
-                        </Text>
-                        <CustomShortInput
-                            value={answerOne}
-                            options={answers}
-                            showAnswers={showAnswersOne}
-                            handleShowAnswers={handleShowAnswersOne}
-                            handleOptionChange={setAnswerOne}
-                        />
-                    </View>
-                    <View style={styles.questionInColumn}>
-                        <Text style={styles.questionTitle}>
-                            Do you or have you had family members with ovarian cancer?
-                        </Text>
-                        <CustomShortInput
-                            value={answerTwo}
-                            options={answers}
-                            showAnswers={showAnswersTwo}
-                            handleShowAnswers={handleShowAnswersTwo}
-                            handleOptionChange={setAnswerTwo}
-                        />
+
+                    <View style={styles.questions}>
+                        <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
+
+                        <View style={styles.checkboxRow}>
+                            {data.ovarianCancerValues.values.map(value => (
+                                <Checkbox
+                                    key={value}
+                                    labelStyle={styles.checkbox}
+                                    label={value}
+                                    checked={ovarianCancer === value}
+                                    onPress={() => setOvarianCancer(value)}
+                                />
+                            ))}
+                        </View>
+                        <Footer
+                            style={styles.footer}
+                            goBack={() => {
+                                navigation.navigate(routes.INTRO_SCREEN)
+                                setValue([])
+                            }}
+                            goTo={() => navigation.navigate(
+                                routes.STATISTICS_SCREEN,
+                                {
+                                    geneticResult,
+                                    age,
+                                    breastCancer,
+                                    ovarianCancer,
+                                }
+                            )}
+                            disabled={checkDisabled()} />
                     </View>
                 </View>
             </View>
-        </KeyboardAwareScrollView>
+        </Container>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 80,
+        width: 492,
     },
-    article: {
-        fontSize: 20,
+    headerArticle: {
+        fontSize: 24,
         color: colors.black,
-        paddingBottom: 20,
+        marginBottom: 16,
+        fontWeight: '500'
     },
     boldArticle: {
-        fontWeight: "500",
+        fontWeight: "700",
     },
-    questionInRow: {
-        flexDirection: "row",
+    article: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginBottom: 32
+    },
+    input: {
+        backgroundColor: colors.white,
+        borderColor: colors.gray,
+        borderRadius: 4,
+        borderWidth: 1,
+        height: 48,
+        paddingHorizontal: 20,
+        width: 460,
+    },
+    dropDownContainer: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        width: '100%'
+    },
+    pickerContainer: {
+        borderColor: colors.gray,
+        borderRadius: 4,
+        borderWidth: 1,
+        width: 460
+    },
+    placeHolder: {
+        color: colors.darkGray,
+        fontSize: 14,
+        fontWeight: '500'
+    },
+    questions: {
         alignItems: "flex-start",
+        flexDirection: 'column',
         justifyContent: "space-between",
-        marginVertical: 5,
+        marginBottom: 32
     },
-    questionInColumn: {
-        alignItems: "center",
+    dropDownQuestion: {
+        zIndex: 1
     },
-    questionTitle: {
-        fontSize: 17,
-        paddingRight: 20,
-        fontWeight: "500",
+    checkboxRow: {
+        flexDirection: 'row',
+        marginTop: 8,
+    },
+    checkbox: {
+        marginRight: 28
+    },
+    questionsTitle: {
         color: colors.black,
-        marginVertical: 5,
+        fontSize: 14,
+        fontWeight: "700",
+        marginBottom: 8,
     }
 })
 
