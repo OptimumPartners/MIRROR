@@ -9,7 +9,6 @@ const client = createClient(
 
 export const getContentfulData = (entryID) => {
     return client.getEntry(entryID).then(response => {
-        console.log('response.fields: ', response.fields);
         return response.fields
     }).catch(err => console.log(err))
 }

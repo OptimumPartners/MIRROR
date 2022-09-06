@@ -24,7 +24,6 @@ const SurgicalOptions = ({ navigation, route }) => {
 
     const getData = async () => {
         const data = await getContentfulData(REVIEW_OPTIONS_ENTRY_ID);
-        // console.log(data.BSO.title);
         setData(data)
     }
 

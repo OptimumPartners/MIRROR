@@ -33,7 +33,6 @@ const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHea
                     </View>
                 }
                 {options && options.map(option => {
-                    console.log(value === option);
                     const selected = value === option
                     return (
                         <TouchableOpacity

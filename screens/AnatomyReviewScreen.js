@@ -24,7 +24,6 @@ function AnatomyReviewScreen({ navigation, route }) {
 
     const getData = async () => {
         const data = await getContentfulData(LEARN_YOUR_RISK_ANATOMY_ENTRY_ID);
-        console.log(data);
         setData(data)
     }
 
