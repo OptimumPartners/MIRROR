@@ -64,9 +64,8 @@ const SurgicalOptions = ({ navigation, route }) => {
 
                 <View style={styles.header}>
                     {value.map((question, index) => (
-                        <>
+                        <React.Fragment key={question.key}>
                             <DropDown
-                                key={question.key}
                                 label={question.label}
                                 value={params[question.key]}
                                 options={question.values}
@@ -76,7 +75,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                                 arrowSize={18}
                             />
                             {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
-                        </>
+                        </React.Fragment>
                     ))}
 
                 </View>

@@ -23,8 +23,10 @@ const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHea
                     <Text style={[styles.placeHolder, placeholderStyle]}>{value || placeHolder}</Text>
                     <Icon name='chevron-down' color={colors.lightBlue} size={arrowSize} />
                 </View>
-
             </TouchableWithoutFeedback>
+
+            <View style={styles.dashedLine}></View>
+
             {openDropDown && <View style={styles.options}>
                 {dropDownHeader &&
                     <View style={styles.option}>
@@ -60,7 +62,7 @@ const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHea
 export default DropDown
 const styles = StyleSheet.create({
     container: {
-        zIndex: -1
+        zIndex: -1,
     },
     containerOnBlur: {
         zIndex: 1,
@@ -69,6 +71,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
+        backgroundColor:colors.white,
+        paddingBottom:8
     },
     label: {
         color: colors.darkGray,
@@ -128,5 +132,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -100,
         right: -500
+    },
+    dashedLine: {
+        borderColor: colors.lightBlue,
+        borderWidth: 2,
+        marginTop:-2,
+        borderStyle: 'dashed',
+        width: '100%',
+        zIndex:-1
     }
 })

@@ -40,9 +40,8 @@ function StatisticsScreen({ navigation, route }) {
 
         <TimeLine currentStep={data.step} />
         <View style={styles.header}>
-          {value.map((question, index) => (<>
+          {value.map((question, index) => (<React.Fragment key={question.key}>
             <DropDown
-              key={question.key}
               label={question.label}
               value={params[question.key]}
               options={question.values}
@@ -50,7 +49,7 @@ function StatisticsScreen({ navigation, route }) {
               dropDownHeader={question.header}
             />
             {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
-          </>
+          </React.Fragment>
           ))}
 
         </View>
