@@ -4,13 +4,15 @@ import { colors } from '../../assets/colors/colors'
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconO from "react-native-vector-icons/Octicons";
 
-const ResultContainer = ({ result }) => {
-    console.log(result.con.content);
+const ResultContainer = ({ title, color, delayTo, result }) => {
+
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>{result.title}</Text>
-                <Icon name='information-circle-outline' size={21} color={colors.white} />
+            <View style={[styles.header, color === 2 && styles.headerYellow]}>
+                <Text style={[styles.headerTitle, color === 2 && styles.headerTitleYellow]}>
+                    {title || result.title} {delayTo || ''}
+                </Text>
+                <Icon name='information-circle-outline' size={21} color={color === 2 ? colors.primaryText : colors.white} />
             </View>
 
             <View style={styles.body}>
@@ -18,6 +20,7 @@ const ResultContainer = ({ result }) => {
                     <View style={styles.resultsTitles}>
                         <Text style={styles.prosTitle}>{result.pro.title}</Text>
                     </View>
+
                     {result.pro.content.map(pro => (
                         <View
                             key={pro}
@@ -30,9 +33,7 @@ const ResultContainer = ({ result }) => {
                                 style={styles.blackDot}
                             />
 
-                            <Text style={styles.proConText}>
-                                {pro}
-                            </Text>
+                            <Text style={styles.proConText}>{pro}</Text>
                         </View>
                     ))}
                 </View>
@@ -54,9 +55,7 @@ const ResultContainer = ({ result }) => {
                                 style={styles.blackDot}
                             />
 
-                            <Text style={styles.proConText}>
-                                {con}
-                            </Text>
+                            <Text style={styles.proConText}>{con}</Text>
                         </View>
                     ))}
                 </View>
@@ -79,10 +78,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         width: '100%'
     },
+    headerYellow: {
+        backgroundColor: colors.yellow
+    },
     headerTitle: {
         color: colors.white,
         fontSize: 12,
         fontWeight: '600'
+    },
+    headerTitleYellow: {
+        color: colors.primaryText
     },
     body: {
         borderColor: colors.lightGray,

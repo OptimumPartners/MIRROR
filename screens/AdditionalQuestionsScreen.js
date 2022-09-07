@@ -98,7 +98,6 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                             goBack={() => {
                                 const questions = [...value]
                                 questions.splice(4, data.questions.length)
-                                console.log('questions:: ', questions, questions.length);
                                 setValue(questions)
                                 navigation.navigate(routes.ANATOMY_REVIEW_SCREEN)
                             }}

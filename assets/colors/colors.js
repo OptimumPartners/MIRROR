@@ -13,4 +13,5 @@ export const colors = {
     primaryText: '#343643',
     red:'#D24646',
     white: '#fff',
+    yellow:'#F1C31E'
 }

@@ -20,10 +20,11 @@ function StatisticsScreen({ navigation, route }) {
 
   useEffect(() => {
     getData()
-  }, []);
+  }, [params]);
 
   const getData = async () => {
     const data = await getContentfulData(LEARN_YOUR_RISK_ENTRY_ID);
+    if (params.ovarianCancer === "Yes") data.risks.values.push(data.familyHistoryRisk)
     setData(data)
   }
 
@@ -76,7 +77,7 @@ function StatisticsScreen({ navigation, route }) {
 
               <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
               <View style={styles.resultPoints}>
-                {[...data.risks, params.ovarianCancer === "Yes" && data.familyHistoryRisk].map((risk, index) => (
+                {data.risks.values.map((risk, index) => (
                   <View
                     key={index}
                     style={styles.textFragmentContainer}
@@ -87,7 +88,7 @@ function StatisticsScreen({ navigation, route }) {
                       style={styles.blackDot}
                     />
                     <Text style={styles.fragment}>
-                      {risk}
+                      {risk} {index === data.risks.percentageIndex && data.risks.percentages[params.geneticResult]}
                     </Text>
                   </View>
                 ))}

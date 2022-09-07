@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { REVIEW_OPTIONS_ENTRY_ID } from '../env/env.json'
+import { REVIEW_OPTIONS_ENTRY_ID, ALGO_ENTRY_ID } from '../env/env.json'
 import Container from '../components/shared/Container'
 import { getContentfulData } from '../client';
 import ResultContainer from '../components/shared/ResultContainer';
@@ -15,16 +15,46 @@ import VerticalLine from '../components/shared/VerticalLine';
 
 const SurgicalOptions = ({ navigation, route }) => {
     const [data, setData] = useState({})
-
+    const [algo, setAlgo] = useState({})
+    const [params, setParams] = useState(route.params);
+    const [results, setResults] = useState([])
     const { value, setValues } = useContext(Questions)
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [params])
 
     const getData = async () => {
         const data = await getContentfulData(REVIEW_OPTIONS_ENTRY_ID);
-        setData(data)
+        setData(data);
+        await getAlgoResult()
+    }
+
+    const getAlgoResult = async () => {
+        const algo = await getContentfulData(ALGO_ENTRY_ID);
+        const algoGroupName = algo.checkGroup[params.geneticResult];
+        const ageAddition = algoGroupName.ageAddition
+        const groupAlgo = algo[algoGroupName.group];
+        const checkMenopause = groupAlgo[params.menopause] || groupAlgo.No
+        const checkPregnant = checkMenopause[params.pregnant] || checkMenopause.No
+
+        for (let i = 0; i < checkPregnant.length; i++) {
+            const ageFrom = checkPregnant[i].age.from + ageAddition;
+            const ageTo = checkPregnant[i].age.to + ageAddition;
+
+            if (ageFrom <= params.age && ageTo >= params.age) {
+                setResults(checkPregnant[i].answers);
+                break;
+            }
+        }
+
+        setAlgo(algo);
+    }
+
+    const onSelect = (value, dataName) => {
+        const newData = { ...params };
+        newData[dataName] = value
+        setParams(newData)
     }
 
     return data.title && (
@@ -38,7 +68,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                             <DropDown
                                 key={question.key}
                                 label={question.label}
-                                value={route.params[question.key]}
+                                value={params[question.key]}
                                 options={question.values}
                                 onSelect={(value) => onSelect(value, question.key)}
                                 dropDownHeader={question.header}
@@ -55,13 +85,12 @@ const SurgicalOptions = ({ navigation, route }) => {
 
                 <View style={styles.container}>
                     <Text style={styles.title}>{data.title}</Text>
-                    <View>
-                        <ResultContainer result={data.BSO} />
-                    </View>
+                    {results[0] && results.map(result => (
+                        <View>
+                            <ResultContainer title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
+                        </View>
+                    ))}
 
-                    <View>
-                        <ResultContainer result={data.SDO} />
-                    </View>
                     <Footer
                         buttonText='Submit for Discussion'
                         buttonStyle={styles.footerButton}

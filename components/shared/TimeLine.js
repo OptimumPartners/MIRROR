@@ -23,8 +23,8 @@ const TimeLine = ({ currentStep }) => {
         const current = step.id === currentStep;
         const passed = step.id < currentStep;
         return (
-          <View style={styles.stepContainer}>
-            <View key={step.id} style={[styles.step, current && styles.currentStep, passed && styles.passedStep]}>
+          <View key={step.id} style={styles.stepContainer}>
+            <View style={[styles.step, current && styles.currentStep, passed && styles.passedStep]}>
               {passed ? <Icon name='ios-checkmark-sharp' color={colors.white} size={19} /> :
                 <Text style={[styles.stepNum, current && styles.stepNumCurrent]}>{step.id}</Text>}
             </View>

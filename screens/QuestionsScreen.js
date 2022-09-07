@@ -42,7 +42,6 @@ function QuestionsScreen({ navigation }) {
     return geneticResult && age && ovarianCancerCount && breastCancerCount
   }
 
-
   return data.title && (
     <Container>
       <TimeLine currentStep={data.step} />
@@ -77,7 +76,7 @@ function QuestionsScreen({ navigation }) {
 
             <TextInput
               style={styles.input}
-              onChangeText={setAge}
+              onChangeText={(value) => setAge(value.replace(/[^0-9]/g, ''))}
               value={age}
               keyboardType='numeric'
               placeholder={data.age.placeholder}
@@ -89,9 +88,9 @@ function QuestionsScreen({ navigation }) {
             <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
 
             <View style={styles.checkboxRow}>
-              {data.breastCancerValues.values.map(value => (
+              {data.breastCancerValues.values.map((value, index) => (
                 <Checkbox
-                  key={value}
+                  key={`${value}~${index}`}
                   labelStyle={styles.checkbox}
                   label={value}
                   checked={breastCancer === value}
@@ -105,9 +104,9 @@ function QuestionsScreen({ navigation }) {
             <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
 
             <View style={styles.checkboxRow}>
-              {data.ovarianCancerValues.values.map(value => (
+              {data.ovarianCancerValues.values.map((value, index) => (
                 <Checkbox
-                  key={value}
+                  key={`${index}-${value}`}
                   labelStyle={styles.checkbox}
                   label={value}
                   checked={ovarianCancer === value}
@@ -115,6 +114,7 @@ function QuestionsScreen({ navigation }) {
                 />
               ))}
             </View>
+
             <Footer
               style={styles.footer}
               goBack={() => {

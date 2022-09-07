@@ -13,14 +13,12 @@ import AnatomyTab from "../screens/AnatomyTab"
 
 
 import CustomTabBarIcon from '../components/CustomTabBarIcon';
-import WhereYouAreTab from '../screens/WhereYouAreTab';
 
 function TabNavigator({ answers }) {
     const Tab = createBottomTabNavigator()
 
     return (
         <Tab.Navigator
-            initialRouteName='WhereYouAreTab'
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: styles.tabBarStyle,
@@ -98,15 +96,6 @@ function TabNavigator({ answers }) {
                         <CustomTabBarIcon
                             imgSource={require("../assets/images/anatomy.png")}
                         />
-                }}
-            />
-            <Tab.Screen
-                name='WhereYouAreTab'
-                component={WhereYouAreTab}
-                options={{
-                    tabBarItemStyle: {
-                        display: "none",
-                    }
                 }}
             />
         </Tab.Navigator>
