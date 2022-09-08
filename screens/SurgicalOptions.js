@@ -12,6 +12,7 @@ import { colors } from '../assets/colors/colors';
 import { Questions } from '../contexts/QuestionContext';
 import DropDown from '../components/shared/DropDown';
 import VerticalLine from '../components/shared/VerticalLine';
+import LearnMore from '../components/shared/LearnMore';
 
 const SurgicalOptions = ({ navigation, route }) => {
     const [data, setData] = useState({})
@@ -84,8 +85,8 @@ const SurgicalOptions = ({ navigation, route }) => {
 
                 <View style={styles.container}>
                     <Text style={styles.title}>{data.title}</Text>
-                    {results[0] && results.map(result => (
-                        <View>
+                    {results[0] && results.map((result, index) => (
+                        <View key={`${index}-${result.name}`}>
                             <ResultContainer title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
                         </View>
                     ))}
@@ -96,9 +97,9 @@ const SurgicalOptions = ({ navigation, route }) => {
                         style={styles.footer}
                         goTo={() => { }}
                         goBack={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN)}
-                    // disabled={answers.pregnant && answers.menopause && answers.HRT}
                     />
                 </View>
+                <LearnMore/>
             </Container>
         </ScrollView>
     )

@@ -11,9 +11,9 @@ function AnatomyTab({ }) {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        client.getEntries()
-            .then((response) => setData(response.items.find((item) => item.fields.anatomy).fields.anatomy))
-            .catch((err) => console.log(err))
+        // client.getEntries()
+        //     .then((response) => setData(response.items.find((item) => item.fields.anatomy).fields.anatomy))
+        //     .catch((err) => console.log(err))
     }, [])
 
     return (
