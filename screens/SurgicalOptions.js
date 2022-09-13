@@ -95,7 +95,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                         buttonText='Next Step'
                         buttonStyle={styles.footerButton}
                         style={styles.footer}
-                        goTo={() => { }}
+                        goTo={() => navigation.navigate(routes.SELF_REFlECTION_SCREEN)}
                         goBack={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN)}
                     />
                 </View>

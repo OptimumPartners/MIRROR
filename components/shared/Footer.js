@@ -11,10 +11,10 @@ const Footer = ({ goBack, disabled = true, style = {}, footerElementStyle = {}, 
             <VerticalLine />
             <View style={[styles.container, footerElementStyle]}>
                 <TouchableOpacity onPress={goBack}>
-                    <View style={styles.prevScreenContainer}>
+                    {goBack && <View style={styles.prevScreenContainer}>
                         <Icon name='arrow-back' size={22} color={colors.primaryText} />
                         <Text>Go Back</Text>
-                    </View>
+                    </View>}
                 </TouchableOpacity>
 
                 <Button

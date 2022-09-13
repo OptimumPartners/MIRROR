@@ -9,7 +9,7 @@ import AnatomyIntroScreen from "../screens/AnatomyIntroScreen";
 import AnatomyReviewScreen from "../screens/AnatomyReviewScreen";
 import AdditionalQuestionsScreen from "../screens/AdditionalQuestionsScreen";
 import DashboardScreen from "../screens/DashboardScreen";
-import SelfReflectionScreen from "../components/SelfReflectionScreen";
+import SelfReflectionScreen from "../screens/SelfReflectionScreen";
 import SurgicalOptions from "../screens/SurgicalOptions";
 import routes from "./routes";
 
@@ -56,7 +56,7 @@ function StackNavigator() {
                 component={SurgicalOptions}
             />
             <Stack.Screen
-                name={routes.SELF_REFECTION_SCREEN}
+                name={routes.SELF_REFlECTION_SCREEN}
                 component={SelfReflectionScreen}
             />
         </Stack.Navigator>
