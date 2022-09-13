@@ -36,7 +36,7 @@ const SurgicalOptions = ({ navigation, route }) => {
         const ageAddition = algoGroupName.ageAddition
         const groupAlgo = algo[algoGroupName.group];
         const checkMenopause = groupAlgo[params.menopause] || groupAlgo.No
-        const checkPregnant = checkMenopause[params.pregnant] || checkMenopause.No
+        const checkPregnant = checkMenopause[params.pregnant] || checkMenopause.Yes
 
         for (let i = 0; i < checkPregnant.length; i++) {
             const ageFrom = checkPregnant[i].age.from + ageAddition;
@@ -58,14 +58,15 @@ const SurgicalOptions = ({ navigation, route }) => {
     }
 
     return data.title && (
-        <ScrollView style={styles.scrollView}>
-            <Container>
+        <Container>
+            <ScrollView style={styles.scrollView}>
                 <TimeLine currentStep={data.step} />
 
                 <View style={styles.header}>
                     {value.map((question, index) => (
                         <React.Fragment key={question.key}>
                             <DropDown
+                                isInput={question.key === 'age'}
                                 label={question.label}
                                 value={params[question.key]}
                                 options={question.values}
@@ -84,23 +85,22 @@ const SurgicalOptions = ({ navigation, route }) => {
 
                 <View style={styles.container}>
                     <Text style={styles.title}>{data.title}</Text>
-                    {results[0] && results.map(result => (
-                        <View>
-                            <ResultContainer title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
+                    {results[0] && results.map((result, index) => (
+                        <View key={`${result.name}-${index}`}>
+                            <ResultContainer answers={params} title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
                         </View>
                     ))}
 
                     <Footer
-                        buttonText='Submit for Discussion'
+                        buttonText='Next Step'
                         buttonStyle={styles.footerButton}
                         style={styles.footer}
                         goTo={() => { }}
                         goBack={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN)}
-                    // disabled={answers.pregnant && answers.menopause && answers.HRT}
                     />
                 </View>
-            </Container>
-        </ScrollView>
+            </ScrollView>
+        </Container>
     )
 }
 export default SurgicalOptions
@@ -144,8 +144,5 @@ const styles = StyleSheet.create({
     },
     footer: {
         marginTop: 0
-    },
-    footerButton: {
-        width: 219
     }
 })

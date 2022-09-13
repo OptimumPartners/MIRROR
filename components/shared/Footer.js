@@ -20,7 +20,7 @@ const Footer = ({ goBack, disabled = true, style = {}, footerElementStyle = {}, 
                 <Button
                     onPress={goTo}
                     text={buttonText}
-                    style={[styles.continueBtn, buttonStyle, disabled ? {} : styles.continueBtnDisabled]}
+                    style={[buttonStyle, disabled ? {} : styles.continueBtnDisabled]}
                     textStyle={disabled ? {} : styles.continueBtnTextDisabled}
                     disabled={!disabled}
                 />
@@ -45,10 +45,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly'
-    },
-    continueBtn: {
-        width: 128,
-        height: 48
     },
     continueBtnDisabled: {
         backgroundColor: colors.lightGray,

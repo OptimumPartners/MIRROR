@@ -12,6 +12,7 @@ import Footer from '../components/shared/Footer';
 import TimeLine from '../components/shared/TimeLine';
 import routes from '../navigators/routes';
 import { Questions } from '../contexts/QuestionContext';
+import NumberInput from '../components/shared/NumberInput';
 
 function QuestionsScreen({ navigation }) {
   const [geneticResults, setGeneticResults] = useState([]);
@@ -50,10 +51,10 @@ function QuestionsScreen({ navigation }) {
           <Text style={styles.headerArticle}>{data.title}</Text>
           <Text style={styles.article}>{data.description}</Text>
         </View>
+
         <View>
           <View style={[styles.questions, styles.dropDownQuestion]}>
             <Text style={styles.questionsTitle}>{data.geneticResults.question}</Text>
-
             <View style={styles.dropDownContainer}>
               <DropDownPicker
                 open={showDropDown}
@@ -66,19 +67,15 @@ function QuestionsScreen({ navigation }) {
                 placeholder={data.geneticResults.placeholder}
                 placeholderStyle={styles.placeHolder}
               />
-
               <Icon name='information-circle-outline' size={21} color={colors.primaryText} />
             </View>
           </View>
 
           <View style={styles.questions}>
             <Text style={styles.questionsTitle}>{data.age.question}</Text>
-
-            <TextInput
-              style={styles.input}
-              onChangeText={(value) => setAge(value.replace(/[^0-9]/g, ''))}
+            <NumberInput
+              onChange={setAge}
               value={age}
-              keyboardType='numeric'
               placeholder={data.age.placeholder}
               placeholderTextColor={colors.darkGray}
             />
@@ -86,7 +83,6 @@ function QuestionsScreen({ navigation }) {
 
           <View style={styles.questions}>
             <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
-
             <View style={styles.checkboxRow}>
               {data.breastCancerValues.values.map((value, index) => (
                 <Checkbox
@@ -156,15 +152,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginBottom: 32
-  },
-  input: {
-    backgroundColor: colors.white,
-    borderColor: colors.gray,
-    borderRadius: 4,
-    borderWidth: 1,
-    height: 48,
-    paddingHorizontal: 20,
-    width: 460,
   },
   dropDownContainer: {
     alignItems: 'center',

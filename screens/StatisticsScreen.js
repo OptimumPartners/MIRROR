@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { colors } from '../assets/colors/colors';
 import IconO from "react-native-vector-icons/Octicons";
 import { LEARN_YOUR_RISK_ENTRY_ID } from '../env/env.json'
@@ -11,10 +11,13 @@ import DropDown from '../components/shared/DropDown';
 import Footer from '../components/shared/Footer';
 import routes from '../navigators/routes';
 import { Questions } from '../contexts/QuestionContext';
+import PercentageAmongPeople from '../components/shared/PercentageAmongPeople';
 
 function StatisticsScreen({ navigation, route }) {
   const [params, setParams] = useState(route.params);
-  const [data, setData] = useState({})
+  const [data, setData] = useState({});
+  const [riskPercentage, setRiskPercentage] = useState({});
+  const [additionalRisks, setAdditionalRisks] = useState([])
 
   const { value, setValue } = useContext(Questions)
 
@@ -24,8 +27,26 @@ function StatisticsScreen({ navigation, route }) {
 
   const getData = async () => {
     const data = await getContentfulData(LEARN_YOUR_RISK_ENTRY_ID);
-    if (params.ovarianCancer === "Yes") data.risks.values.push(data.familyHistoryRisk)
-    setData(data)
+    const DataAfterFill = fillAdditionalRisk(data)
+    setData(DataAfterFill)
+    setRiskPercentage(data.risks.percentages[params.geneticResult])
+  }
+
+  const fillAdditionalRisk = (data) => {
+    const allData = { ...data }
+    if (params.ovarianCancer === 'Yes' && params.breastCancer === 'Yes') {
+      allData.risks.values = [...allData.risks.values, ...allData.risks.breastAndOvarianCancer]
+      return allData
+    };
+    if (params.ovarianCancer === 'Yes') {
+      allData.risks.values = [...allData.risks.values, ...allData.risks.ovarianCancer]
+      return allData
+    };
+    if (params.breastCancer === 'Yes') {
+      allData.risks.values = [...allData.risks.values, ...allData.risks.breastCancer]
+      return allData
+    };
+    return data
   }
 
   const onSelect = (value, dataName) => {
@@ -39,9 +60,11 @@ function StatisticsScreen({ navigation, route }) {
       <Container style={styles.container}>
 
         <TimeLine currentStep={data.step} />
+
         <View style={styles.header}>
           {value.map((question, index) => (<React.Fragment key={question.key}>
             <DropDown
+              isInput={question.key === 'age'}
               label={question.label}
               value={params[question.key]}
               options={question.values}
@@ -51,7 +74,6 @@ function StatisticsScreen({ navigation, route }) {
             {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
           </React.Fragment>
           ))}
-
         </View>
 
         <VerticalLine style={styles.verticalLine} />
@@ -59,12 +81,12 @@ function StatisticsScreen({ navigation, route }) {
         <View style={styles.bodyContainer}>
           <View style={styles.statistics}>
             <View style={styles.statisticsImageContainer}>
-              <Image source={require("../assets/images/statistics.png")} />
+              <PercentageAmongPeople percentage={riskPercentage.to} />
               <Text style={styles.statisticsDescription}>Before surgery</Text>
             </View>
 
             <View style={styles.statisticsImageContainer}>
-              <Image source={require("../assets/images/statistics2.png")} />
+              <PercentageAmongPeople percentage={2} />
               <Text style={styles.statisticsDescription}>After removal of tubes and ovaries</Text>
             </View>
           </View>
@@ -75,22 +97,27 @@ function StatisticsScreen({ navigation, route }) {
               <Text style={styles.bannerRiskDescription}>{data.description}</Text>
 
               <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
+
               <View style={styles.resultPoints}>
-                {data.risks.values.map((risk, index) => (
-                  <View
-                    key={index}
-                    style={styles.textFragmentContainer}
-                  >
-                    <IconO
-                      name={"dot-fill"}
-                      color={colors.black}
-                      style={styles.blackDot}
-                    />
-                    <Text style={styles.fragment}>
-                      {risk} {index === data.risks.percentageIndex && data.risks.percentages[params.geneticResult]}
-                    </Text>
-                  </View>
-                ))}
+                {data.risks.values.map((risk, index) => {
+                  const ovarianRisk = index === data.risks.percentageIndex
+                  const ovarianRiskOutput = riskPercentage.from ? riskPercentage.from + '-' + riskPercentage.to : riskPercentage.to
+                  return (
+                    <View
+                      key={index}
+                      style={styles.textFragmentContainer}
+                    >
+                      <IconO
+                        name={"dot-fill"}
+                        color={colors.black}
+                        style={styles.blackDot}
+                      />
+                      <Text style={styles.fragment}>
+                        {risk} {ovarianRisk && ovarianRiskOutput} {ovarianRisk && typeof riskPercentage.to === 'number' ? '%' : ''}
+                      </Text>
+                    </View>
+                  )
+                })}
               </View>
             </View>
 

@@ -1,10 +1,37 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { colors } from '../../assets/colors/colors'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../assets/colors/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconO from "react-native-vector-icons/Octicons";
 
-const ResultContainer = ({ title, color, delayTo, result }) => {
+const ResultContainer = ({ answers, title, color, delayTo, result }) => {
+    const [pros, setPros] = useState([]);
+    const [cons, setCons] = useState([]);
+
+    useEffect(() => {
+        fillCons();
+        fillPros();
+    }, [answers]);
+
+    const fillPros = () => {
+        const allPros = [...result.pro.content];
+        if (result.pro.menopause && answers.menopause !== 'Yes') allPros.push(result.pro.menopause);
+        if (result.pro.breastCancer && answers.breastCancer === 'Yes') allPros.push(result.pro.breastCancer);
+        if (result.pro.HRT && answers.HRT !== 'No') allPros.push(result.pro.HRT);
+        if (result.pro.pregnant && answers.pregnant !== 'No') allPros.push(result.pro.pregnant);
+        if (result.pro.ovarianCancer && answers.ovarianCancer === 'Yes') allPros.push(result.pro.ovarianCancer);
+        setPros(allPros)
+    };
+
+    const fillCons = () => {
+        const allCons = [...result.con.content];
+        if (result.con.menopause && answers.menopause === 'No') allCons.push(result.con.menopause);
+        if (result.con.breastCancer && answers.breastCancer === 'Yes') allCons.push(result.con.breastCancer);
+        if (result.con.HRT && answers.HRT === 'Yes') allCons.push(result.con.HRT);
+        if (result.con.pregnant && answers.pregnant === 'Yes') allCons.push(result.con.pregnant);
+        if (result.con.ovarianCancer && answers.ovarianCancer === 'Yes') allCons.push(result.con.ovarianCancer);
+        setCons(allCons);
+    };
 
     return (
         <View style={styles.container}>
@@ -21,9 +48,9 @@ const ResultContainer = ({ title, color, delayTo, result }) => {
                         <Text style={styles.prosTitle}>{result.pro.title}</Text>
                     </View>
 
-                    {result.pro.content.map(pro => (
+                    {pros.map((pro, index) => (
                         <View
-                            key={pro}
+                            key={`${pro}-${index}`}
                             style={styles.proConContainer}
                         >
                             <IconO
@@ -43,9 +70,9 @@ const ResultContainer = ({ title, color, delayTo, result }) => {
                         <Text style={styles.consTitle}>{result.con.title}</Text>
                     </View>
 
-                    {result.con.content.map(con => (
+                    {cons.map((con, index) => (
                         <View
-                            key={con}
+                            key={`${con}-${index}`}
                             style={styles.proConContainer}
                         >
                             <IconO
