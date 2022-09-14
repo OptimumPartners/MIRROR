@@ -20,8 +20,9 @@ function AdditionalQuestionsScreen({ navigation, route }) {
     const { value, setValue } = useContext(Questions)
 
     useEffect(() => {
+        console.log(value);
         getData()
-    }, [])
+    }, [value])
 
     const getData = async () => {
         const data = await getContentfulData(ADDITIONAL_QUESTIONS_ENTRY_ID);

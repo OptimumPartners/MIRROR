@@ -16,12 +16,13 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lightBlue,
         borderRadius: 100,
         justifyContent: 'center',
-        height: 40,
-        width: 100,
+        paddingHorizontal: 32,
+        paddingTop: 16,
+        paddingBottom: 15
     },
     text: {
         color: colors.white,
-        fontSize:14,
-        fontWeight:'700'
+        fontSize: 14,
+        fontWeight: '700'
     }
 })

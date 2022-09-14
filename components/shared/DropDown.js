@@ -3,8 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } fr
 import Icon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../assets/colors/colors';
 import { Dimensions } from 'react-native';
+import NumberInput from './NumberInput';
 
-const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHeader, value, placeholderStyle = {}, arrowSize = 26 }) => {
+const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHeader, value, placeholderStyle = {}, arrowSize = 26, isInput = false }) => {
     const [openDropDown, setOpenDropDown] = useState(false);
     const [blur, setBlur] = useState(false)
 
@@ -34,6 +35,7 @@ const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHea
                         <Icon name='chevron-up' color={colors.darkGray} size={arrowSize} />
                     </View>
                 }
+
                 {options && options.map(option => {
                     const selected = value === option
                     return (
@@ -51,6 +53,7 @@ const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHea
                         </TouchableOpacity>
                     )
                 })}
+                {isInput && <NumberInput style={styles.numberInput} onChange={onSelect} value={value} />}
             </View>}
         </View>
         {blur && <TouchableWithoutFeedback onPress={toggleDropDown}>
@@ -71,8 +74,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        backgroundColor:colors.white,
-        paddingBottom:8
+        backgroundColor: colors.white,
+        paddingBottom: 8
     },
     label: {
         color: colors.darkGray,
@@ -133,12 +136,18 @@ const styles = StyleSheet.create({
         top: -100,
         right: -500
     },
+    numberInput: {
+        alignSelf:'center',
+        borderColor: colors.lightBlue,
+
+    },
     dashedLine: {
         borderColor: colors.lightBlue,
         borderWidth: 2,
+        marginTop: -2,
         borderStyle: 'dashed',
         marginTop:-2,
         width: '100%',
-        zIndex:-1
+        zIndex: -1
     }
 })

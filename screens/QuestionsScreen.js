@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Text, TextInput } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView } from 'react-native';
 import { colors } from '../assets/colors/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -12,6 +12,7 @@ import Footer from '../components/shared/Footer';
 import TimeLine from '../components/shared/TimeLine';
 import routes from '../navigators/routes';
 import { Questions } from '../contexts/QuestionContext';
+import NumberInput from '../components/shared/NumberInput';
 
 function QuestionsScreen({ navigation }) {
   const [geneticResults, setGeneticResults] = useState([]);
@@ -43,98 +44,98 @@ function QuestionsScreen({ navigation }) {
   }
 
   return data.title && (
-    <Container>
-      <TimeLine currentStep={data.step} />
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.headerArticle}>{data.title}</Text>
-          <Text style={styles.article}>{data.description}</Text>
-        </View>
-        <View>
-          <View style={[styles.questions, styles.dropDownQuestion]}>
-            <Text style={styles.questionsTitle}>{data.geneticResults.question}</Text>
+    <ScrollView style={styles.scrollView}>
+      <Container>
+        <TimeLine currentStep={data.step} />
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.headerArticle}>{data.title}</Text>
+            <Text style={styles.article}>{data.description}</Text>
+          </View>
 
-            <View style={styles.dropDownContainer}>
-              <DropDownPicker
-                open={showDropDown}
-                value={geneticResult}
-                items={geneticResults}
-                setOpen={setShowDropDown}
-                setValue={setGeneticResult}
-                style={styles.pickerContainer}
-                containerStyle={{ width: 460 }}
-                placeholder={data.geneticResults.placeholder}
-                placeholderStyle={styles.placeHolder}
+          <View>
+            <View style={[styles.questions, styles.dropDownQuestion]}>
+              <Text style={styles.questionsTitle}>{data.geneticResults.question}</Text>
+              <View style={styles.dropDownContainer}>
+                <DropDownPicker
+                  open={showDropDown}
+                  value={geneticResult}
+                  items={geneticResults}
+                  setOpen={setShowDropDown}
+                  setValue={setGeneticResult}
+                  style={styles.pickerContainer}
+                  containerStyle={{ width: 460 }}
+                  placeholder={data.geneticResults.placeholder}
+                  placeholderStyle={styles.placeHolder}
+                  scrollViewProps={{
+                    nestedScrollEnabled: true,
+                  }}
+                />
+                <Icon name='information-circle-outline' size={21} color={colors.primaryText} />
+              </View>
+            </View>
+
+            <View style={styles.questions}>
+              <Text style={styles.questionsTitle}>{data.age.question}</Text>
+              <NumberInput
+                onChange={setAge}
+                value={age}
+                placeholder={data.age.placeholder}
+                placeholderTextColor={colors.darkGray}
               />
-
-              <Icon name='information-circle-outline' size={21} color={colors.primaryText} />
-            </View>
-          </View>
-
-          <View style={styles.questions}>
-            <Text style={styles.questionsTitle}>{data.age.question}</Text>
-
-            <TextInput
-              style={styles.input}
-              onChangeText={(value) => setAge(value.replace(/[^0-9]/g, ''))}
-              value={age}
-              keyboardType='numeric'
-              placeholder={data.age.placeholder}
-              placeholderTextColor={colors.darkGray}
-            />
-          </View>
-
-          <View style={styles.questions}>
-            <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
-
-            <View style={styles.checkboxRow}>
-              {data.breastCancerValues.values.map((value, index) => (
-                <Checkbox
-                  key={`${value}~${index}`}
-                  labelStyle={styles.checkbox}
-                  label={value}
-                  checked={breastCancer === value}
-                  onPress={() => setBreastCancer(value)}
-                />
-              ))}
-            </View>
-          </View>
-
-          <View style={styles.questions}>
-            <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
-
-            <View style={styles.checkboxRow}>
-              {data.ovarianCancerValues.values.map((value, index) => (
-                <Checkbox
-                  key={`${index}-${value}`}
-                  labelStyle={styles.checkbox}
-                  label={value}
-                  checked={ovarianCancer === value}
-                  onPress={() => setOvarianCancer(value)}
-                />
-              ))}
             </View>
 
-            <Footer
-              style={styles.footer}
-              goBack={() => {
-                navigation.navigate(routes.INTRO_SCREEN)
-                setValue([])
-              }}
-              goTo={() => navigation.navigate(
-                routes.STATISTICS_SCREEN,
-                {
-                  geneticResult,
-                  age,
-                  breastCancer,
-                  ovarianCancer,
-                }
-              )}
-              disabled={checkDisabled()} />
+            <View style={styles.questions}>
+              <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
+              <View style={styles.checkboxRow}>
+                {data.breastCancerValues.values.map((value, index) => (
+                  <Checkbox
+                    key={`${value}~${index}`}
+                    labelStyle={styles.checkbox}
+                    label={value}
+                    checked={breastCancer === value}
+                    onPress={() => setBreastCancer(value)}
+                  />
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.questions}>
+              <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
+
+              <View style={styles.checkboxRow}>
+                {data.ovarianCancerValues.values.map((value, index) => (
+                  <Checkbox
+                    key={`${index}-${value}`}
+                    labelStyle={styles.checkbox}
+                    label={value}
+                    checked={ovarianCancer === value}
+                    onPress={() => setOvarianCancer(value)}
+                  />
+                ))}
+              </View>
+
+              <Footer
+                style={styles.footer}
+                goBack={() => {
+                  navigation.navigate(routes.INTRO_SCREEN)
+                  setValue([])
+                }}
+                goTo={() => navigation.navigate(
+                  routes.STATISTICS_SCREEN,
+                  {
+                    geneticResult,
+                    age,
+                    breastCancer,
+                    ovarianCancer,
+                  }
+                )}
+                disabled={checkDisabled()} />
+            </View>
           </View>
         </View>
-      </View>
-    </Container>
+      </Container>
+    </ScrollView>
   );
 }
 
@@ -142,6 +143,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: 492,
+  },
+  scrollView: {
+    width: '100%'
   },
   headerArticle: {
     fontSize: 24,
@@ -156,15 +160,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginBottom: 32
-  },
-  input: {
-    backgroundColor: colors.white,
-    borderColor: colors.gray,
-    borderRadius: 4,
-    borderWidth: 1,
-    height: 48,
-    paddingHorizontal: 20,
-    width: 460,
   },
   dropDownContainer: {
     alignItems: 'center',

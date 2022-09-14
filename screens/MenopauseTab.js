@@ -17,11 +17,11 @@ function MenopauseTab({ }) {
     const [keyPoints, setKeyPoints] = useState([]);
     const [showModal, setShowModal] = useState(false)
 
-    useEffect(() => {
-        client.getEntries()
-            .then((response) => setKeyPoints(response.items.find((item) => item.fields.keyPoints).fields.keyPoints))
-            .catch((err) => console.log(err))
-    }, [])
+    // useEffect(() => {
+    //     client.getEntries()
+    //         .then((response) => setKeyPoints(response.items.find((item) => item.fields.keyPoints).fields.keyPoints))
+    //         .catch((err) => console.log(err))
+    // }, [])
 
 
     const handleUrlPress = () => {
