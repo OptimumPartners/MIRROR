@@ -58,8 +58,8 @@ const SurgicalOptions = ({ navigation, route }) => {
     }
 
     return data.title && (
-        <Container>
-            <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollView}>
+            <Container>
                 <TimeLine currentStep={data.step} />
 
                 <View style={styles.header}>
@@ -96,11 +96,11 @@ const SurgicalOptions = ({ navigation, route }) => {
                         buttonStyle={styles.footerButton}
                         style={styles.footer}
                         goTo={() => navigation.navigate(routes.SELF_REFlECTION_SCREEN)}
-                        goBack={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN)}
+                        goBack={() => navigation.goBack()}
                     />
                 </View>
-            </ScrollView>
-        </Container>
+            </Container>
+        </ScrollView>
     )
 }
 export default SurgicalOptions

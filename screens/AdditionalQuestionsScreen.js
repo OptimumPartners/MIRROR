@@ -25,8 +25,10 @@ function AdditionalQuestionsScreen({ navigation, route }) {
 
     const getData = async () => {
         const data = await getContentfulData(ADDITIONAL_QUESTIONS_ENTRY_ID);
+        const questions = [...value]
+        questions.splice(4, data.questions.length)
+        setValue(questions)
         setData(data)
-        setValue([...value, ...data.questions])
     }
 
     const handleSetAnswers = (key, answer) => {
@@ -88,18 +90,17 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                         )}
                         <Footer
                             style={styles.footer}
-                            goTo={() => navigation.navigate(
-                                routes.SURGICAL_OPTIONS,
-                                {
-                                    ...route.params,
-                                    ...answers
-                                })
-                            }
+                            goTo={() => {
+                                navigation.navigate(
+                                    routes.SURGICAL_OPTIONS,
+                                    {
+                                        ...route.params,
+                                        ...answers
+                                    })
+                                setValue([...value, ...data.questions])
+                            }}
                             goBack={() => {
-                                const questions = [...value]
-                                questions.splice(4, data.questions.length)
-                                setValue(questions)
-                                navigation.navigate(routes.ANATOMY_REVIEW_SCREEN)
+                                navigation.goBack()
                             }}
                             disabled={answers.pregnant && answers.menopause && answers.HRT}
                         />

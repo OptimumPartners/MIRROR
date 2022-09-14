@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 
 const PercentageAmongPeople = ({ percentage }) => {
-    // console.log('array', Array(100));
+
     return (
         <View style={styles.container}>
 
