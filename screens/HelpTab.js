@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { colors } from "../assets/colors/colors"
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { colors } from '../assets/colors/colors';
 import { getContentfulData } from '../client';
 import CustomizedText from '../components/shared/CustomizedText';
 import TabContainer from '../components/shared/TabContainer';
-import { FERTILITY_TAB_ENTRY_ID } from '../env/env.json'
+import { HELP_TAB_ENTRY_ID } from '../env/env.json'
 
-function FertilityTab({ navigation }) {
+const HelpTab = ({ navigation }) => {
 
     const [data, setData] = useState({})
 
@@ -15,21 +15,21 @@ function FertilityTab({ navigation }) {
     }, [])
 
     const getData = async () => {
-        const data = await getContentfulData(FERTILITY_TAB_ENTRY_ID);
-        console.log(data.content);
+        const data = await getContentfulData(HELP_TAB_ENTRY_ID);
         setData(data);
     }
 
 
     return data.content && (
         <TabContainer data={data} navigation={navigation} buttons={data.buttons}>
-            <Text style={styles.title}>{data.content.title}</Text>
+
+            <CustomizedText style={styles.title}>{data.content.title}</CustomizedText>
 
             {data.content.list.map((element, index) => (
                 <View key={index}>
                     <CustomizedText ul>{element}</CustomizedText>
                     {element.subText && element.subText.map((text, index) => (
-                        <CustomizedText key={text} ul dotColor={colors.gray} textStyle={styles.subText} style={styles.subTextContainer}>{text}</CustomizedText>
+                        <CustomizedText key={index} ul dotColor={colors.gray} textStyle={styles.subText} style={styles.subTextContainer}>{text}</CustomizedText>
                     ))}
                 </View>
             ))}
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default FertilityTab;
+export default HelpTab

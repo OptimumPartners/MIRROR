@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
 import { colors } from '../assets/colors/colors';
+import Container from '../components/shared/Container';
 
 function WelcomeScreen({ navigation }) {
 
@@ -12,56 +13,49 @@ function WelcomeScreen({ navigation }) {
     }, [])
 
     return (
-        <View style={styles.container}>
-            <View>
-                <Image
-                    source={require("../assets/images/logo.png")}
-                    style={styles.logo}
-                />
-                <Text
-                    style={styles.appTitle}
-                >
-                    MIRROR
-                </Text>
+        <Container>
+            <View style={styles.container}>
+                <Image source={require("../assets/images/logo.png")} style={styles.logo} />
+                <Image source={require('../assets/images/nameLogo.png')} style={styles.nameLogo} />
+
+                <View>
+                    <Text style={styles.introText}>
+                        <Text style={styles.specialCharacter}>M</Text>y
+                        <Text style={styles.specialCharacter}> I</Text>ndividualzed
+                        <Text style={styles.specialCharacter}> R</Text>isk
+                        <Text style={styles.specialCharacter}> R</Text>eduction for
+                        <Text style={styles.specialCharacter}> O</Text>varian
+                        Cance<Text style={styles.specialCharacter}>r</Text>
+                    </Text>
+                </View>
             </View>
-            <View>
-                <Text style={styles.introText}>
-                    <Text style={styles.underLineLetter}>M</Text>y <Text style={styles.underLineLetter}>I</Text>ndividualzed <Text style={styles.underLineLetter}>R</Text>isk <Text style={styles.underLineLetter}>R</Text>eduction
-                    <Text>for <Text style={styles.underLineLetter}>O</Text>varian Cance<Text style={styles.underLineLetter}>r</Text></Text>
-                </Text>
-            </View>
-        </View>
+
+        </Container>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        paddingVertical: 50,
-        backgroundColor: colors.white,
+        alignItems: 'center',
+        width: '45.6%'
     },
     logo: {
-        width: 150,
-        height: 150,
-        position: "absolute",
+        marginTop: 96,
+        height: 200,
+        width: 162,
     },
-    appTitle: {
-        color: colors.black,
-        fontSize: 60,
-        fontWeight: "500",
-        textAlign: "center",
-        paddingVertical: 45,
+    nameLogo: {
+        marginTop: 40,
+        marginBottom: 17
     },
     introText: {
-        fontSize: 30,
-        color: colors.black,
-        textAlign: "center",
-        paddingHorizontal: 50
+        color: colors.primaryText,
+        fontSize: 24,
+        fontWeight: '700',
+        textAlign: 'center'
     },
-    underLineLetter: {
-        textDecorationLine: "underline",
-        fontWeight: "500",
+    specialCharacter: {
+        color: colors.lightBlue
     }
 })
 

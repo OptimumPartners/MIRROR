@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
-import Icon from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { BASIC_INFO_ENTRY_ID } from '../env/env.json'
 
@@ -13,6 +12,8 @@ import TimeLine from '../components/shared/TimeLine';
 import routes from '../navigators/routes';
 import { Questions } from '../contexts/QuestionContext';
 import NumberInput from '../components/shared/NumberInput';
+import CustomizedText from '../components/shared/CustomizedText';
+import InfoBox from '../components/shared/InfoBox';
 
 function QuestionsScreen({ navigation }) {
   const [geneticResults, setGeneticResults] = useState([]);
@@ -44,98 +45,97 @@ function QuestionsScreen({ navigation }) {
   }
 
   return data.title && (
-    <ScrollView style={styles.scrollView}>
-      <Container>
-        <TimeLine currentStep={data.step} />
-        <View style={styles.container}>
-          <View>
-            <Text style={styles.headerArticle}>{data.title}</Text>
-            <Text style={styles.article}>{data.description}</Text>
+    <Container>
+      <TimeLine currentStep={data.step} />
+      <View style={styles.container}>
+        <View>
+          <CustomizedText textStyle={styles.headerArticle}>{data.title}</CustomizedText>
+          <Text style={styles.article}>{data.description}</Text>
+        </View>
+
+        <View>
+          <View style={[styles.questions, styles.dropDownQuestion]}>
+            <Text style={styles.questionsTitle}>{data.geneticResults.question}</Text>
+
+            <View style={styles.dropDownContainer}>
+
+              <DropDownPicker
+                open={showDropDown}
+                value={geneticResult}
+                items={geneticResults}
+                setOpen={setShowDropDown}
+                setValue={setGeneticResult}
+                style={styles.pickerContainer}
+                containerStyle={{ width: 460 }}
+                placeholder={data.geneticResults.placeholder}
+                placeholderStyle={styles.placeHolder}
+              />
+
+              <InfoBox data={data.geneticResultInfo} />
+
+            </View>
           </View>
 
-          <View>
-            <View style={[styles.questions, styles.dropDownQuestion]}>
-              <Text style={styles.questionsTitle}>{data.geneticResults.question}</Text>
-              <View style={styles.dropDownContainer}>
-                <DropDownPicker
-                  open={showDropDown}
-                  value={geneticResult}
-                  items={geneticResults}
-                  setOpen={setShowDropDown}
-                  setValue={setGeneticResult}
-                  style={styles.pickerContainer}
-                  containerStyle={{ width: 460 }}
-                  placeholder={data.geneticResults.placeholder}
-                  placeholderStyle={styles.placeHolder}
-                  scrollViewProps={{
-                    nestedScrollEnabled: true,
-                  }}
+          <View style={styles.questions}>
+            <Text style={styles.questionsTitle}>{data.age.question}</Text>
+            <NumberInput
+              onChange={setAge}
+              value={age}
+              placeholder={data.age.placeholder}
+              placeholderTextColor={colors.darkGray}
+            />
+          </View>
+
+          <View style={styles.questions}>
+            <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
+            <View style={styles.checkboxRow}>
+              {data.breastCancerValues.values.map((value, index) => (
+                <Checkbox
+                  key={`${value}~${index}`}
+                  labelStyle={styles.checkbox}
+                  label={value}
+                  checked={breastCancer === value}
+                  onPress={() => setBreastCancer(value)}
                 />
-                <Icon name='information-circle-outline' size={21} color={colors.primaryText} />
-              </View>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.questions}>
+            <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
+
+            <View style={styles.checkboxRow}>
+              {data.ovarianCancerValues.values.map((value, index) => (
+                <Checkbox
+                  key={`${index}-${value}`}
+                  labelStyle={styles.checkbox}
+                  label={value}
+                  checked={ovarianCancer === value}
+                  onPress={() => setOvarianCancer(value)}
+                />
+              ))}
             </View>
 
-            <View style={styles.questions}>
-              <Text style={styles.questionsTitle}>{data.age.question}</Text>
-              <NumberInput
-                onChange={setAge}
-                value={age}
-                placeholder={data.age.placeholder}
-                placeholderTextColor={colors.darkGray}
-              />
-            </View>
-
-            <View style={styles.questions}>
-              <Text style={styles.questionsTitle}>{data.breastCancerValues.question}</Text>
-              <View style={styles.checkboxRow}>
-                {data.breastCancerValues.values.map((value, index) => (
-                  <Checkbox
-                    key={`${value}~${index}`}
-                    labelStyle={styles.checkbox}
-                    label={value}
-                    checked={breastCancer === value}
-                    onPress={() => setBreastCancer(value)}
-                  />
-                ))}
-              </View>
-            </View>
-
-            <View style={styles.questions}>
-              <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
-
-              <View style={styles.checkboxRow}>
-                {data.ovarianCancerValues.values.map((value, index) => (
-                  <Checkbox
-                    key={`${index}-${value}`}
-                    labelStyle={styles.checkbox}
-                    label={value}
-                    checked={ovarianCancer === value}
-                    onPress={() => setOvarianCancer(value)}
-                  />
-                ))}
-              </View>
-
-              <Footer
-                style={styles.footer}
-                goBack={() => {
-                  navigation.navigate(routes.INTRO_SCREEN)
-                  setValue([])
-                }}
-                goTo={() => navigation.navigate(
-                  routes.STATISTICS_SCREEN,
-                  {
-                    geneticResult,
-                    age,
-                    breastCancer,
-                    ovarianCancer,
-                  }
-                )}
-                disabled={checkDisabled()} />
-            </View>
+            <Footer
+              style={styles.footer}
+              goBack={() => {
+                navigation.goBack()
+                setValue([])
+              }}
+              goTo={() => navigation.navigate(
+                routes.STATISTICS_SCREEN,
+                {
+                  geneticResult,
+                  age,
+                  breastCancer,
+                  ovarianCancer,
+                }
+              )}
+              disabled={checkDisabled()} />
           </View>
         </View>
-      </Container>
-    </ScrollView>
+      </View>
+    </Container>
   );
 }
 
@@ -144,14 +144,9 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 492,
   },
-  scrollView: {
-    width: '100%'
-  },
   headerArticle: {
     fontSize: 24,
-    color: colors.black,
     marginBottom: 16,
-    fontWeight: '500'
   },
   boldArticle: {
     fontWeight: "700",
@@ -195,7 +190,7 @@ const styles = StyleSheet.create({
     marginRight: 28
   },
   questionsTitle: {
-    color: colors.black,
+    color: colors.primaryText,
     fontSize: 14,
     fontWeight: "700",
     marginBottom: 8,

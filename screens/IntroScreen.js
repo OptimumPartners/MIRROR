@@ -4,13 +4,11 @@ import { WELCOMING_ENTRY_ID } from '../env/env.json'
 import { colors } from '../assets/colors/colors';
 import { getContentfulData } from '../client';
 
-import HyperLinkBox from '../components/HyperLinkBox';
 import Button from '../components/shared/Button';
 import Container from '../components/shared/Container';
 import VerticalLine from '../components/shared/VerticalLine';
 import routes from '../navigators/routes';
-import LearnMore from '../components/shared/LearnMore';
-import { ScrollView } from 'react-native-gesture-handler';
+import CustomizedText from '../components/shared/CustomizedText';
 
 function IntroScreen({ navigation }) {
     const [data, setData] = useState({})
@@ -22,39 +20,19 @@ function IntroScreen({ navigation }) {
         setData(await getContentfulData(WELCOMING_ENTRY_ID))
     }
 
-    return (
+    return data.content && (
         <Container>
-            <ScrollView style={styles.scrollView}>
                 <View style={styles.container}>
+                    <Text style={styles.articleTitle}>{data.welcomeTitle}</Text>
 
-                    <View>
-                        <Text style={styles.articleTitle}>
-                            {data.welcomeTitle}
-                        </Text>
-                    </View>
-                    <View>
-                        <Text style={[styles.section, styles.introGraph]}>
-                            {data.welcomeGraph}
-                        </Text>
-                        <Text style={styles.section}>
-                            If you have not yet had genetic counseling,
-                            you can find a genetic counselor at:
-                            <HyperLinkBox
-                                title={" nsgc.org"}
-                                url={"https://www.nsgc.org/"}
-                            />
-                            .
-                        </Text>
-                        <Text style={styles.section}>
-                            Recommendations are based on the guidelines of the
-                            <HyperLinkBox
-                                title={" NCCN "}
-                                url={"https://www.nccn.org/login?ReturnURL=https://www.nccn.org/professionals/physician_gls/pdf/genetics_bop.pdf"}
-                            />
-                            and personalized based on your preferences.
-                        </Text>
-                    </View>
+                    <Text style={[styles.section, styles.introGraph]}>{data.welcomeGraph}</Text>
+
+                    {data.content.map((element, index) => (
+                        <CustomizedText key={index} textStyle={styles.section}>{element}</CustomizedText>
+                    ))}
+
                     <VerticalLine style={styles.verticalLine} />
+
                     <Button
                         text="Let's Get Started"
                         style={styles.button}
@@ -62,8 +40,7 @@ function IntroScreen({ navigation }) {
                         onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
                     />
                 </View>
-            </ScrollView>
-        </Container>
+        </Container >
     );
 }
 
@@ -73,20 +50,16 @@ const styles = StyleSheet.create({
         marginTop: 56,
         width: 492
     },
-    scrollView: {
-       flex:1
-    },
     articleTitle: {
         color: colors.primaryText,
         fontSize: 40,
     },
     introGraph: {
+        color: colors.primaryText,
         fontSize: 24,
+        fontWeight: '500',
     },
     section: {
-        color: colors.primaryText,
-        fontSize: 14,
-        fontWeight: '500',
         paddingTop: 32,
     },
     button: {

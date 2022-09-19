@@ -4,7 +4,6 @@ import { REVIEW_OPTIONS_ENTRY_ID, ALGO_ENTRY_ID } from '../env/env.json'
 import Container from '../components/shared/Container'
 import { getContentfulData } from '../client';
 import ResultContainer from '../components/shared/ResultContainer';
-import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../components/shared/Footer';
 import routes from '../navigators/routes';
 import TimeLine from '../components/shared/TimeLine';
@@ -19,7 +18,7 @@ const SurgicalOptions = ({ navigation, route }) => {
     const [algo, setAlgo] = useState({})
     const [params, setParams] = useState(route.params);
     const [results, setResults] = useState([])
-    const { value, setValues } = useContext(Questions)
+    const { value, setValue } = useContext(Questions)
 
     useEffect(() => {
         getData()
@@ -60,47 +59,50 @@ const SurgicalOptions = ({ navigation, route }) => {
 
     return data.title && (
         <Container>
-            <ScrollView style={styles.scrollView}>
-                <TimeLine currentStep={data.step} />
+            <TimeLine currentStep={data.step} />
 
-                <View style={styles.header}>
-                    {value.map((question, index) => (
-                        <React.Fragment key={question.key}>
-                            <DropDown
-                                isInput={question.key === 'age'}
-                                label={question.label}
-                                value={params[question.key]}
-                                options={question.values}
-                                onSelect={(value) => onSelect(value, question.key)}
-                                dropDownHeader={question.header}
-                                placeholderStyle={styles.dropDownPlaceholder}
-                                arrowSize={18}
-                            />
-                            {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
-                        </React.Fragment>
-                    ))}
+            <View style={styles.header}>
+                {value.map((question, index) => (
+                    <React.Fragment key={question.key}>
+                        <DropDown
+                            isInput={question.key === 'age'}
+                            label={question.label}
+                            value={params[question.key]}
+                            options={question.values}
+                            onSelect={(value) => onSelect(value, question.key)}
+                            dropDownHeader={question.header}
+                            placeholderStyle={styles.dropDownPlaceholder}
+                            arrowSize={18}
+                        />
+                        {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
+                    </React.Fragment>
+                ))}
 
-                </View>
+            </View>
 
-                <VerticalLine style={styles.verticalLine} />
+            <VerticalLine style={styles.verticalLine} />
 
-                <View style={styles.container}>
-                    <Text style={styles.title}>{data.title}</Text>
-                    {results[0] && results.map((result, index) => (
-                        <View key={`${result.name}-${index}`}>
-                            <ResultContainer answers={params} title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
-                        </View>
-                    ))}
+            <View style={styles.container}>
+                <Text style={styles.title}>{data.title}</Text>
+                {results[0] && results.map((result, index) => (
+                    <View key={`${result.name}-${index}`}>
+                        <ResultContainer answers={params} title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
+                    </View>
+                ))}
 
-                    <Footer
-                        buttonText='Next Step'
-                        buttonStyle={styles.footerButton}
-                        style={styles.footer}
-                        goTo={() => navigation.navigate(routes.SELF_REFlECTION_SCREEN)}
-                        goBack={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN)}
-                    />
-                </View>
-            </ScrollView>
+                <Footer
+                    buttonText='Next Step'
+                    buttonStyle={styles.footerButton}
+                    style={styles.footer}
+                    goTo={() => navigation.navigate(routes.SELF_REFlECTION_SCREEN)}
+                    goBack={() => {
+                        setValue(value.slice(0, params.ansOldLength));
+                        navigation.goBack()
+                    }}
+                />
+            </View>
+
+            <LearnMore navigate={navigation.navigate} />
         </Container>
     )
 }
@@ -109,9 +111,6 @@ const styles = StyleSheet.create({
     container: {
         alignSelf: 'center',
         width: '45.5%'
-    },
-    scrollView: {
-        width: '100%'
     },
     header: {
         alignSelf: 'flex-end',

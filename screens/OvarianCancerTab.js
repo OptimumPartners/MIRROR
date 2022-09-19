@@ -1,100 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, Linking, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../assets/colors/colors';
+import { getContentfulData } from '../client';
+import CustomizedText from '../components/shared/CustomizedText';
+import TabContainer from '../components/shared/TabContainer';
+import { OVARIAN_CANCER_TAB_ENTRY_ID } from '../env/env.json'
 
-import { client } from "../client";
+function OvarianCancerTab({ navigation }) {
 
-import IconO from "react-native-vector-icons/Octicons";
-
-function OvarianCancerTab({ }) {
-
-    const [points, setPoints] = useState([]);
+    const [data, setData] = useState({})
 
     useEffect(() => {
-        client.getEntries()
-            .then((response) => setPoints(response.items.find((item) => item.fields.ovarianCancer).fields.ovarianCancer))
-            .catch((err) => console.log(err))
+        getData()
     }, [])
 
-    const handleUrlPress = (url) => {
-        if (Linking.canOpenURL(url)) {
-            Linking.openURL(url);
-        }
+    const getData = async () => {
+        const data = await getContentfulData(OVARIAN_CANCER_TAB_ENTRY_ID);
+        setData(data);
     }
 
-    return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Image
-                        source={require("../assets/images/ovarianCancerLogo.png")}
-                    />
-                    <Text style={styles.headerTitle}>
-                        Ovarian Cancer: The Basics
-                    </Text>
-                </View>
-                <View>
-                    {points.map((point, index) =>
-                        <View
-                            key={index}
-                            style={styles.pointsContainer}
-                        >
-                            <IconO
-                                name={"dot-fill"}
-                                style={styles.blackDot}
-                            />
-                            <Text style={styles.point}>
-                                {point.point}
-                                {point.urlName &&
-                                    <Text
-                                        style={styles.link}
-                                        onPress={() => handleUrlPress(point.url)}
-                                    >
-                                        {point.urlName}
-                                    </Text>
-                                }
-                            </Text>
-                        </View>
-                    )}
-                </View>
+
+    return data.content && (
+        <TabContainer data={data} navigation={navigation} buttons={data.buttons}>
+            <View>
+                {data.content.map((element, index) => (
+                    <View key={index}>
+                        <CustomizedText ul>{element}</CustomizedText>
+                        {element.subText && element.subText.map((text, index) => (
+                            <CustomizedText key={index} ul dotColor={colors.gray} textStyle={styles.subText} style={styles.subTextContainer}>{text}</CustomizedText>
+                        ))}
+                    </View>
+                ))}
             </View>
-        </ScrollView>
+        </TabContainer>
+
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: colors.white,
-        flex: 1,
-        padding: 20,
+    subText: {
+        color: colors.gray,
     },
-    header: {
-        alignItems: "center",
-        flexDirection: "row",
-    },
-    headerTitle: {
-        flex: 0.8,
-        fontSize: 26,
-        paddingLeft: 20,
-    },
-    pointsContainer: {
-        flexDirection: "row",
-        paddingVertical: 5,
-    },
-    point: {
-        fontSize: 16,
-        paddingLeft: 10,
-    },
-    blackDot: {
-        alignSelf: "flex-start",
-        padding: 2,
-        top: 2,
-    },
-    link: {
-        color: colors.hyperLinkBlue,
-        fontSize: 16,
-        textDecorationLine: "underline",
-    },
+    subTextContainer: {
+        marginLeft: 8
+    }
+
 })
+
 
 export default OvarianCancerTab;

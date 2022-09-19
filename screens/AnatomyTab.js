@@ -1,130 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
+import { getContentfulData } from '../client';
+import CustomizedText from '../components/shared/CustomizedText';
+import TabContainer from '../components/shared/TabContainer';
+import { ANATOMY_TAB_ENTRY_ID } from '../env/env.json'
 
-import IconAD from "react-native-vector-icons/AntDesign";
+function AnatomyTab({ navigation }) {
 
-import { client } from "../client"
-
-function AnatomyTab({ }) {
-
-    const [data, setData] = useState([])
+    const [data, setData] = useState({})
 
     useEffect(() => {
-        // client.getEntries()
-        //     .then((response) => setData(response.items.find((item) => item.fields.anatomy).fields.anatomy))
-        //     .catch((err) => console.log(err))
+        getData()
     }, [])
 
-    return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Image
-                        source={require("../assets/images/anatomy.png")}
-                    />
-                    <Text style={styles.headerTitle}>
-                        Anatomy Review
-                    </Text>
+    const getData = async () => {
+        const data = await getContentfulData(ANATOMY_TAB_ENTRY_ID);
+        setData(data);
+    }
 
-                </View>
-                <View>
-                    <Image
-                        source={require("../assets/images/uterus.png")}
-                        style={styles.uterus}
-                        resizeMode={"cover"}
-                    />
-                </View>
-                <View style={styles.banner}>
-                    <View style={styles.section}>
-                        <Text style={styles.boldTitle}>
-                            Uterus:
-                        </Text>
-                        {data?.uterus?.map((uterusPoint, index) =>
-                            <View key={index} style={styles.uterusPointsContainer}>
-                                <IconAD
-                                    name='minus'
-                                    color={colors.black}
-                                    style={styles.iconMore}
-                                />
-                                <Text style={styles.uterusPoint}>
-                                    {uterusPoint}
-                                </Text>
+
+    return data.content && (
+        <TabContainer data={data} navigation={navigation} buttons={data.buttons}>
+            <View>
+                <Image style={styles.image} source={require('../assets/images/uterus.png')} />
+
+                {data.content.map((part, index) => (
+                    <View style={styles.anatomyPart} key={part.name}>
+                        <View style={styles.anatomyTitleContainer}>
+                            <View style={styles.partNumberHolder}>
+                                <Text style={styles.anatomyPartNumber}>{index + 1}</Text>
                             </View>
-                        )}
-                    </View>
 
-                    <View style={styles.section}>
-                        <Text style={styles.boldTitle}>
-                            Fallopian Tube:
-                            <Text style={styles.defaultText}>
-                                {data.fallopianTube}
-                            </Text>
-                        </Text>
+                            <Text style={styles.partName}>{part.name}</Text>
+                        </View>
+
+                        <View style={styles.symptomsContainer}>
+                            {part.points.map((symptom, index) =>
+                                <View
+                                    style={styles.rowedBox}
+                                    key={part.name + index}
+                                >
+                                    <CustomizedText ul={part.dots} style={styles.symptom}>
+                                        {symptom}
+                                    </CustomizedText>
+                                </View>
+                            )}
+                        </View>
                     </View>
-                    <View style={styles.section}>
-                        <Text style={styles.boldTitle}>
-                            Ovary:
-                            <Text style={styles.defaultText}>
-                                {data.ovary}
-                            </Text>
-                        </Text>
-                    </View>
-                    <View>
-                        <Image
-                            source={require("../assets/images/anatomy2.png")}
-                            style={styles.uterus}
-                            resizeMode={"cover"}
-                        />
-                    </View>
-                </View>
+                ))}
             </View>
-        </ScrollView>
+        </TabContainer>
+
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.white,
+    image:{
+        marginBottom:35
     },
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-        zIndex: 1,
-        paddingHorizontal: 20,
-        top: 40,
+    anatomyTitleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
     },
-    headerTitle: {
-        fontSize: 26,
-        paddingLeft: 20,
+    partNumberHolder: {
+        alignItems: 'center',
+        backgroundColor: colors.purple,
+        borderRadius: 10,
+        justifyContent: 'center',
+        marginRight: 8,
+        height: 20,
+        width: 20,
     },
-    boldTitle: {
-        fontWeight: "700",
+    anatomyPartNumber: {
+        color: colors.white,
+        fontSize: 10,
+        fontWeight: '600'
     },
-    defaultText: {
-        fontWeight: "400",
+    anatomyPart: {
+        marginBottom: 32
     },
-    uterusPointsContainer: {
-        flexDirection: "row",
-        alignItems: "center",
+    partName: {
+        color: colors.darkGray,
+        fontSize: 12,
+        fontWeight: '600'
     },
-    banner: {
-        paddingLeft: 10,
-    },
-    uterus: {
-        alignSelf: "center",
-        // height: 250,
-        width: 250
-    },
-    uterusPoint: {
-        fontSize: 16,
-        paddingLeft: 10,
-    },
-    section: {
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-    }
 })
-
 export default AnatomyTab;

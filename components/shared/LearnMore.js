@@ -16,7 +16,6 @@ const LearnMore = ({ navigate }) => {
     const { push } = useNavigation()
     const getData = async () => {
         const data = await getContentfulData(LEARN_MORE_ENTRY_ID);
-        console.log(data.icons[2].fields);
         setData(data)
     }
 

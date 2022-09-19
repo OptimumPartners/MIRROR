@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
-import IconO from "react-native-vector-icons/Octicons";
 import { LEARN_YOUR_RISK_ENTRY_ID } from '../env/env.json'
 import { getContentfulData } from '../client';
 import Container from '../components/shared/Container';
@@ -12,6 +11,7 @@ import Footer from '../components/shared/Footer';
 import routes from '../navigators/routes';
 import { Questions } from '../contexts/QuestionContext';
 import PercentageAmongPeople from '../components/shared/PercentageAmongPeople';
+import CustomizedText from '../components/shared/CustomizedText';
 
 function StatisticsScreen({ navigation, route }) {
   const [params, setParams] = useState(route.params);
@@ -56,108 +56,93 @@ function StatisticsScreen({ navigation, route }) {
   }
 
   return data.description && (
-    <ScrollView>
-      <Container style={styles.container}>
+    <Container style={styles.container}>
 
-        <TimeLine currentStep={data.step} />
+      <TimeLine currentStep={data.step} />
 
-        <View style={styles.header}>
-          {value.map((question, index) => (<React.Fragment key={question.key}>
-            <DropDown
-              isInput={question.key === 'age'}
-              label={question.label}
-              value={params[question.key]}
-              options={question.values}
-              onSelect={(value) => onSelect(value, question.key)}
-              dropDownHeader={question.header}
-            />
-            {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
-          </React.Fragment>
-          ))}
+      <View style={styles.header}>
+        {value.map((question, index) => (<React.Fragment key={question.key}>
+          <DropDown
+            isInput={question.key === 'age'}
+            label={question.label}
+            value={params[question.key]}
+            options={question.values}
+            onSelect={(value) => onSelect(value, question.key)}
+            dropDownHeader={question.header}
+          />
+          {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
+        </React.Fragment>
+        ))}
+      </View>
+
+      <VerticalLine style={styles.verticalLine} />
+
+      <View style={styles.bodyContainer}>
+        <View style={styles.statistics}>
+          <View style={styles.statisticsImageContainer}>
+            <PercentageAmongPeople percentage={riskPercentage.to} />
+            <Text style={styles.statisticsDescription}>Before surgery</Text>
+          </View>
+
+          <View style={styles.statisticsImageContainer}>
+            <PercentageAmongPeople percentage={2} />
+            <Text style={styles.statisticsDescription}>After removal of tubes and ovaries</Text>
+          </View>
         </View>
 
-        <VerticalLine style={styles.verticalLine} />
+        <View style={styles.resultContainer}>
 
-        <View style={styles.bodyContainer}>
-          <View style={styles.statistics}>
-            <View style={styles.statisticsImageContainer}>
-              <PercentageAmongPeople percentage={riskPercentage.to} />
-              <Text style={styles.statisticsDescription}>Before surgery</Text>
-            </View>
+          <View style={styles.banner}>
+            <Text style={styles.bannerRiskDescription}>{data.description}</Text>
 
-            <View style={styles.statisticsImageContainer}>
-              <PercentageAmongPeople percentage={2} />
-              <Text style={styles.statisticsDescription}>After removal of tubes and ovaries</Text>
+            <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
+
+            <View style={styles.resultPoints}>
+              {data.risks.values.map((risk, index) => {
+                const ovarianRisk = index === data.risks.percentageIndex
+                const ovarianRiskOutput = riskPercentage.from ? riskPercentage.from + '-' + riskPercentage.to : riskPercentage.to
+                return (
+                  <View
+                    key={index}
+                  >
+                    <CustomizedText
+                      additions={<Text style={styles.fragment}>
+                        {ovarianRisk && ovarianRiskOutput} {ovarianRisk && typeof riskPercentage.to === 'number' ? '%.' : ''}
+                      </Text>}
+                      ul
+                    >{risk}
+                    </CustomizedText>
+                  </View>
+                )
+              })}
             </View>
           </View>
 
-          <View style={styles.resultContainer}>
+          <View style={styles.doesAgeMatter}>
+            <Text style={styles.bannerUnderLinedTitle}>{data.ageInfoTitle}</Text>
 
-            <View style={styles.banner}>
-              <Text style={styles.bannerRiskDescription}>{data.description}</Text>
-
-              <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
-
-              <View style={styles.resultPoints}>
-                {data.risks.values.map((risk, index) => {
-                  const ovarianRisk = index === data.risks.percentageIndex
-                  const ovarianRiskOutput = riskPercentage.from ? riskPercentage.from + '-' + riskPercentage.to : riskPercentage.to
-                  return (
-                    <View
-                      key={index}
-                      style={styles.textFragmentContainer}
-                    >
-                      <IconO
-                        name={"dot-fill"}
-                        color={colors.black}
-                        style={styles.blackDot}
-                      />
-                      <Text style={styles.fragment}>
-                        {risk} {ovarianRisk && ovarianRiskOutput} {ovarianRisk && typeof riskPercentage.to === 'number' ? '%' : ''}
-                      </Text>
-                    </View>
-                  )
-                })}
-              </View>
-            </View>
-
-            {params.geneticResult !== "Lynch" &&
-              <View style={styles.doesAgeMatter}>
-                <Text style={styles.bannerUnderLinedTitle}>{data.ageInfoTitle}</Text>
-
-                <View style={styles.resultPoints}>
-                  {data.ageInfo.map((reason, index) => (
-                    <View
-                      key={index}
-                      style={styles.textFragmentContainer}
-                    >
-                      <IconO
-                        name={"dot-fill"}
-                        color={colors.black}
-                        style={styles.blackDot}
-                      />
-
-                      <Text style={styles.fragment}>
-                        {reason}
-                      </Text>
-
-                    </View>
-                  ))}
+            <View style={styles.resultPoints}>
+              {data.ageInfo.map((reason, index) => (
+                <View
+                  key={index}
+                >
+                  <CustomizedText ul>{reason}</CustomizedText>
                 </View>
-              </View>
-            }
+              ))}
+            </View>
           </View>
+
         </View>
-        <Footer style={styles.footer}
-          goBack={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
-          goTo={() =>
-            navigation.navigate(
-              routes.ANATOMY_REVIEW_SCREEN,
-              { ...params }
-            )}
-        />
-      </Container>
-    </ScrollView >
+      </View>
+      <Footer style={styles.footer}
+        goBack={() => navigation.goBack()}
+        goTo={() =>
+          navigation.navigate(
+            routes.ANATOMY_REVIEW_SCREEN,
+            { ...params }
+          )}
+      />
+    </Container>
   );
 
 }
@@ -256,16 +241,10 @@ const styles = StyleSheet.create({
   doesAgeMatter: {
     paddingHorizontal: 20,
   },
-  textFragmentContainer: {
-    flexDirection: "row",
-  },
-  blackDot: {
-    top: 5,
-  },
   fragment: {
-    color: colors.black,
-    fontSize: 18,
-    paddingLeft: 10,
+    color: colors.primaryText,
+    fontSize: 14,
+    fontWeight: '700'
   },
   statistics: {
     marginRight: '7.7%',

@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
     footer: {
         width: '100%',
         marginTop: 40,
-        paddingBottom: 68
     },
     container: {
         marginTop: 32,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems:'center'
     },
     prevScreenContainer: {
         flexDirection: 'row',
