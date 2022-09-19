@@ -4,16 +4,15 @@ import {
     StyleSheet,
     Text,
     Image,
-    ScrollView,
 } from 'react-native';
 import { LEARN_YOUR_RISK_ANATOMY_ENTRY_ID } from '../env/env.json'
 import { colors } from '../assets/colors/colors';
-import IconO from "react-native-vector-icons/Octicons";
 import { getContentfulData } from "../client"
 import Container from '../components/shared/Container';
 import Footer from '../components/shared/Footer';
 import TimeLine from '../components/shared/TimeLine';
 import routes from '../navigators/routes';
+import CustomizedText from '../components/shared/CustomizedText';
 
 function AnatomyReviewScreen({ navigation, route }) {
     const [data, setData] = useState({})
@@ -30,28 +29,14 @@ function AnatomyReviewScreen({ navigation, route }) {
     return data.title && (
         <Container >
             <TimeLine currentStep={data.step} />
-            <ScrollView style={styles.container} >
+            <View style={styles.dataContainer}>
                 <View style={styles.header}>
                     <Text style={styles.headerText} >{data.title}.</Text>
 
                     <View style={styles.basics}>
                         <Text style={styles.basicsTitle}>{data.basicsTitle}</Text>
                         {data.basics.map((text, index) =>
-                            <View
-                                style={[styles.rowedBox, styles.headerBoxRows]}
-                                key={index}
-                            >
-                                <IconO
-                                    name={"dot-fill"}
-                                    color={colors.black}
-                                    size={10}
-                                    style={styles.blackDot}
-                                />
-
-                                <Text style={styles.notBoldSubtitle}>
-                                    {text}
-                                </Text>
-                            </View>
+                            <CustomizedText ul key={index}>{text}</CustomizedText>
                         )}
                     </View>
                 </View>
@@ -78,21 +63,14 @@ function AnatomyReviewScreen({ navigation, route }) {
                                 </View>
 
                                 <View style={styles.symptomsContainer}>
-                                    {part.points.map((symptom) =>
+                                    {part.points.map((symptom, index) =>
                                         <View
                                             style={styles.rowedBox}
-                                            key={symptom}
+                                            key={part.name + index}
                                         >
-                                            {part.dots && < IconO
-                                                name={"dot-fill"}
-                                                color={colors.black}
-                                                style={styles.blackDot}
-                                                size={10}
-                                            />}
-
-                                            <Text style={styles.symptom}>
+                                            <CustomizedText ul={part.dots} style={styles.symptom}>
                                                 {symptom}
-                                            </Text>
+                                            </CustomizedText>
                                         </View>
                                     )}
                                 </View>
@@ -102,17 +80,16 @@ function AnatomyReviewScreen({ navigation, route }) {
                 </View>
                 <Footer
                     footerElementStyle={styles.footer}
-                    goTo={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN,{...route.params})}
-                    goBack={() => navigation.navigate(routes.STATISTICS_SCREEN)}
+                    goTo={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN, { ...route.params })}
+                    goBack={() => navigation.goBack()}
                 />
-            </ScrollView>
+            </View>
         </Container>
-        // {/* </ScrollView> */}
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    dataContainer: {
         alignSelf: 'flex-end',
         marginRight: '3.7%',
         width: '69%',
@@ -139,7 +116,7 @@ const styles = StyleSheet.create({
     rowedBox: {
         flexDirection: "row",
         marginTop: 13,
-        width:'99%'
+        width: '99%'
     },
     headerBoxRows: {
         marginLeft: 8,

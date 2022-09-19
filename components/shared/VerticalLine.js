@@ -10,7 +10,7 @@ export default VerticalLine
 const styles = StyleSheet.create({
     line: {
         borderColor: colors.lightGray,
-        borderWidth: 1,
+        borderBottomWidth: 1,
         width: '100%',
     }
 })

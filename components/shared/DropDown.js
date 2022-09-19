@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         marginTop: -2,
         borderStyle: 'dashed',
+        marginTop:-2,
         width: '100%',
         zIndex: -1
     }

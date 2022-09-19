@@ -5,13 +5,18 @@ import IntroScreen from "../screens/IntroScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import QuestionsScreen from "../screens/QuestionsScreen";
 import StatisticsScreen from "../screens/StatisticsScreen";
-import AnatomyIntroScreen from "../screens/AnatomyIntroScreen";
 import AnatomyReviewScreen from "../screens/AnatomyReviewScreen";
 import AdditionalQuestionsScreen from "../screens/AdditionalQuestionsScreen";
-import DashboardScreen from "../screens/DashboardScreen";
 import SelfReflectionScreen from "../screens/SelfReflectionScreen";
 import SurgicalOptions from "../screens/SurgicalOptions";
 import routes from "./routes";
+import MenopauseTab from "../screens/MenopauseTab";
+import SurgeryTab from "../screens/SurgeryTab";
+import OvarianCancerTab from "../screens/OvarianCancerTab";
+import FertilityTab from "../screens/FertilityTab";
+import AnatomyTab from "../screens/AnatomyTab";
+import HelpTab from "../screens/HelpTab";
+import FinalScreen from "../screens/FinalScreen";
 
 function StackNavigator() {
 
@@ -23,42 +28,71 @@ function StackNavigator() {
                 headerShown: false,
             }}
         >
-            <Stack.Screen
-                name={routes.WELCOME_SCREEN}
-                component={WelcomeScreen}
-            />
-            <Stack.Screen
-                name={routes.INTRO_SCREEN}
-                component={IntroScreen}
-            />
-            <Stack.Screen
-                name={routes.QUESTIONS_SCREEN}
-                component={QuestionsScreen}
-            />
-            <Stack.Screen
-                name={routes.STATISTICS_SCREEN}
-                component={StatisticsScreen}
-            />
-            <Stack.Screen
-                name={routes.ANATOMY_INTRO_SCREEN}
-                component={AnatomyIntroScreen}
-            />
-            <Stack.Screen
-                name={routes.ANATOMY_REVIEW_SCREEN}
-                component={AnatomyReviewScreen}
-            />
-            <Stack.Screen
-                name={routes.ADDITIONAL_QUESTION_SCREEN}
-                component={AdditionalQuestionsScreen}
-            />
-            <Stack.Screen
-                name={routes.SURGICAL_OPTIONS}
-                component={SurgicalOptions}
-            />
-            <Stack.Screen
-                name={routes.SELF_REFlECTION_SCREEN}
-                component={SelfReflectionScreen}
-            />
+            <Stack.Group>
+                <Stack.Screen
+                    name={routes.WELCOME_SCREEN}
+                    component={WelcomeScreen}
+                />
+                <Stack.Screen
+                    name={routes.INTRO_SCREEN}
+                    component={IntroScreen}
+                />
+                <Stack.Screen
+                    name={routes.QUESTIONS_SCREEN}
+                    component={QuestionsScreen}
+                />
+                <Stack.Screen
+                    name={routes.STATISTICS_SCREEN}
+                    component={StatisticsScreen}
+                />
+                <Stack.Screen
+                    name={routes.ANATOMY_REVIEW_SCREEN}
+                    component={AnatomyReviewScreen}
+                />
+                <Stack.Screen
+                    name={routes.ADDITIONAL_QUESTION_SCREEN}
+                    component={AdditionalQuestionsScreen}
+                />
+                <Stack.Screen
+                    name={routes.SURGICAL_OPTIONS}
+                    component={SurgicalOptions}
+                />
+                <Stack.Screen
+                    name={routes.SELF_REFlECTION_SCREEN}
+                    component={SelfReflectionScreen}
+                />
+                <Stack.Screen
+                    name={routes.FINAL_SCREEN}
+                    component={FinalScreen}
+                />
+
+            </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen
+                    name={routes.MENOPAUSE_TAB}
+                    component={MenopauseTab}
+                />
+                <Stack.Screen
+                    name={routes.SURGERY_TAB}
+                    component={SurgeryTab}
+                />
+                <Stack.Screen
+                    name={routes.OVARIAN_CANCER_TAB}
+                    component={OvarianCancerTab}
+                />
+                <Stack.Screen
+                    name={routes.FERTILITY_TAB}
+                    component={FertilityTab}
+                />
+                <Stack.Screen
+                    name={routes.ANATOMY_TAB}
+                    component={AnatomyTab}
+                />
+                <Stack.Screen
+                    name={routes.HELP_TAB}
+                    component={HelpTab}
+                />
+            </Stack.Group>
         </Stack.Navigator>
     )
 }

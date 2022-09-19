@@ -6,7 +6,8 @@ import { getContentfulData } from '../../client'
 import { LEARN_MORE_ENTRY_ID } from '../../env/env.json'
 import AnatomyTab from '../../screens/AnatomyTab'
 import VerticalLine from './VerticalLine'
-const LearnMore = () => {
+
+const LearnMore = ({ navigate }) => {
     const [data, setData] = useState({})
     const [modalVisible, setModalVisible] = useState(false)
     useEffect(() => {
@@ -29,23 +30,13 @@ const LearnMore = () => {
             <VerticalLine />
             {data.icons.map(icon => (
                 <View key={icon.fields.description}>
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <TouchableOpacity onPress={() => navigate(icon.fields.title)}>
                         <View style={styles.rowData}>
                             <Image style={styles.image} source={{ uri: `https:${icon.fields.file.url}` }} />
                             <Text style={styles.rowTitle}>{icon.fields.description}</Text>
                         </View>
                     </TouchableOpacity>
                     <VerticalLine />
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        {/* <TabNavigator /> */}
-                    </Modal>
                 </View>
             ))}
         </View>

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
 import { ADDITIONAL_QUESTIONS_ENTRY_ID } from '../env/env.json'
 
-import IconO from "react-native-vector-icons/Octicons";
 import { getContentfulData } from "../client"
 import Container from '../components/shared/Container';
 import Checkbox from '../components/shared/Checkbox';
@@ -12,6 +11,8 @@ import Footer from '../components/shared/Footer';
 import TimeLine from '../components/shared/TimeLine';
 import routes from '../navigators/routes';
 import { Questions } from '../contexts/QuestionContext';
+import CustomizedText from '../components/shared/CustomizedText';
+import InfoBox from '../components/shared/InfoBox';
 
 function AdditionalQuestionsScreen({ navigation, route }) {
     const [data, setData] = useState({})
@@ -41,7 +42,6 @@ function AdditionalQuestionsScreen({ navigation, route }) {
     return data.title && (
         <Container>
             <TimeLine currentStep={data.step} />
-            <ScrollView style={styles.scrollView}>
                 <View style={styles.container}>
                     <View style={styles.partsContainers}>
                         <Text style={styles.headerText}>{data.title}</Text>
@@ -51,29 +51,20 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                         <Text style={styles.decisionTitle}>{data.decisionMaking.title}</Text>
 
                         {data.decisionMaking.decisions.map((decision, index) =>
-                            <View
-                                key={index}
-                                style={styles.decision}
-                            >
-                                <IconO
-                                    name={"dot-fill"}
-                                    color={colors.primaryText}
-                                    size={10}
-                                    style={styles.blackDot}
-                                />
-                                <Text style={styles.decisionText}>
-                                    {decision}
-                                </Text>
-                            </View>
+                            <CustomizedText key={index} ul>{decision}</CustomizedText>
                         )}
                     </View>
 
                     <VerticalLine style={styles.VerticalLine} />
 
-                    <View style={[styles.partsContainers, styles.questionsContainer]}>
-                        {data.questions.map(question => (
-                            <View style={styles.question} key={question.key}>
-                                <Text style={styles.questionText}>{question.question}</Text>
+                    <View style={[styles.partsContainers, styles.allQuestionsContainer]}>
+                        {data.questions.map((question, index) => (
+                            <View style={[styles.question, {zIndex: 10 - index}]} key={question.key}>
+                                <View style={styles.questionContainer}>
+                                    <Text style={styles.questionText}>{question.question}</Text>
+                                    {question.info && <InfoBox data={question.info} />}
+                                </View>
+
                                 <View style={styles.answersContainer}>
                                     {question.values.map(answer => (
                                         <Checkbox
@@ -95,7 +86,8 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                                     routes.SURGICAL_OPTIONS,
                                     {
                                         ...route.params,
-                                        ...answers
+                                        ...answers,
+                                        ansOldLength: value.length
                                     })
                                 setValue([...value, ...data.questions])
                             }}
@@ -106,7 +98,6 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                         />
                     </View>
                 </View>
-            </ScrollView>
         </Container >
     );
 }
@@ -116,9 +107,6 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         width: '69%',
         marginRight: '3.7%'
-    },
-    scrollView: {
-        width: '100%',
     },
     partsContainers: {
         width: '100%',
@@ -154,8 +142,12 @@ const styles = StyleSheet.create({
     VerticalLine: {
         marginVertical: 40
     },
-    questionsContainer: {
+    allQuestionsContainer: {
         width: '66%'
+    },
+    questionContainer:{
+        flexDirection: 'row',
+        width:'94.9%'
     },
     question: {
         marginBottom: 32
@@ -164,6 +156,8 @@ const styles = StyleSheet.create({
         color: colors.primaryText,
         fontSize: 14,
         fontWeight: '700',
+        marginTop:2,
+        marginRight:8,
     },
     answersContainer: {
         flexDirection: 'row',

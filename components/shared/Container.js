@@ -1,12 +1,15 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { colors } from '../../assets/colors/colors'
 
 const Container = ({ children, style }) => {
     return (
-        <View style={[styles.container, style]}>
-            {children}
-        </View>
+        <ScrollView>
+            <View style={[styles.container, style]}>
+                {children}
+            </View>
+        </ScrollView>
     )
 }
 export default Container
@@ -16,6 +19,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: colors.white,
         flex: 1,
-        paddingTop: 64
+        minHeight: Dimensions.get('window').height,
+        paddingBottom: 68,
+        paddingTop: 64,
     }
 })
