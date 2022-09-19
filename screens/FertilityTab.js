@@ -16,7 +16,6 @@ function FertilityTab({ navigation }) {
 
     const getData = async () => {
         const data = await getContentfulData(FERTILITY_TAB_ENTRY_ID);
-        console.log(data.content);
         setData(data);
     }
 

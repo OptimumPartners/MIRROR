@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     section: {
-        paddingTop: 32,
+        marginTop: 32,
     },
     button: {
         alignSelf: 'flex-end',
