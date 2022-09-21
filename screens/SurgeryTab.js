@@ -44,7 +44,6 @@ function SurgeryTab({ navigation }) {
                     </View>
                 </View>
             </View>
-
         </TabContainer>
     );
 }
@@ -52,20 +51,21 @@ function SurgeryTab({ navigation }) {
 const styles = StyleSheet.create({
     secondContent: {
         alignSelf: 'flex-end',
-        width: '142%'
+        width: '141.8%'
     },
     surgicalInfo: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     verticalLine: {
-        marginVertical: 32
+        marginVertical: 32,
     },
     surgicalInfoList: {
-        width: '70.4%'
+        width: '70.5%',
+        marginRight: '1%'
     },
     image: {
         height: 133,
-        marginRight: "5%",
         width: 129
     },
     text: {

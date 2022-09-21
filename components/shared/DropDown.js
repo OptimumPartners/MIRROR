@@ -90,13 +90,13 @@ const styles = StyleSheet.create({
         marginRight: 11,
     },
     options: {
-        position: 'absolute',
-        width: 323,
-        borderRadius: 4,
         backgroundColor: colors.white,
+        borderRadius: 4,
         marginTop: 24,
         paddingBottom: 14,
-        paddingTop: 5
+        paddingTop: 5,
+        position: 'absolute',
+        width: 323,
     },
     headerOption: {
         color: colors.darkGray,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         right: -500
     },
     numberInput: {
-        alignSelf:'center',
+        alignSelf: 'center',
         borderColor: colors.lightBlue,
 
     },
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         marginTop: -2,
         borderStyle: 'dashed',
-        marginTop:-2,
+        marginTop: -2,
         width: '100%',
         zIndex: -1
     }

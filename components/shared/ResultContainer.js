@@ -9,30 +9,30 @@ const ResultContainer = ({ answers, title, color, delayTo, result }) => {
   const [cons, setCons] = useState([]);
 
   useEffect(() => {
-    fillCons();
-    fillPros();
+    fillBoxData('con');
+    fillBoxData('pro');
   }, [answers]);
 
-  const fillPros = () => {
-    const allPros = [...result.pro.content];
-    if (result.pro.menopause && answers.menopause !== 'Yes') allPros.push(result.pro.menopause);
-    if (result.pro.breastCancer && answers.breastCancer === 'Yes') allPros.push(result.pro.breastCancer);
-    if (result.pro.HRT && answers.HRT !== 'No') allPros.push(result.pro.HRT);
-    if (result.pro.pregnant && answers.pregnant !== 'No') allPros.push(result.pro.pregnant);
-    if (result.pro.ovarianCancer && answers.ovarianCancer === 'Yes') allPros.push(result.pro.ovarianCancer);
-    if (result.pro.age && result.pro.age.lessThan >= answers.age) allPros.push(result.pro.age.text);
-    setPros(allPros)
-  };
+  const fillBoxData = (type) => {
+    const allBoxData = [...result[type].content];
+    if (result[type].menopause && answers.menopause !== 'Yes') allBoxData.push(result[type].menopause);
+    if (result[type].breastCancer && answers.breastCancer === 'Yes') allBoxData.push(result[type].breastCancer);
+    if (result[type].HRT && answers.HRT !== 'No') allBoxData.push(result[type].HRT);
+    if (result[type].pregnant && answers.pregnant !== 'No') allBoxData.push(result[type].pregnant);
+    if (result[type].ovarianCancer && answers.ovarianCancer === 'Yes') allBoxData.push(result[type].ovarianCancer);
+    if (result[type].age) {
+      for (let i = 0; i < result[type].age.length; i++) {
+        if (result[type].age[i].lessThan >= answers.age) {
+          allBoxData.push(result[type].age[i].text)
+        }
+      }
+    };
+    if (type === 'pro') {
+      setPros(allBoxData)
 
-  const fillCons = () => {
-    const allCons = [...result.con.content];
-    if (result.con.menopause && answers.menopause === 'No') allCons.push(result.con.menopause);
-    if (result.con.breastCancer && answers.breastCancer === 'Yes') allCons.push(result.con.breastCancer);
-    if (result.con.HRT && answers.HRT === 'Yes') allCons.push(result.con.HRT);
-    if (result.con.pregnant && answers.pregnant === 'Yes') allCons.push(result.con.pregnant);
-    if (result.con.ovarianCancer && answers.ovarianCancer === 'Yes') allCons.push(result.con.ovarianCancer);
-    if (result.con.age && result.con.age.lessThan >= answers.age) allCons.push(result.con.age.text);
-    setCons(allCons);
+    } else if (type === 'con') {
+      setCons(allBoxData);
+    }
   };
 
   return (

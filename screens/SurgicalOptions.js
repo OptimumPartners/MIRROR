@@ -15,7 +15,7 @@ import LearnMore from '../components/shared/LearnMore';
 
 const SurgicalOptions = ({ navigation, route }) => {
     const [data, setData] = useState({})
-    const [algo, setAlgo] = useState({})
+    const [algoGroup, setAlgoGroup] = useState({})
     const [params, setParams] = useState(route.params);
     const [results, setResults] = useState([])
     const { value, setValue } = useContext(Questions)
@@ -48,7 +48,7 @@ const SurgicalOptions = ({ navigation, route }) => {
             }
         }
 
-        setAlgo(algo);
+        setAlgoGroup(algoGroupName);
     }
 
     const onSelect = (value, dataName) => {
@@ -86,7 +86,13 @@ const SurgicalOptions = ({ navigation, route }) => {
                 <Text style={styles.title}>{data.title}</Text>
                 {results[0] && results.map((result, index) => (
                     <View key={`${result.name}-${index}`}>
-                        <ResultContainer answers={params} title={result.header} color={result.color} delayTo={result.delayTo} result={data[result.name]} />
+                        <ResultContainer
+                            answers={params}
+                            title={result.header}
+                            color={result.color}
+                            delayTo={result.delayTo + algoGroup.ageAddition}
+                            result={data[result.name]}
+                        />
                     </View>
                 ))}
 
