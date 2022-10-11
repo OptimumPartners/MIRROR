@@ -23,26 +23,24 @@ function IntroScreen({ navigation }) {
 
     return data.content && (
         <Container>
-                <View style={styles.container}>
-                    <Text style={styles.articleTitle}>{data.welcomeTitle}</Text>
+            <View style={styles.container}>
+                <Text style={styles.articleTitle}>{data.welcomeTitle}</Text>
 
-                    <Text style={[styles.section, styles.introGraph]}>{data.welcomeGraph}</Text>
+                <Text style={[styles.section, styles.introGraph]}>{data.welcomeGraph}</Text>
 
-                    {data.content.map((element, index) => (
-                        <CustomizedText key={index} textStyle={styles.section}>{element}</CustomizedText>
-                    ))}
+                {data.content.map((element, index) => (
+                    <CustomizedText key={index} textStyle={styles.section}>{element}</CustomizedText>
+                ))}
 
-                    <VerticalLine style={styles.verticalLine} />
+                <VerticalLine style={styles.verticalLine} />
 
-                    <Button
-                        text="Let's Get Started"
-                        style={styles.button}
-                        textStyle={styles.buttonText}
-                        onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
-                    />
-                </View>
-            <LearnMore navigate={navigation.navigate} />
-
+                <Button
+                    text="Let's Get Started"
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
+                />
+            </View>
         </Container >
     );
 }
