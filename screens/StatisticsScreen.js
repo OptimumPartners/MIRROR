@@ -97,17 +97,16 @@ function StatisticsScreen({ navigation, route }) {
 
             <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
 
-            <View style={styles.resultPoints}>
+            <View>
               {data.risks.values.map((risk, index) => {
                 const ovarianRisk = index === data.risks.percentageIndex
                 const ovarianRiskOutput = riskPercentage.from ? riskPercentage.from + '-' + riskPercentage.to : riskPercentage.to
                 return (
-                  <View
-                    key={index}
-                  >
+                  <View key={index}>
                     <CustomizedText
                       additions={<Text style={styles.fragment}>
                         {ovarianRisk && ovarianRiskOutput} {ovarianRisk && typeof riskPercentage.to === 'number' ? '%.' : ''}
+                        {risk.fixedPercentage && data.risks.fixedPercentage}
                       </Text>}
                       ul
                     >{risk}
@@ -234,9 +233,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     marginTop: 24
-  },
-  resultPoints: {
-    marginTop: 16
   },
   doesAgeMatter: {
     paddingHorizontal: 20,

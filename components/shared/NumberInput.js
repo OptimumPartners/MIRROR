@@ -6,7 +6,7 @@ const NumberInput = ({ value, placeholder = '', onChange, placeholderTextColor, 
     return (
         <TextInput
             style={[styles.input, style]}
-            onChangeText={(value) => onChange(value.replace(/[^0-9]/g, ''))}
+            onChangeText={(value) => value.length < 4 && onChange(value.replace(/[^0-9]/g, ''))}
             value={value}
             keyboardType='numeric'
             placeholder={placeholder}

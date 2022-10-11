@@ -71,7 +71,7 @@ function QuestionsScreen({ navigation }) {
                 placeholderStyle={styles.placeHolder}
               />
 
-              <InfoBox data={data.geneticResultInfo} />
+              <InfoBox data={data.geneticResultInfo} style={styles.infoBox} />
 
             </View>
           </View>
@@ -102,7 +102,10 @@ function QuestionsScreen({ navigation }) {
           </View>
 
           <View style={styles.questions}>
-            <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
+            <View style={styles.questionTextContainer}>
+              <Text style={styles.questionsTitle}>{data.ovarianCancerValues.question}</Text>
+              <InfoBox data={data.familyMembersInfo} style={styles.infoBox} />
+            </View>
 
             <View style={styles.checkboxRow}>
               {data.ovarianCancerValues.values.map((value, index) => (
@@ -156,9 +159,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 32
   },
+  infoBox: {
+    marginLeft: 16
+  },
   dropDownContainer: {
     alignItems: 'center',
-    justifyContent: 'space-between',
     flexDirection: 'row',
     width: '100%'
   },
@@ -179,6 +184,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 32
   },
+  questionTextContainer: {
+    flexDirection: 'row'
+  },
   dropDownQuestion: {
     zIndex: 1
   },
@@ -194,6 +202,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
     marginBottom: 8,
+    // marginRight:16
   }
 })
 

@@ -9,6 +9,7 @@ import Container from '../components/shared/Container';
 import VerticalLine from '../components/shared/VerticalLine';
 import routes from '../navigators/routes';
 import CustomizedText from '../components/shared/CustomizedText';
+import LearnMore from '../components/shared/LearnMore';
 
 function IntroScreen({ navigation }) {
     const [data, setData] = useState({})
@@ -40,6 +41,8 @@ function IntroScreen({ navigation }) {
                         onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
                     />
                 </View>
+            <LearnMore navigate={navigation.navigate} />
+
         </Container >
     );
 }

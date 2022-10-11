@@ -5,7 +5,7 @@ import { getContentfulData } from '../../client'
 import { TIME_LINE_ENTRY_ID } from '../../env/env.json'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const TimeLine = ({ currentStep }) => {
+const TimeLine = ({ currentStep, header }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -19,21 +19,24 @@ const TimeLine = ({ currentStep }) => {
 
   return data.steps && (
     <View style={styles.container}>
-      {data.steps.map(step => {
-        const current = step.id === currentStep;
-        const passed = step.id < currentStep;
-        return (
-          <View key={step.id} style={styles.stepContainer}>
-            <View style={[styles.step, current && styles.currentStep, passed && styles.passedStep]}>
-              {passed ? <Icon name='ios-checkmark-sharp' color={colors.white} size={19} /> :
-                <Text style={[styles.stepNum, current && styles.stepNumCurrent]}>{step.id}</Text>}
-            </View>
+      {header && <Text style={styles.header}>{header}</Text>}
+      <View>
+        {data.steps.map(step => {
+          const current = step.id === currentStep;
+          const passed = step.id < currentStep;
+          return (
+            <View key={step.id} style={styles.stepContainer}>
+              <View style={[styles.step, current && styles.currentStep, passed && styles.passedStep]}>
+                {passed ? <Icon name='ios-checkmark-sharp' color={colors.white} size={19} /> :
+                  <Text style={[styles.stepNum, current && styles.stepNumCurrent]}>{step.id}</Text>}
+              </View>
 
-            <Text style={[styles.stepText, current && styles.currentStepText]}>{step.text}</Text>
-          </View>
-        )
-      })}
-      <View style={styles.horizontalLine}></View>
+              <Text style={[styles.stepText, current && styles.currentStepText]}>{step.text}</Text>
+            </View>
+          )
+        })}
+        <View style={styles.horizontalLine}></View>
+      </View>
     </View>
   )
 }
@@ -43,6 +46,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 41,
     top: 64,
+  },
+  header: {
+    color: colors.darkGray,
+    fontSize: 10,
+    fontWeight: '600',
+    marginBottom: 16
   },
   stepContainer: {
     alignItems: 'center',
@@ -89,7 +98,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     position: 'absolute',
     top: 16,
-    height: 182,
+    height: 228,
     width: 0,
     zIndex: -1
   }

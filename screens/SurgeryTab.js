@@ -37,7 +37,7 @@ function SurgeryTab({ navigation }) {
                     <Image style={styles.image} source={{ uri: `https:${data.helperImage.fields.file.url}` }} />
 
                     <View style={styles.surgicalInfoList}>
-                        <Text style={styles.title}>{data.firstContent.title}</Text>
+                        <Text style={styles.title}>{data.secondContent.title}</Text>
                         {data.secondContent.list.map((text, index) => (
                             <CustomizedText key={index} style={styles.text} ul>{text}</CustomizedText>
                         ))}

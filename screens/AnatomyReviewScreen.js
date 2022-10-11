@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     },
     rowedBox: {
         flexDirection: "row",
-        marginTop: 13,
         width: '99%'
     },
     headerBoxRows: {

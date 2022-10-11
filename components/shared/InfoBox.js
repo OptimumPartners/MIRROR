@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../assets/colors/colors';
@@ -33,6 +33,9 @@ const InfoBox = ({ data, style = {} }) => {
                     ))}
                 </View>
             </View>}
+            {openInfo && <TouchableWithoutFeedback onPress={() => setOpenInfo(!openInfo)} >
+                <View style={styles.blur}></View>
+            </TouchableWithoutFeedback>}
         </View>
     )
 }
@@ -40,6 +43,7 @@ export default InfoBox
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        zIndex: 1
     },
     boxContainer: {
         flexDirection: 'row',
@@ -70,5 +74,13 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '500',
         marginTop: 16
-    }
+    },
+    blur: {
+        height: Dimensions.get('window').height * 2,
+        width: Dimensions.get('window').width * 2,
+        position: 'absolute',
+        bottom: - Dimensions.get('window').height,
+        right: -500,
+        zIndex: 2
+    },
 })

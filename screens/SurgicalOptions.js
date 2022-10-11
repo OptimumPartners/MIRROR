@@ -59,7 +59,7 @@ const SurgicalOptions = ({ navigation, route }) => {
 
     return data.title && (
         <Container>
-            <TimeLine currentStep={data.step} />
+            <TimeLine header={data.timelineHeader} currentStep={data.step} />
 
             <View style={styles.header}>
                 {value.map((question, index) => (
@@ -73,6 +73,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                             dropDownHeader={question.header}
                             placeholderStyle={styles.dropDownPlaceholder}
                             arrowSize={18}
+                            right={index > 3}
                         />
                         {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
                     </React.Fragment>

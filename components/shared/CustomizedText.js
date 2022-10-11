@@ -21,7 +21,9 @@ const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize =
             return children.text
         }
         const result = children.text.split(children.bold);
-        result.splice(1, 0, <Text key={children.bold} style={styles.boldText}>{children.bold}</Text>)
+        const purple = children.purple ? <Text key={children.purple} style={styles.purple}>{children.purple}</Text> : ''
+        const text = <Text key={children.bold} style={styles.boldText}>{purple}{children.bold}</Text>
+        result.splice(1, 0, text)
         return result
     }
 
@@ -39,12 +41,17 @@ const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize =
             result.splice(1, 0, newText);
         }
         else {
-            result[0] = result[0].split(children.link.text);
-            result[0].splice(1, 0, newText);
+            if (result[0].indexOf(children.link.text) >= 0) {
+                result[0] = result[0].split(children.link.text);
+                result[0].splice(1, 0, newText);
+            }
 
-            result[2] = result[2].split(children.link.text);
-            result[2].splice(1, 0, newText);
+            if (result[2]?.indexOf(children.link.text)) {
+                result[2] = result[2].split(children.link.text);
+                result[2].splice(1, 0, newText);
+            }
         }
+
         return result
     }
 
@@ -60,7 +67,7 @@ const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize =
             {ol && <Text style={[styles.text, textStyle]}>{olNum}. </Text>}
 
             <Text style={[styles.text, textStyle]}>{textResult} {additions && additions}</Text>
-            
+
         </View>
     )
 }
@@ -82,6 +89,9 @@ const styles = StyleSheet.create({
     },
     boldText: {
         fontWeight: '700'
+    },
+    purple: {
+        color: colors.purple
     },
     link: {
         color: colors.lightBlue,

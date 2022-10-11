@@ -10,6 +10,7 @@ import { colors } from '../assets/colors/colors';
 import Button from '../components/shared/Button';
 import VerticalLine from '../components/shared/VerticalLine';
 import CustomizedText from '../components/shared/CustomizedText';
+import TimeLine from '../components/shared/TimeLine';
 
 function SelfReflectionScreen({ navigation }) {
     const [data, setData] = useState({})
@@ -25,6 +26,7 @@ function SelfReflectionScreen({ navigation }) {
 
     return data.content && (
         <Container style={styles.container}>
+            <TimeLine currentStep={data.step}/>
             <View style={styles.rowContainer}>
                 <View style={styles.iconHeader}></View>
 
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
     rowContainer: {
         alignItems: "flex-start",
         flexDirection: 'row',
+        left: 15,
         width: '61%'
     },
     iconHeader: {

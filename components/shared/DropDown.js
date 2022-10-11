@@ -5,7 +5,7 @@ import { colors } from '../../assets/colors/colors';
 import { Dimensions } from 'react-native';
 import NumberInput from './NumberInput';
 
-const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHeader, value, placeholderStyle = {}, arrowSize = 26, isInput = false }) => {
+const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHeader, value, placeholderStyle = {}, arrowSize = 26, isInput = false, right = false }) => {
     const [openDropDown, setOpenDropDown] = useState(false);
     const [blur, setBlur] = useState(false)
 
@@ -28,33 +28,37 @@ const DropDown = ({ placeHolder = '', label = '', options, onSelect, dropDownHea
 
             <View style={styles.dashedLine}></View>
 
-            {openDropDown && <View style={styles.options}>
-                {dropDownHeader &&
-                    <View style={styles.option}>
-                        <Text style={styles.headerOption}>{dropDownHeader}</Text>
-                        <Icon name='chevron-up' color={colors.darkGray} size={arrowSize} />
-                    </View>
-                }
-
-                {options && options.map(option => {
-                    const selected = value === option
-                    return (
-                        <TouchableOpacity
-                            key={option}
-                            onPress={() => {
-                                toggleDropDown();
-                                onSelect(option);
-                            }}
-                        >
-                            <View style={[styles.option, selected && styles.optionSelected]}>
-                                <Text style={[styles.optionValue, selected && styles.optionValueSelected]}>{option}</Text>
-                                {selected && <Text style={styles.selected}>SELECTED</Text>}
+            {openDropDown &&
+                <View style={[styles.options, right && styles.right]}>
+                    {dropDownHeader &&
+                        <TouchableWithoutFeedback onPress={toggleDropDown}>
+                            <View style={styles.option}>
+                                <Text style={styles.headerOption}>{dropDownHeader}</Text>
+                                <Icon name='chevron-up' color={colors.darkGray} size={arrowSize} />
                             </View>
-                        </TouchableOpacity>
-                    )
-                })}
-                {isInput && <NumberInput style={styles.numberInput} onChange={onSelect} value={value} />}
-            </View>}
+                        </TouchableWithoutFeedback>
+                    }
+
+                    {options && options.map(option => {
+                        const selected = value === option
+                        return (
+                            <TouchableOpacity
+                                key={option}
+                                onPress={() => {
+                                    toggleDropDown();
+                                    onSelect(option);
+                                }}
+                            >
+                                <View style={[styles.option, selected && styles.optionSelected]}>
+                                    <Text style={[styles.optionValue, selected && styles.optionValueSelected]}>{option}</Text>
+                                    {selected && <Text style={styles.selected}>SELECTED</Text>}
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    })}
+                    {isInput && <NumberInput style={styles.numberInput} onChange={onSelect} value={value} />}
+                </View>
+            }
         </View>
         {blur && <TouchableWithoutFeedback onPress={toggleDropDown}>
             <View style={styles.blur}></View>
@@ -149,5 +153,9 @@ const styles = StyleSheet.create({
         marginTop: -2,
         width: '100%',
         zIndex: -1
+    },
+    right: {
+        right: 0,
+
     }
 })
