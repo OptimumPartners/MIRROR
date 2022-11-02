@@ -7,7 +7,7 @@ export default {
     ANATOMY_REVIEW_SCREEN: 'AnatomyReviewScreen',
     ADDITIONAL_QUESTION_SCREEN: 'AdditionalQuestionsScreen',
     SURGICAL_OPTIONS: 'SurgicalOptions',
-    SELF_REFlECTION_SCREEN: 'SelfReflectionScreen',
+    SELF_REFLECTION_SCREEN: 'SelfReflectionScreen',
     FINAL_SCREEN: 'FinalScreen',
     MENOPAUSE_TAB: 'Menopause',
     SURGERY_TAB: 'Surgery',

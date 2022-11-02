@@ -69,6 +69,9 @@ function QuestionsScreen({ navigation }) {
                 containerStyle={{ width: 460 }}
                 placeholder={data.geneticResults.placeholder}
                 placeholderStyle={styles.placeHolder}
+                selectedItemContainerStyle={styles.selectedPicker}
+                selectedItemLabelStyle ={styles.selectedText}
+                TickIconComponent={() => <Text style={styles.selectedText} >SELECTED</Text>}
               />
 
               <InfoBox data={data.geneticResultInfo} style={styles.infoBox} />
@@ -173,6 +176,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 460
   },
+  selectedPicker: {
+    backgroundColor: colors.green
+  },
+  selectedText: {
+    color: colors.white
+  },
   placeHolder: {
     color: colors.darkGray,
     fontSize: 14,
@@ -185,7 +194,8 @@ const styles = StyleSheet.create({
     marginBottom: 32
   },
   questionTextContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    zIndex: 1
   },
   dropDownQuestion: {
     zIndex: 1
@@ -202,7 +212,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
     marginBottom: 8,
-    // marginRight:16
   }
 })
 

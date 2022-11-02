@@ -11,7 +11,6 @@ const InfoBox = ({ data, style = {} }) => {
         <View style={[styles.container, style]}>
             <TouchableOpacity onPress={() => setOpenInfo(!openInfo)}>
                 <Icon
-                    style={styles.infoIcon}
                     name='information-circle-outline'
                     size={21}
                     color={openInfo ? colors.lightBlue : colors.primaryText}
@@ -50,8 +49,6 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         position: 'absolute',
     },
-    infoIcon: {
-    },
     triangle: {
         left: 6,
     },
@@ -76,6 +73,7 @@ const styles = StyleSheet.create({
         marginTop: 16
     },
     blur: {
+        // backgroundColor: colors.gray,
         height: Dimensions.get('window').height * 2,
         width: Dimensions.get('window').width * 2,
         position: 'absolute',

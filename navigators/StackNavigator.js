@@ -58,7 +58,7 @@ function StackNavigator() {
                     component={SurgicalOptions}
                 />
                 <Stack.Screen
-                    name={routes.SELF_REFlECTION_SCREEN}
+                    name={routes.SELF_REFLECTION_SCREEN}
                     component={SelfReflectionScreen}
                 />
                 <Stack.Screen

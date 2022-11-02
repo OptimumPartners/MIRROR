@@ -4,7 +4,7 @@ import { colors } from '../../assets/colors/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconO from "react-native-vector-icons/Octicons";
 
-const ResultContainer = ({ answers, title, color, delayTo, result }) => {
+const ResultContainer = ({ answers, title, color, delayTo, result, algoGroup }) => {
   const [pros, setPros] = useState([]);
   const [cons, setCons] = useState([]);
 
@@ -16,10 +16,10 @@ const ResultContainer = ({ answers, title, color, delayTo, result }) => {
   const fillBoxData = (type) => {
     const allBoxData = [...result[type].content];
     if (result[type].menopause && answers.menopause !== 'Yes') allBoxData.push(result[type].menopause);
-    if (result[type].breastCancer && answers.breastCancer === 'Yes') allBoxData.push(result[type].breastCancer);
+    if (result[type].breast && algoGroup.breast) allBoxData.push(result[type].breast);
     if (result[type].HRT && answers.HRT !== 'No') allBoxData.push(result[type].HRT);
     if (result[type].pregnant && answers.pregnant !== 'No') allBoxData.push(result[type].pregnant);
-    if (result[type].ovarianCancer && answers.ovarianCancer === 'Yes') allBoxData.push(result[type].ovarianCancer);
+    if (result[type].UT && algoGroup.UT) allBoxData.push(result[type].UT);
     if (result[type].age) {
       for (let i = 0; i < result[type].age.length; i++) {
         if (result[type].age[i].lessThan >= answers.age) {

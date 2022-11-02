@@ -9,7 +9,7 @@ import Container from '../components/shared/Container';
 import VerticalLine from '../components/shared/VerticalLine';
 import routes from '../navigators/routes';
 import CustomizedText from '../components/shared/CustomizedText';
-import LearnMore from '../components/shared/LearnMore';
+import sendEmail from '../services/emailService';
 
 function IntroScreen({ navigation }) {
     const [data, setData] = useState({})
@@ -39,6 +39,17 @@ function IntroScreen({ navigation }) {
                     style={styles.button}
                     textStyle={styles.buttonText}
                     onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
+                />
+                <Button
+                    text="sendEmail"
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    onPress={async () => {
+                        console.log('before ******************************************');
+                        await sendEmail()
+                        .catch(err => {console.log('data: ', err.response.data)})
+                        console.log('after');
+                    }}
                 />
             </View>
         </Container >

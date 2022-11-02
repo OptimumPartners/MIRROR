@@ -37,6 +37,7 @@ const SurgicalOptions = ({ navigation, route }) => {
         const groupAlgo = algo[algoGroupName.group];
         const checkMenopause = groupAlgo[params.menopause] || groupAlgo.No
         const checkPregnant = checkMenopause[params.pregnant] || checkMenopause.Yes
+        setAlgoGroup(algoGroupName);
 
         for (let i = 0; i < checkPregnant.length; i++) {
             const ageFrom = checkPregnant[i].age.from + ageAddition;
@@ -47,8 +48,6 @@ const SurgicalOptions = ({ navigation, route }) => {
                 break;
             }
         }
-
-        setAlgoGroup(algoGroupName);
     }
 
     const onSelect = (value, dataName) => {
@@ -92,6 +91,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                             title={result.header}
                             color={result.color}
                             delayTo={result.delayTo + algoGroup.ageAddition}
+                            algoGroup={algoGroup}
                             result={data[result.name]}
                         />
                     </View>
@@ -101,7 +101,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                     buttonText='Next Step'
                     buttonStyle={styles.footerButton}
                     style={styles.footer}
-                    goTo={() => navigation.navigate(routes.SELF_REFlECTION_SCREEN)}
+                    goTo={() => navigation.navigate(routes.SELF_REFLECTION_SCREEN)}
                     goBack={() => {
                         setValue(value.slice(0, params.ansOldLength));
                         navigation.goBack()

@@ -59,7 +59,7 @@ function AdditionalQuestionsScreen({ navigation, route }) {
 
                     <View style={[styles.partsContainers, styles.allQuestionsContainer]}>
                         {data.questions.map((question, index) => (
-                            <View style={[styles.question, {zIndex: 10 - index}]} key={question.key}>
+                            <View style={[styles.question, {zIndex: 1}]} key={question.key}>
                                 <View style={styles.questionContainer}>
                                     <Text style={styles.questionText}>{question.question}</Text>
                                     {question.info && <InfoBox data={question.info} />}
