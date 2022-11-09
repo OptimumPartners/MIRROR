@@ -3,7 +3,7 @@ import { Dimensions, Image, Linking, StyleSheet, Text, TouchableOpacity, View } 
 import { colors } from '../../assets/colors/colors'
 import Button from './Button'
 import Container from './Container'
-import VerticalLine from './VerticalLine'
+import HorizontalLine from './HorizontalLine'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const TabContainer = ({ children, data, navigation }) => {
@@ -30,7 +30,7 @@ const TabContainer = ({ children, data, navigation }) => {
                     {children}
 
                     {data.footer || data.footerText && <View style={styles.footer}>
-                        <VerticalLine style={styles.verticalLine} />
+                        <HorizontalLine style={styles.HorizontalLine} />
 
                         <Text style={styles.footerTitle}>{data.footer || data.footerText}</Text>
 
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         marginBottom: 24
     },
-    verticalLine: {
+    HorizontalLine: {
         marginVertical: 32
     },
     buttonsContainer: {

@@ -1,47 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../assets/colors/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconO from "react-native-vector-icons/Octicons";
 
-const ResultContainer = ({ answers, title, color, delayTo, result, algoGroup }) => {
-  const [pros, setPros] = useState([]);
-  const [cons, setCons] = useState([]);
-
-  useEffect(() => {
-    fillBoxData('con');
-    fillBoxData('pro');
-  }, [answers]);
-
-  const fillBoxData = (type) => {
-    const allBoxData = [...result[type].content];
-    if (result[type].menopause && answers.menopause !== 'Yes') allBoxData.push(result[type].menopause);
-    if (result[type].breast && algoGroup.breast) allBoxData.push(result[type].breast);
-    if (result[type].HRT && answers.HRT !== 'No') allBoxData.push(result[type].HRT);
-    if (result[type].pregnant && answers.pregnant !== 'No') allBoxData.push(result[type].pregnant);
-    if (result[type].UT && algoGroup.UT) allBoxData.push(result[type].UT);
-    if (result[type].age) {
-      for (let i = 0; i < result[type].age.length; i++) {
-        if (result[type].age[i].lessThan >= answers.age) {
-          allBoxData.push(result[type].age[i].text)
-        }
-      }
-    };
-    if (type === 'pro') {
-      setPros(allBoxData)
-
-    } else if (type === 'con') {
-      setCons(allBoxData);
-    }
-  };
+const ResultContainer = ({result }) => {
+  const [finalResult, setFinalResult] = useState({ ...result })
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, color === 2 && styles.headerYellow]}>
-        <Text style={[styles.headerTitle, color === 2 && styles.headerTitleYellow]}>
-          {title || result.title} {delayTo || ''}
+      <View style={[styles.header, result.color === 2 && styles.headerYellow]}>
+        <Text style={[styles.headerTitle, result.color === 2 && styles.headerTitleYellow]}>
+          {result.title} {result.delayTo || ''}
         </Text>
-        <Icon name='information-circle-outline' size={21} color={color === 2 ? colors.primaryText : colors.white} />
+        <Icon name='information-circle-outline' size={21} color={result.color === 2 ? colors.primaryText : colors.white} />
       </View>
 
       <View style={styles.body}>
@@ -50,7 +22,7 @@ const ResultContainer = ({ answers, title, color, delayTo, result, algoGroup }) 
             <Text style={styles.prosTitle}>{result.pro.title}</Text>
           </View>
 
-          {pros.map((pro, index) => (
+          {result.pro.content.map((pro, index) => (
             <View
               key={`${pro}-${index}`}
               style={styles.proConContainer}
@@ -72,7 +44,7 @@ const ResultContainer = ({ answers, title, color, delayTo, result, algoGroup }) 
             <Text style={styles.consTitle}>{result.con.title}</Text>
           </View>
 
-          {cons.map((con, index) => (
+          {result.con.content.map((con, index) => (
             <View
               key={`${con}-${index}`}
               style={styles.proConContainer}

@@ -4,8 +4,7 @@ import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import { colors } from '../../assets/colors/colors'
 import { getContentfulData } from '../../client'
 import { LEARN_MORE_ENTRY_ID } from '../../env/env.json'
-import AnatomyTab from '../../screens/AnatomyTab'
-import VerticalLine from './VerticalLine'
+import HorizontalLine from './HorizontalLine'
 
 const LearnMore = ({ navigate }) => {
     const [data, setData] = useState({})
@@ -27,7 +26,7 @@ const LearnMore = ({ navigate }) => {
     return data.icons && (
         <View style={styles.container}>
             <Text style={styles.title}>{data.title}</Text>
-            <VerticalLine />
+            <HorizontalLine />
             {data.icons.map(icon => (
                 <View key={icon.fields.description}>
                     <TouchableOpacity onPress={() => navigate(icon.fields.title)}>
@@ -36,7 +35,7 @@ const LearnMore = ({ navigate }) => {
                             <Text style={styles.rowTitle}>{icon.fields.description}</Text>
                         </View>
                     </TouchableOpacity>
-                    <VerticalLine />
+                    <HorizontalLine />
                 </View>
             ))}
         </View>

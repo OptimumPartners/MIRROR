@@ -5,7 +5,7 @@ import { colors } from '../assets/colors/colors';
 import TabContainer from '../components/shared/TabContainer';
 import { getContentfulData } from '../client';
 import CustomizedText from '../components/shared/CustomizedText';
-import VerticalLine from '../components/shared/VerticalLine';
+import HorizontalLine from '../components/shared/HorizontalLine';
 
 function SurgeryTab({ navigation }) {
     const [data, setData] = useState({})
@@ -31,7 +31,7 @@ function SurgeryTab({ navigation }) {
             </View>
 
             <View style={styles.secondContent}>
-                <VerticalLine style={styles.verticalLine} />
+                <HorizontalLine style={styles.HorizontalLine} />
 
                 <View style={styles.surgicalInfo}>
                     <Image style={styles.image} source={{ uri: `https:${data.helperImage.fields.file.url}` }} />
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    verticalLine: {
+    HorizontalLine: {
         marginVertical: 32,
     },
     surgicalInfoList: {

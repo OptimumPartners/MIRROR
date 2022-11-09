@@ -4,7 +4,7 @@ import { colors } from '../assets/colors/colors';
 import { LEARN_YOUR_RISK_ENTRY_ID } from '../env/env.json'
 import { getContentfulData } from '../client';
 import Container from '../components/shared/Container';
-import VerticalLine from '../components/shared/VerticalLine';
+import HorizontalLine from '../components/shared/HorizontalLine';
 import TimeLine from '../components/shared/TimeLine';
 import DropDown from '../components/shared/DropDown';
 import Footer from '../components/shared/Footer';
@@ -75,7 +75,7 @@ function StatisticsScreen({ navigation, route }) {
         ))}
       </View>
 
-      <VerticalLine style={styles.verticalLine} />
+      <HorizontalLine style={styles.HorizontalLine} />
 
       <View style={styles.bodyContainer}>
         <View style={styles.statistics}>
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     height: 51,
     marginHorizontal: 24
   },
-  verticalLine: {
+  HorizontalLine: {
     marginRight: '3.7%',
     marginVertical: 24,
     width: '69%',

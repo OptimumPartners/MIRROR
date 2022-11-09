@@ -1,25 +1,47 @@
 import axios from 'axios'
 import { encode as btoa } from 'base-64'
 
-const sendEmail = async () => {
-    const data = new FormData();
-    data.append('from', 'yousef yousef.alramli@optimumpartners.co');
-    data.append('to', 'yousef.alramli@sociumtech.com');
-    data.append('subject', 'Hello');
-    data.append('text', 'Testing some Mailgun awesomeness!');
+const sendEmail = async (to , result, answers) => {
 
-    var config = {
-        method: 'post',
-        url: 'https://api.mailgun.net/v3/sandbox683c9bf662344cc0ae2abb68f03c73b7.mailgun.org/messages',
-        headers: {
-            'Authorization': `Basic ${btoa(`api:78cb713dc477615bcdafc848209f1213-31eedc68-c9af605e`)}`,
+    const data = {
+        "from": {
+            "email": "yousef.alramli@optimumpartners.co"
         },
-        data
+        "personalizations": [
+            {
+                "to": [
+                    {
+                        "email": to
+                    }
+                ],
+                "dynamic_template_data": {
+                    "result": result,
+                    "answers": answers
+                }
+            }
+        ],
+        "template_id": "d-6d4550fcb5e341ef9b3dd7d1bab50fd8"
+
+    }
+
+    const config = {
+        method: 'post',
+        url: 'https://api.sendgrid.com/v3/mail/send',
+        headers: {
+            'Authorization': 'Bearer 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',
+            'Content-Type': 'application/json'
+        },
+        data: data
     };
 
-    await axios(config).then(function (response) {
-          console.log(JSON.stringify(response.data));
+    return await axios(config)
+        .then(() => {
+            return true
         })
+        .catch(function (error) {
+            console.log('ERROR', error);
+            return false
+        });
 }
 
 export default sendEmail

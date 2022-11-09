@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { Modal, StyleSheet, Text, View } from 'react-native'
 import { REVIEW_OPTIONS_ENTRY_ID, ALGO_ENTRY_ID } from '../env/env.json'
 import Container from '../components/shared/Container'
 import { getContentfulData } from '../client';
@@ -10,20 +10,61 @@ import TimeLine from '../components/shared/TimeLine';
 import { colors } from '../assets/colors/colors';
 import { Questions } from '../contexts/QuestionContext';
 import DropDown from '../components/shared/DropDown';
-import VerticalLine from '../components/shared/VerticalLine';
+import HorizontalLine from '../components/shared/HorizontalLine';
 import LearnMore from '../components/shared/LearnMore';
+import Button from '../components/shared/Button';
+import { TextInput } from 'react-native-gesture-handler';
+import sendEmail from '../services/emailService';
 
 const SurgicalOptions = ({ navigation, route }) => {
-    const [data, setData] = useState({})
-    const [algoGroup, setAlgoGroup] = useState({})
+    const [data, setData] = useState({});
+    const [algoGroup, setAlgoGroup] = useState({});
     const [params, setParams] = useState(route.params);
-    const [results, setResults] = useState([])
+    const [results, setResults] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState(false)
+    const [finalResults, setFinalResults] = useState([])
+
     const { value, setValue } = useContext(Questions)
 
     useEffect(() => {
-        getData()
+        getData();
     }, [params])
 
+    useEffect(() => {
+        fillBoxData('pro')
+        fillBoxData('con')
+    }, [results])
+
+    const fillBoxData = (type) => {
+        const final = []
+        for (let i = 0; i < results.length; i++) {
+            const result = { ...data[[...results][i].name] };
+
+            const allBoxData = result[type].content;
+
+            if (result[type].menopause && params.menopause !== 'Yes') allBoxData.push(result[type].menopause);
+            if (result[type].breast && algoGroup.breast) allBoxData.push(result[type].breast);
+            if (result[type].HRT && params.HRT !== 'No') allBoxData.push(result[type].HRT);
+            if (result[type].pregnant && params.pregnant !== 'No') allBoxData.push(result[type].pregnant);
+            if (result[type].UT && algoGroup.UT) allBoxData.push(result[type].UT);
+            if (result[type].age) {
+                for (let i = 0; i < result[type].age.length; i++) {
+                    if (result[type].age[i].lessThan >= params.age) {
+                        allBoxData.push(result[type].age[i].text)
+                    }
+                }
+            };
+
+            result[type].content = allBoxData;
+            result.delayTo = result.delayTo + algoGroup.ageAddition || '';
+            result.color = results[i].color
+            if (results[i].header) result.title = results[i].header
+            final.push(result)
+        }
+        setFinalResults(final)
+    }
     const getData = async () => {
         const data = await getContentfulData(REVIEW_OPTIONS_ENTRY_ID);
         setData(data);
@@ -56,6 +97,18 @@ const SurgicalOptions = ({ navigation, route }) => {
         setParams(newData)
     }
 
+    const handleSendEmail = async () => {
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(email)) {
+            await sendEmail(email, finalResults, params)
+            setShowModal(false)
+            setEmailError(false)
+        }
+        else {
+            setEmailError(true)
+        }
+    }
+
     return data.title && (
         <Container>
             <TimeLine header={data.timelineHeader} currentStep={data.step} />
@@ -74,25 +127,20 @@ const SurgicalOptions = ({ navigation, route }) => {
                             arrowSize={18}
                             right={index > 3}
                         />
-                        {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
+                        {index + 1 !== value.length && <View style={styles.VerticalLine}></View>}
                     </React.Fragment>
                 ))}
 
             </View>
 
-            <VerticalLine style={styles.verticalLine} />
+            <HorizontalLine style={styles.HorizontalLine} />
 
             <View style={styles.container}>
                 <Text style={styles.title}>{data.title}</Text>
-                {results[0] && results.map((result, index) => (
+                {finalResults[0] && finalResults.map((result, index) => (
                     <View key={`${result.name}-${index}`}>
                         <ResultContainer
-                            answers={params}
-                            title={result.header}
-                            color={result.color}
-                            delayTo={result.delayTo + algoGroup.ageAddition}
-                            algoGroup={algoGroup}
-                            result={data[result.name]}
+                            result={result}
                         />
                     </View>
                 ))}
@@ -107,6 +155,45 @@ const SurgicalOptions = ({ navigation, route }) => {
                         navigation.goBack()
                     }}
                 />
+
+                <Button
+                    text="Send me results"
+                    style={styles.openModalBtn}
+                    onPress={() => setShowModal(true)}
+                />
+
+                <Modal
+                    animationType='fade'
+                    visible={showModal}
+                    onRequestClose={() => setShowModal(false)}
+                    transparent={true}
+                >
+                    <View style={styles.modalContentHolder}>
+                        <View style={styles.modalContent}>
+                            <Text style={styles.modalText}>Write your email bellow and press send to get your results email</Text>
+
+                            <TextInput
+                                style={styles.emailInput}
+                                onChangeText={setEmail}
+                            />
+                            {emailError && <Text style={styles.invalidEmail}>Invalid email</Text>}
+
+                            <View style={styles.modalButtonsHolder}>
+                                <Button
+                                    onPress={() => setShowModal(!showModal)}
+                                    text='Cancel'
+                                    style={styles.cancelButton}
+                                    textStyle={styles.cancelButtonText}
+                                />
+                                <Button
+                                    onPress={handleSendEmail}
+                                    text='Send'
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
 
             <LearnMore navigate={navigation.navigate} />
@@ -131,13 +218,13 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '700',
     },
-    horizontalLine: {
+    VerticalLine: {
         borderColor: colors.lightGray,
         borderWidth: 1,
         height: 36,
         marginHorizontal: 16
     },
-    verticalLine: {
+    HorizontalLine: {
         alignSelf: 'flex-end',
         marginRight: '3.7%',
         marginVertical: 32,
@@ -151,5 +238,67 @@ const styles = StyleSheet.create({
     },
     footer: {
         marginTop: 0
+    },
+    openModalBtn: {
+        alignSelf: 'flex-end',
+        marginTop: 30,
+        width: 180,
+    },
+    modalContentHolder: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalContent: {
+        alignItems: "center",
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width: 350
+    },
+    modalText: {
+        textAlign: "center",
+    },
+    emailInput: {
+        backgroundColor: colors.white,
+        borderColor: colors.gray,
+        borderRadius: 4,
+        borderWidth: 1,
+        height: 48,
+        marginTop: 35,
+        paddingHorizontal: 20,
+        width: '100%',
+    },
+    invalidEmail: {
+        color: colors.red,
+        fontSize: 14,
+        fontWeight: '500',
+        textAlign: 'left',
+        marginTop: 4,
+        width: '98%'
+    },
+    modalButtonsHolder: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 40,
+        width: '100%',
+    },
+    cancelButton: {
+        backgroundColor: colors.white,
+        borderColor: colors.green,
+        borderWidth: 2
+    },
+    cancelButtonText: {
+        color: colors.green
     }
+
 })

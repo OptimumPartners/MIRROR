@@ -8,7 +8,7 @@ import routes from '../navigators/routes';
 import Container from '../components/shared/Container';
 import { colors } from '../assets/colors/colors';
 import Button from '../components/shared/Button';
-import VerticalLine from '../components/shared/VerticalLine';
+import HorizontalLine from '../components/shared/HorizontalLine';
 import CustomizedText from '../components/shared/CustomizedText';
 import TimeLine from '../components/shared/TimeLine';
 
@@ -49,7 +49,7 @@ function SelfReflectionScreen({ navigation }) {
                     </View>
 
                     <View style={styles.footer}>
-                        <VerticalLine style={styles.verticalLine} />
+                        <HorizontalLine style={styles.HorizontalLine} />
 
                         <Text style={styles.footerTitle}>{data.footer}</Text>
 
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     subTextContainer: {
         marginLeft: 22
     },
-    verticalLine: {
+    HorizontalLine: {
         marginVertical: 32
     },
     footerTitle: {

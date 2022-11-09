@@ -6,7 +6,7 @@ import { ADDITIONAL_QUESTIONS_ENTRY_ID } from '../env/env.json'
 import { getContentfulData } from "../client"
 import Container from '../components/shared/Container';
 import Checkbox from '../components/shared/Checkbox';
-import VerticalLine from '../components/shared/VerticalLine';
+import HorizontalLine from '../components/shared/HorizontalLine';
 import Footer from '../components/shared/Footer';
 import TimeLine from '../components/shared/TimeLine';
 import routes from '../navigators/routes';
@@ -55,7 +55,7 @@ function AdditionalQuestionsScreen({ navigation, route }) {
                         )}
                     </View>
 
-                    <VerticalLine style={styles.VerticalLine} />
+                    <HorizontalLine style={styles.HorizontalLine} />
 
                     <View style={[styles.partsContainers, styles.allQuestionsContainer]}>
                         {data.questions.map((question, index) => (
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "500",
     },
-    VerticalLine: {
+    HorizontalLine: {
         marginVertical: 40
     },
     allQuestionsContainer: {

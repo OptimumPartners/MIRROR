@@ -3,12 +3,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../assets/colors/colors';
 import Button from './Button';
-import VerticalLine from './VerticalLine';
+import HorizontalLine from './HorizontalLine';
 
 const Footer = ({ goBack, disabled = true, style = {}, footerElementStyle = {}, buttonStyle = {}, goTo, buttonText = 'Continue' }) => {
     return (
         <View style={[styles.footer, style]} >
-            <VerticalLine />
+            <HorizontalLine />
             <View style={[styles.container, footerElementStyle]}>
                 <TouchableOpacity onPress={goBack}>
                     {goBack && <View style={styles.prevScreenContainer}>

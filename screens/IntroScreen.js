@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Modal } from 'react-native';
 import { WELCOMING_ENTRY_ID } from '../env/env.json'
 import { colors } from '../assets/colors/colors';
 import { getContentfulData } from '../client';
 
 import Button from '../components/shared/Button';
 import Container from '../components/shared/Container';
-import VerticalLine from '../components/shared/VerticalLine';
+import HorizontalLine from '../components/shared/HorizontalLine';
 import routes from '../navigators/routes';
 import CustomizedText from '../components/shared/CustomizedText';
-import sendEmail from '../services/emailService';
 
 function IntroScreen({ navigation }) {
     const [data, setData] = useState({})
@@ -32,24 +31,13 @@ function IntroScreen({ navigation }) {
                     <CustomizedText key={index} textStyle={styles.section}>{element}</CustomizedText>
                 ))}
 
-                <VerticalLine style={styles.verticalLine} />
+                <HorizontalLine style={styles.HorizontalLine} />
 
                 <Button
                     text="Let's Get Started"
                     style={styles.button}
                     textStyle={styles.buttonText}
                     onPress={() => navigation.navigate(routes.QUESTIONS_SCREEN)}
-                />
-                <Button
-                    text="sendEmail"
-                    style={styles.button}
-                    textStyle={styles.buttonText}
-                    onPress={async () => {
-                        console.log('before ******************************************');
-                        await sendEmail()
-                        .catch(err => {console.log('data: ', err.response.data)})
-                        console.log('after');
-                    }}
                 />
             </View>
         </Container >
@@ -84,10 +72,9 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 14
     },
-    verticalLine: {
+    HorizontalLine: {
         marginVertical: 40
-    }
-
+    },
 })
 
 export default IntroScreen;
