@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { encode as btoa } from 'base-64'
+import { SENDER_EMAIL, SENDGRID_API_KEY, EMAIL_TEMPLATE_ID } from '../env/env.json'
 
-const sendEmail = async (to , result, answers) => {
+const sendEmail = async (to, result, answers) => {
 
     const data = {
         "from": {
-            "email": "yousef.alramli@optimumpartners.co"
+            "email": SENDER_EMAIL
         },
         "personalizations": [
             {
@@ -20,7 +21,7 @@ const sendEmail = async (to , result, answers) => {
                 }
             }
         ],
-        "template_id": "d-6d4550fcb5e341ef9b3dd7d1bab50fd8"
+        "template_id": EMAIL_TEMPLATE_ID
 
     }
 
@@ -28,7 +29,7 @@ const sendEmail = async (to , result, answers) => {
         method: 'post',
         url: 'https://api.sendgrid.com/v3/mail/send',
         headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': `Bearer ${SENDGRID_API_KEY}`,
             'Content-Type': 'application/json'
         },
         data: data
