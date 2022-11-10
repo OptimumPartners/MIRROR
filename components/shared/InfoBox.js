@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../assets/colors/colors';
 
-const InfoBox = ({ data, style = {} }) => {
+const InfoBox = ({ data, style = {}, boxStyle = {}, iconColor = colors.primaryText }) => {
     const [openInfo, setOpenInfo] = useState(false)
 
     return (
@@ -13,11 +13,11 @@ const InfoBox = ({ data, style = {} }) => {
                 <Icon
                     name='information-circle-outline'
                     size={21}
-                    color={openInfo ? colors.lightBlue : colors.primaryText}
+                    color={openInfo ? colors.lightBlue : iconColor}
                 />
             </TouchableOpacity>
 
-            {openInfo && <View style={styles.boxContainer}>
+            {openInfo && <View style={[styles.boxContainer, boxStyle]}>
                 <Icon
                     style={styles.triangle}
                     name='caret-back-sharp'

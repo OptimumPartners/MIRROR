@@ -1,11 +1,11 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../assets/colors/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconO from "react-native-vector-icons/Octicons";
+import InfoBox from './InfoBox';
 
-const ResultContainer = ({result }) => {
-  const [finalResult, setFinalResult] = useState({ ...result })
+const ResultContainer = ({ result, info = '' }) => {
 
   return (
     <View style={styles.container}>
@@ -13,7 +13,7 @@ const ResultContainer = ({result }) => {
         <Text style={[styles.headerTitle, result.color === 2 && styles.headerTitleYellow]}>
           {result.title} {result.delayTo || ''}
         </Text>
-        <Icon name='information-circle-outline' size={21} color={result.color === 2 ? colors.primaryText : colors.white} />
+        {info && <InfoBox data={info} boxStyle={styles.infoBox} iconColor={result.color !== 2 && colors.white}/> }
       </View>
 
       <View style={styles.body}>
@@ -142,6 +142,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     lineHeight: 14
+  },
+  infoBox:{
+    marginLeft: 26
   }
 
 })

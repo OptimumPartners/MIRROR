@@ -137,9 +137,11 @@ const SurgicalOptions = ({ navigation, route }) => {
 
             <View style={styles.container}>
                 <Text style={styles.title}>{data.title}</Text>
+                
                 {finalResults[0] && finalResults.map((result, index) => (
                     <View key={`${result.name}-${index}`}>
                         <ResultContainer
+                            info={algoGroup.info}
                             result={result}
                         />
                     </View>
