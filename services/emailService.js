@@ -11,7 +11,7 @@ const sendEmail = async (to, result, answers) => {
             {
                 "to": [
                     {
-                        "email": 'yousef.alrmali@sociumtech.com'
+                        "email": to
                     }
                 ],
                 "dynamic_template_data": {
