@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import { SURGERY_TAB_ENTRY_ID } from '../env/env.json'
+import { SURGERY_TAB_ENTRY_ID } from '@env'
 import { colors } from '../assets/colors/colors';
 import TabContainer from '../components/shared/TabContainer';
 import { getContentfulData } from '../client';

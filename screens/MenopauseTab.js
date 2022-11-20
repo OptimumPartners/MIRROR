@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { colors } from '../assets/colors/colors';
-import { MENOPAUSE_TAB_ENTRY_ID } from '../env/env.json'
+import { MENOPAUSE_TAB_ENTRY_ID } from '@env'
 import { getContentfulData } from "../client"
 import TabContainer from '../components/shared/TabContainer';
 import CustomizedText from '../components/shared/CustomizedText';

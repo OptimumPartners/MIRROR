@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { BASIC_INFO_ENTRY_ID } from '../env/env.json'
+import { BASIC_INFO_ENTRY_ID } from '@env'
 
 import { getContentfulData } from '../client'
 import Container from '../components/shared/Container';

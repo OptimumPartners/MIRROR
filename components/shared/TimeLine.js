@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import { getContentfulData } from '../../client'
-import { TIME_LINE_ENTRY_ID } from '../../env/env.json'
+import { TIME_LINE_ENTRY_ID } from '@env'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const TimeLine = ({ currentStep, header }) => {

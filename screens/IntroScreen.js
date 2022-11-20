@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Modal } from 'react-native';
-import { WELCOMING_ENTRY_ID } from '../env/env.json'
 import { colors } from '../assets/colors/colors';
 import { getContentfulData } from '../client';
 
@@ -9,6 +8,7 @@ import Container from '../components/shared/Container';
 import HorizontalLine from '../components/shared/HorizontalLine';
 import routes from '../navigators/routes';
 import CustomizedText from '../components/shared/CustomizedText';
+import {WELCOMING_ENTRY_ID} from '@env'
 
 function IntroScreen({ navigation }) {
     const [data, setData] = useState({})

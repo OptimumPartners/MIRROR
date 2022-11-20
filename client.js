@@ -1,5 +1,5 @@
 const { createClient } = require('contentful/dist/contentful.browser.min.js')
-import { CONTENTFUL_SPACE_ID, CONTENTFUL_ACCESS_TOKEN } from './env/env.json'
+import { CONTENTFUL_SPACE_ID, CONTENTFUL_ACCESS_TOKEN } from '@env'
 const client = createClient(
     {
         accessToken: CONTENTFUL_ACCESS_TOKEN,

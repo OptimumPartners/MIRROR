@@ -4,7 +4,7 @@ import { colors } from '../assets/colors/colors';
 import { getContentfulData } from '../client';
 import CustomizedText from '../components/shared/CustomizedText';
 import TabContainer from '../components/shared/TabContainer';
-import { ANATOMY_TAB_ENTRY_ID } from '../env/env.json'
+import { ANATOMY_TAB_ENTRY_ID } from '@env'
 
 function AnatomyTab({ navigation }) {
 

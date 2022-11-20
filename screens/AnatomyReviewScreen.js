@@ -5,7 +5,7 @@ import {
     Text,
     Image,
 } from 'react-native';
-import { LEARN_YOUR_RISK_ANATOMY_ENTRY_ID } from '../env/env.json'
+import { LEARN_YOUR_RISK_ANATOMY_ENTRY_ID } from '@env'
 import { colors } from '../assets/colors/colors';
 import { getContentfulData } from "../client"
 import Container from '../components/shared/Container';

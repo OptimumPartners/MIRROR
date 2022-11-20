@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
-import { Modal, StyleSheet, Text, View } from 'react-native'
-import { REVIEW_OPTIONS_ENTRY_ID, ALGO_ENTRY_ID } from '../env/env.json'
+import { KeyboardAvoidingView, Modal, StyleSheet, Text, View } from 'react-native'
+import { REVIEW_OPTIONS_ENTRY_ID, ALGO_ENTRY_ID } from '@env'
 import Container from '../components/shared/Container'
 import { getContentfulData } from '../client';
 import ResultContainer from '../components/shared/ResultContainer';
@@ -137,7 +137,7 @@ const SurgicalOptions = ({ navigation, route }) => {
 
             <View style={styles.container}>
                 <Text style={styles.title}>{data.title}</Text>
-                
+
                 {finalResults[0] && finalResults.map((result, index) => (
                     <View key={`${result.name}-${index}`}>
                         <ResultContainer
@@ -170,7 +170,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                     onRequestClose={() => setShowModal(false)}
                     transparent={true}
                 >
-                    <View style={styles.modalContentHolder}>
+                    <KeyboardAvoidingView style={styles.modalContentHolder} behavior='padding'>
                         <View style={styles.modalContent}>
                             <Text style={styles.modalText}>Write your email bellow and press send to get your results email</Text>
 
@@ -179,7 +179,6 @@ const SurgicalOptions = ({ navigation, route }) => {
                                 onChangeText={setEmail}
                             />
                             {emailError && <Text style={styles.invalidEmail}>Invalid email</Text>}
-
                             <View style={styles.modalButtonsHolder}>
                                 <Button
                                     onPress={() => setShowModal(!showModal)}
@@ -193,7 +192,7 @@ const SurgicalOptions = ({ navigation, route }) => {
                                 />
                             </View>
                         </View>
-                    </View>
+                    </KeyboardAvoidingView>
                 </Modal>
 
             </View>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { SELF_REFLECTION_ENTRY_ID } from '../env/env.json'
+import { SELF_REFLECTION_ENTRY_ID } from '@env'
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getContentfulData } from '../client';

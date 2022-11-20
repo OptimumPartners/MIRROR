@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { encode as btoa } from 'base-64'
-import { SENDER_EMAIL, SENDGRID_API_KEY, EMAIL_TEMPLATE_ID } from '../env/env.json'
+import { SENDER_EMAIL, SENDGRID_API_KEY, EMAIL_TEMPLATE_ID } from '@env'
 
 const sendEmail = async (to, result, answers) => {
 
@@ -12,7 +11,7 @@ const sendEmail = async (to, result, answers) => {
             {
                 "to": [
                     {
-                        "email": to
+                        "email": 'yousef.alrmali@sociumtech.com'
                     }
                 ],
                 "dynamic_template_data": {
@@ -37,10 +36,11 @@ const sendEmail = async (to, result, answers) => {
 
     return await axios(config)
         .then(() => {
+            console.log('sent');
             return true
         })
         .catch(function (error) {
-            console.log('ERROR', error);
+            console.log('ERROR', error.response.data);
             return false
         });
 }

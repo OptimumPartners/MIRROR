@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
-import { LEARN_YOUR_RISK_ENTRY_ID } from '../env/env.json'
+import { LEARN_YOUR_RISK_ENTRY_ID } from '@env'
 import { getContentfulData } from '../client';
 import Container from '../components/shared/Container';
 import HorizontalLine from '../components/shared/HorizontalLine';

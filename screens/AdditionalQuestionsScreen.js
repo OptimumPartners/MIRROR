@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { colors } from '../assets/colors/colors';
-import { ADDITIONAL_QUESTIONS_ENTRY_ID } from '../env/env.json'
+import { ADDITIONAL_QUESTIONS_ENTRY_ID } from '@env'
 
 import { getContentfulData } from "../client"
 import Container from '../components/shared/Container';

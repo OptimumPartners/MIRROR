@@ -4,7 +4,7 @@ import { colors } from '../assets/colors/colors'
 import { getContentfulData } from '../client'
 import Button from '../components/shared/Button'
 import Container from '../components/shared/Container'
-import { FINAL_SCREEN_ENTRY_ID } from '../env/env.json'
+import { FINAL_SCREEN_ENTRY_ID } from '@env'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const FinalScreen = ({ navigation }) => {
@@ -19,7 +19,7 @@ const FinalScreen = ({ navigation }) => {
         setData(data)
     }
 
-    return (
+    return data && (
         <Container>
             <View style={styles.container}>
                 <Image style={styles.logo} source={require('../assets/images/logo.png')} />

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import { getContentfulData } from '../../client'
-import { LEARN_MORE_ENTRY_ID } from '../../env/env.json'
+import { LEARN_MORE_ENTRY_ID } from '@env'
 import HorizontalLine from './HorizontalLine'
 
 const LearnMore = ({ navigate }) => {
