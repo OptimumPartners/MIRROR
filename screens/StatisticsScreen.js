@@ -89,12 +89,12 @@ function StatisticsScreen({ navigation, route }) {
               onSelect={(value) => onSelect(value, question.key)}
               dropDownHeader={question.header}
             />
-            {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
+            {index + 1 !== value.length && <View style={styles.verticalLine}></View>}
           </React.Fragment>
         ))}
       </View>
 
-      <HorizontalLine style={styles.HorizontalLine} />
+      <HorizontalLine style={styles.horizontalLine} />
 
       <View style={styles.bodyContainer}>
         <View style={styles.statistics}>
@@ -178,13 +178,13 @@ const styles = StyleSheet.create({
     width: '69%',
     zIndex: 1
   },
-  horizontalLine: {
+  verticalLine: {
     borderColor: colors.lightGray,
     borderWidth: 1,
     height: 51,
     marginHorizontal: 24
   },
-  HorizontalLine: {
+  horizontalLine: {
     marginRight: '3.7%',
     marginVertical: 24,
     width: '69%',

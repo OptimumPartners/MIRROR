@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native'
 import { LYNCH_ENTRY_ID } from '@env'
 import { getContentfulData } from '../client';
@@ -10,25 +10,65 @@ import PercentageAmongPeople from '../components/shared/PercentageAmongPeople';
 import HorizontalLine from '../components/shared/HorizontalLine';
 import Footer from '../components/shared/Footer';
 import routes from '../navigators/routes';
+import DropDown from '../components/shared/DropDown';
+import { Questions } from '../contexts/QuestionContext';
 
 const LynchStatistics = ({ navigation, route }) => {
+    const [params, setParams] = useState(route.params);
     const [data, setData] = useState({})
     const [riskPercentage, setRiskPercentage] = useState({});
+
+    const { value } = useContext(Questions)
 
     useEffect(() => {
         getData()
     }, []);
 
+    useEffect(() => {
+        setRiskPercentage(data?.risks?.percentages[params.geneticResult])
+    }, [params]);
+
     const getData = async () => {
         const data = await getContentfulData(LYNCH_ENTRY_ID);
-        setRiskPercentage(data.risks.percentages[route.params.geneticResult])
+        setRiskPercentage(data.risks.percentages[params.geneticResult])
         setData(data);
+    };
+
+    const onSelect = (value, dataName) => {
+        const newData = { ...params };
+        newData[dataName] = value
+        setParams(newData)
+    }
+
+    const getLynchOptions = (options) => {
+        const finalOptions = options.filter(element => element.toLowerCase().startsWith('lynch'))
+        return finalOptions
     }
 
     return data.risks && (
-        <Container>
+        <Container style={styles.container}>
             <TimeLine currentStep={data.step} />
 
+            <View style={styles.header}>
+                {value.map((question, index) => {
+                    const values = question.key !== 'geneticResult' ? question.values : getLynchOptions(question.values)
+                    return (
+                        <React.Fragment key={question.key}>
+                            <DropDown
+                                isInput={question.key === 'age'}
+                                label={question.label}
+                                value={params[question.key]}
+                                options={values}
+                                onSelect={(value) => onSelect(value, question.key)}
+                                dropDownHeader={question.header}
+                            />
+                            {index + 1 !== value.length && <View style={styles.verticalLine}></View>}
+                        </React.Fragment>
+                    )
+                })}
+            </View>
+
+            <HorizontalLine style={styles.horizontalLine} />
 
             <View style={styles.bodyContainer}>
 
@@ -78,7 +118,7 @@ const LynchStatistics = ({ navigation, route }) => {
                 goTo={() => {
                     navigation.navigate(
                         routes.ANATOMY_REVIEW_SCREEN,
-                        { ...route.params }
+                        { ...params }
                     )
                 }}
             />
@@ -87,6 +127,27 @@ const LynchStatistics = ({ navigation, route }) => {
 }
 export default LynchStatistics
 const styles = StyleSheet.create({
+    container: {
+        alignItems: 'flex-end'
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        marginRight: '3.7%',
+        width: '69%',
+        zIndex: 1
+    },
+    verticalLine: {
+        borderColor: colors.lightGray,
+        borderWidth: 1,
+        height: 51,
+        marginHorizontal: 24
+    },
+    horizontalLine: {
+        marginRight: '3.7%',
+        marginVertical: 24,
+        width: '69%',
+    },
     bodyContainer: {
         flexDirection: 'row-reverse',
         justifyContent: 'flex-start',

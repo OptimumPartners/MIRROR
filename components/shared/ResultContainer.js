@@ -12,7 +12,7 @@ const ResultContainer = ({ result, info = '' }) => {
         <Text style={[styles.headerTitle, result.color === 2 && styles.headerTitleYellow]}>
           {result.title} {result.delayTo || ''}
         </Text>
-        {info && <InfoBox data={info} iconColor={result.color !== 2 && colors.white}/> }
+        {info && <InfoBox data={info} iconColor={result.color !== 2 && colors.white} />}
       </View>
 
       <View style={styles.body}>
@@ -27,7 +27,7 @@ const ResultContainer = ({ result, info = '' }) => {
               style={styles.proConContainer}
             >
               <CustomizedText ul style={styles.proConText}>{pro}</CustomizedText>
-              {/* {pro.toLowerCase() === 'decrease risk of uterine cancer' && <InfoBox/>} */}
+              {pro?.info && <InfoBox style={styles.infoBox} data={pro.info} />}
             </View>
           ))}
         </View>
@@ -128,6 +128,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     lineHeight: 14,
-    marginTop:10
+    marginTop: 0
+  },
+  infoBox: {
+    marginLeft: 0,
   }
+
 })

@@ -67,8 +67,6 @@ const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize =
             {ol && <Text style={[styles.text, textStyle]}>{olNum}. </Text>}
 
             <Text style={[styles.text, textStyle]}>{textResult} {additions && additions}</Text>
-
-            {children?.info && <InfoBox style={styles.infoBox} data={children.info}/>}
         </View>
     )
 }
@@ -96,9 +94,5 @@ const styles = StyleSheet.create({
     link: {
         color: colors.lightBlue,
         fontWeight: '700'
-    },
-    infoBox:{
-        marginLeft:0
     }
-
 })
