@@ -130,7 +130,6 @@ const SurgicalOptions = ({ navigation, route }) => {
                         {index + 1 !== value.length && <View style={styles.VerticalLine}></View>}
                     </React.Fragment>
                 ))}
-
             </View>
 
             <HorizontalLine style={styles.HorizontalLine} />
@@ -139,12 +138,11 @@ const SurgicalOptions = ({ navigation, route }) => {
                 <Text style={styles.title}>{data.title}</Text>
 
                 {finalResults[0] && finalResults.map((result, index) => (
-                    <View key={`${result.name}-${index}`}>
-                        <ResultContainer
-                            info={algoGroup.info}
-                            result={result}
-                        />
-                    </View>
+                    <ResultContainer
+                        key={`${result.name}-${index}`}
+                        info={algoGroup.info}
+                        result={result}
+                    />
                 ))}
 
                 <Footer

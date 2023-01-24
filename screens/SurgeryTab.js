@@ -6,6 +6,7 @@ import TabContainer from '../components/shared/TabContainer';
 import { getContentfulData } from '../client';
 import CustomizedText from '../components/shared/CustomizedText';
 import HorizontalLine from '../components/shared/HorizontalLine';
+import InfoBox from '../components/shared/InfoBox';
 
 function SurgeryTab({ navigation }) {
     const [data, setData] = useState({})
@@ -24,9 +25,14 @@ function SurgeryTab({ navigation }) {
     return data.firstContent && (
         <TabContainer data={data} navigation={navigation}>
             <Text style={styles.title}>{data.firstContent.title}</Text>
-            <View>
+            <View style={{ zIndex: 1 }}>
                 {data.firstContent.list.map((text, index) => (
-                    <CustomizedText key={index} style={styles.text} ul>{text}</CustomizedText>
+                    <View key={text} style={styles.text}>
+                        <CustomizedText key={index} style={{ marginTop: 0 }} ul>
+                            {text}
+                        </CustomizedText>
+                        {data.infoBox.afterText === text && <InfoBox data={data.infoBox} />}
+                    </View>
                 ))}
             </View>
 
@@ -69,7 +75,10 @@ const styles = StyleSheet.create({
         width: 129
     },
     text: {
-        marginTop: 14
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginTop: 14,
+        width: '100%',
     },
     title: {
         color: colors.primaryText,

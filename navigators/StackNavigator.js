@@ -1,6 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import routes from "./routes";
+
 import IntroScreen from "../screens/IntroScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import QuestionsScreen from "../screens/QuestionsScreen";
@@ -9,7 +11,6 @@ import AnatomyReviewScreen from "../screens/AnatomyReviewScreen";
 import AdditionalQuestionsScreen from "../screens/AdditionalQuestionsScreen";
 import SelfReflectionScreen from "../screens/SelfReflectionScreen";
 import SurgicalOptions from "../screens/SurgicalOptions";
-import routes from "./routes";
 import MenopauseTab from "../screens/MenopauseTab";
 import SurgeryTab from "../screens/SurgeryTab";
 import OvarianCancerTab from "../screens/OvarianCancerTab";
@@ -17,6 +18,7 @@ import FertilityTab from "../screens/FertilityTab";
 import AnatomyTab from "../screens/AnatomyTab";
 import HelpTab from "../screens/HelpTab";
 import FinalScreen from "../screens/FinalScreen";
+import LynchStatistics from "../screens/LynchStatistics";
 
 function StackNavigator() {
 
@@ -26,6 +28,7 @@ function StackNavigator() {
         <Stack.Navigator
             screenOptions={{
                 headerShown: false,
+                animation: 'none'
             }}
         >
             <Stack.Group>
@@ -65,8 +68,12 @@ function StackNavigator() {
                     name={routes.FINAL_SCREEN}
                     component={FinalScreen}
                 />
-
+                <Stack.Screen
+                    name={routes.LYNCH_STATISTICS}
+                    component={LynchStatistics}
+                />
             </Stack.Group>
+
             <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen
                     name={routes.MENOPAUSE_TAB}

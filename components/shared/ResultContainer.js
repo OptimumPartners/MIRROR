@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../assets/colors/colors';
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconO from "react-native-vector-icons/Octicons";
 import InfoBox from './InfoBox';
+import CustomizedText from './CustomizedText';
 
 const ResultContainer = ({ result, info = '' }) => {
 
@@ -13,7 +12,7 @@ const ResultContainer = ({ result, info = '' }) => {
         <Text style={[styles.headerTitle, result.color === 2 && styles.headerTitleYellow]}>
           {result.title} {result.delayTo || ''}
         </Text>
-        {info && <InfoBox data={info} boxStyle={styles.infoBox} iconColor={result.color !== 2 && colors.white}/> }
+        {info && <InfoBox data={info} iconColor={result.color !== 2 && colors.white}/> }
       </View>
 
       <View style={styles.body}>
@@ -27,14 +26,8 @@ const ResultContainer = ({ result, info = '' }) => {
               key={`${pro}-${index}`}
               style={styles.proConContainer}
             >
-              <IconO
-                name={"dot-fill"}
-                color={colors.primaryText}
-                size={9}
-                style={styles.blackDot}
-              />
-
-              <Text style={styles.proConText}>{pro}</Text>
+              <CustomizedText ul style={styles.proConText}>{pro}</CustomizedText>
+              {/* {pro.toLowerCase() === 'decrease risk of uterine cancer' && <InfoBox/>} */}
             </View>
           ))}
         </View>
@@ -49,14 +42,7 @@ const ResultContainer = ({ result, info = '' }) => {
               key={`${con}-${index}`}
               style={styles.proConContainer}
             >
-              <IconO
-                name={"dot-fill"}
-                color={colors.primaryText}
-                size={9}
-                style={styles.blackDot}
-              />
-
-              <Text style={styles.proConText}>{con}</Text>
+              <CustomizedText ul style={styles.proConText}>{con}</CustomizedText>
             </View>
           ))}
         </View>
@@ -141,10 +127,7 @@ const styles = StyleSheet.create({
     color: colors.primaryText,
     fontSize: 12,
     fontWeight: '500',
-    lineHeight: 14
-  },
-  infoBox:{
-    marginLeft: 26
+    lineHeight: 14,
+    marginTop:10
   }
-
 })

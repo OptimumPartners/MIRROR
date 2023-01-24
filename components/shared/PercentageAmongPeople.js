@@ -1,5 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
+import PurpleIcon from '../../assets/images/personIconPurple.svg'
+import GrayIcon from '../../assets/images/personIconGray.svg'
 
 const PercentageAmongPeople = ({ percentage }) => {
 
@@ -9,8 +11,8 @@ const PercentageAmongPeople = ({ percentage }) => {
             {Array(100).fill('icon').map((elem, index) => {
                 return (
                     <React.Fragment key={index}>
-                        {percentage > index ? <Image style={styles.icon} source={require('../../assets/images/personIconPurple.png')} /> :
-                            <Image style={styles.icon} source={require('../../assets/images/personIconGray.png')} />}
+                        {percentage > index ? <PurpleIcon style={styles.icon} /> :
+                            <GrayIcon style={styles.icon} />}
                     </React.Fragment>
                 )
             })}
@@ -21,14 +23,14 @@ export default PercentageAmongPeople
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        flexWrap:'wrap',
+        flexWrap: 'wrap',
         height: 160,
         width: 160,
     },
     icon: {
         height: 10,
         marginRight: 6,
-        marginBottom:6,
+        marginBottom: 6,
         width: 10
     }
 })

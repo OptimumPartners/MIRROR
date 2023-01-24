@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import { getContentfulData } from '../../client'
 import { TIME_LINE_ENTRY_ID } from '@env'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { StackActions, useNavigation } from '@react-navigation/native'
 
 const TimeLine = ({ currentStep, header }) => {
   const [data, setData] = useState({});
+
+  const navigation = useNavigation()
 
   useEffect(() => {
     getData()
@@ -17,6 +20,16 @@ const TimeLine = ({ currentStep, header }) => {
     setData(data)
   }
 
+
+  const handleStepPress = (step) => {
+    const numberToPop = currentStep - step
+    if (numberToPop < 1) return;
+
+    const popAction = StackActions.pop(numberToPop)
+    navigation.dispatch(popAction);
+  }
+
+
   return data.steps && (
     <View style={styles.container}>
       {header && <Text style={styles.header}>{header}</Text>}
@@ -25,14 +38,16 @@ const TimeLine = ({ currentStep, header }) => {
           const current = step.id === currentStep;
           const passed = step.id < currentStep;
           return (
-            <View key={step.id} style={styles.stepContainer}>
-              <View style={[styles.step, current && styles.currentStep, passed && styles.passedStep]}>
-                {passed ? <Icon name='ios-checkmark-sharp' color={colors.white} size={19} /> :
-                  <Text style={[styles.stepNum, current && styles.stepNumCurrent]}>{step.id}</Text>}
-              </View>
+            <TouchableWithoutFeedback key={step.id} onPress={() => handleStepPress(step.id)}>
+              <View style={styles.stepContainer}>
+                <View style={[styles.step, current && styles.currentStep, passed && styles.passedStep]}>
+                  {passed ? <Icon name='ios-checkmark-sharp' color={colors.white} size={19} /> :
+                    <Text style={[styles.stepNum, current && styles.stepNumCurrent]}>{step.id}</Text>}
+                </View>
 
-              <Text style={[styles.stepText, current && styles.currentStepText]}>{step.text}</Text>
-            </View>
+                <Text style={[styles.stepText, current && styles.currentStepText]}>{step.text}</Text>
+              </View>
+            </TouchableWithoutFeedback>
           )
         })}
         <View style={styles.horizontalLine}></View>

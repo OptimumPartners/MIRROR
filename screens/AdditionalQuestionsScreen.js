@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '700',
         marginTop:2,
-        marginRight:8,
     },
     answersContainer: {
         flexDirection: 'row',

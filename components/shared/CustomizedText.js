@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Linking, StyleSheet, Text, View } from 'react-native'
 import IconO from "react-native-vector-icons/Octicons";
 import { colors } from '../../assets/colors/colors';
+import InfoBox from './InfoBox';
 
 const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize = 9, dotColor = colors.primaryText, textStyle = {}, style = {}, additions }) => {
     const [textResult, setTextResult] = useState('')
@@ -33,7 +34,7 @@ const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize =
         }
 
         const newText = <Text key={children.link.text} onPress={() => Linking.openURL(children.link.url)} style={styles.link}>
-            {` ${children.link.text} `}
+            {children.link.text}
         </Text>
 
         if (typeof result === 'string') {
@@ -63,17 +64,16 @@ const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize =
                 size={dotSize}
                 style={styles.blackDot}
             />}
-
             {ol && <Text style={[styles.text, textStyle]}>{olNum}. </Text>}
 
             <Text style={[styles.text, textStyle]}>{textResult} {additions && additions}</Text>
 
+            {children?.info && <InfoBox style={styles.infoBox} data={children.info}/>}
         </View>
     )
 }
 export default CustomizedText
 const styles = StyleSheet.create({
-
     container: {
         flexDirection: 'row',
         marginTop: 17
@@ -96,6 +96,9 @@ const styles = StyleSheet.create({
     link: {
         color: colors.lightBlue,
         fontWeight: '700'
+    },
+    infoBox:{
+        marginLeft:0
     }
 
 })

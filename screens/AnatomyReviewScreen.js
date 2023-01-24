@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    View,
-    StyleSheet,
-    Text,
-    Image,
-} from 'react-native';
+import { View, StyleSheet, Text, Image, } from 'react-native';
 import { LEARN_YOUR_RISK_ANATOMY_ENTRY_ID } from '@env'
 import { colors } from '../assets/colors/colors';
 import { getContentfulData } from "../client"
@@ -29,8 +24,9 @@ function AnatomyReviewScreen({ navigation, route }) {
     return data.title && (
         <Container >
             <TimeLine currentStep={data.step} />
+
             <View style={styles.dataContainer}>
-                <View style={styles.header}>
+                <View>
                     <Text style={styles.headerText} >{data.title}.</Text>
 
                     <View style={styles.basics}>
@@ -58,11 +54,10 @@ function AnatomyReviewScreen({ navigation, route }) {
                                     <View style={styles.partNumberHolder}>
                                         <Text style={styles.anatomyPartNumber}>{index + 1}</Text>
                                     </View>
-
                                     <Text style={styles.partName}>{part.name}</Text>
                                 </View>
 
-                                <View style={styles.symptomsContainer}>
+                                <View>
                                     {part.points.map((symptom, index) =>
                                         <View
                                             style={styles.rowedBox}
@@ -79,7 +74,8 @@ function AnatomyReviewScreen({ navigation, route }) {
                     </View>
                 </View>
                 <Footer
-                    footerElementStyle={styles.footer}
+                    style={styles.footer}
+                    footerElementStyle={styles.footerElement}
                     goTo={() => navigation.navigate(routes.ADDITIONAL_QUESTION_SCREEN, { ...route.params })}
                     goBack={() => navigation.goBack()}
                 />
@@ -104,8 +100,8 @@ const styles = StyleSheet.create({
         borderLeftColor: colors.purple,
         borderLeftWidth: 4,
         paddingLeft: 24,
-        marginTop: 40,
-        paddingVertical: 24,
+        marginTop: 20,
+        paddingVertical: 19,
         width: '100%'
     },
     basicsTitle: {
@@ -114,7 +110,6 @@ const styles = StyleSheet.create({
         color: colors.primaryText,
     },
     rowedBox: {
-        flexDirection: "row",
         width: '99%'
     },
     headerBoxRows: {
@@ -165,11 +160,11 @@ const styles = StyleSheet.create({
     uterusContentContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        marginTop: 40,
+        marginTop: 20,
         width: '100%'
     },
     anatomyPart: {
-        marginBottom: 32
+        marginBottom: 22
     },
     partName: {
         color: colors.darkGray,
@@ -180,9 +175,14 @@ const styles = StyleSheet.create({
         color: colors.primaryText,
         fontSize: 14,
         fontWeight: '500',
+        marginTop: 10
+    },
+    footerElement: {
+        marginRight: "33.4%",
+        marginTop: 22
     },
     footer: {
-        marginRight: "33.4%"
+        marginTop: 10
     }
 })
 

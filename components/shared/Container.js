@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         paddingBottom: 68,
-        paddingTop: 54,
+        paddingTop: 48,
     },
     safeAreaView: {
         backgroundColor: colors.white,

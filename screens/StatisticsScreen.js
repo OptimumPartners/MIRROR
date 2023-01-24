@@ -17,9 +17,8 @@ function StatisticsScreen({ navigation, route }) {
   const [params, setParams] = useState(route.params);
   const [data, setData] = useState({});
   const [riskPercentage, setRiskPercentage] = useState({});
-  const [additionalRisks, setAdditionalRisks] = useState([])
 
-  const { value, setValue } = useContext(Questions)
+  const { value } = useContext(Questions)
 
   useEffect(() => {
     getData()
@@ -27,8 +26,10 @@ function StatisticsScreen({ navigation, route }) {
 
   const getData = async () => {
     const data = await getContentfulData(LEARN_YOUR_RISK_ENTRY_ID);
-    const DataAfterFill = fillAdditionalRisk(data)
-    setData(DataAfterFill)
+    const fillAdditionalRisks = fillAdditionalRisk(data)
+    const fillAdditionalAgeInfos = fillAdditionalAgeInfo(fillAdditionalRisks)
+
+    setData(fillAdditionalAgeInfos)
     setRiskPercentage(data.risks.percentages[params.geneticResult])
   }
 
@@ -49,6 +50,23 @@ function StatisticsScreen({ navigation, route }) {
     return data
   }
 
+  const fillAdditionalAgeInfo = (data) => {
+    const allData = { ...data }
+    if (allData?.ageInfo?.breastAndOvarianCancer && params.ovarianCancer === 'Yes' && params.breastCancer === 'Yes') {
+      allData.ageInfo.values = [...allData.ageInfo.values, ...allData.ageInfo.breastAndOvarianCancer]
+      return allData
+    };
+    if (allData?.ageInfo?.ovarianCancer && params.ovarianCancer === 'Yes') {
+      allData.ageInfo.values = [...allData.ageInfo.values, ...allData.ageInfo.ovarianCancer]
+      return allData
+    };
+    if (allData?.ageInfo?.breastCancer && params.breastCancer === 'Yes') {
+      allData.ageInfo.values = [...allData.ageInfo.values, ...allData.ageInfo.breastCancer]
+      return allData
+    };
+    return data
+  }
+
   const onSelect = (value, dataName) => {
     const newData = { ...params };
     newData[dataName] = value
@@ -61,17 +79,18 @@ function StatisticsScreen({ navigation, route }) {
       <TimeLine currentStep={data.step} />
 
       <View style={styles.header}>
-        {value.map((question, index) => (<React.Fragment key={question.key}>
-          <DropDown
-            isInput={question.key === 'age'}
-            label={question.label}
-            value={params[question.key]}
-            options={question.values}
-            onSelect={(value) => onSelect(value, question.key)}
-            dropDownHeader={question.header}
-          />
-          {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
-        </React.Fragment>
+        {value.map((question, index) => (
+          <React.Fragment key={question.key}>
+            <DropDown
+              isInput={question.key === 'age'}
+              label={question.label}
+              value={params[question.key]}
+              options={question.values}
+              onSelect={(value) => onSelect(value, question.key)}
+              dropDownHeader={question.header}
+            />
+            {index + 1 !== value.length && <View style={styles.horizontalLine}></View>}
+          </React.Fragment>
         ))}
       </View>
 
@@ -91,10 +110,8 @@ function StatisticsScreen({ navigation, route }) {
         </View>
 
         <View style={styles.resultContainer}>
-
           <View style={styles.banner}>
             <Text style={styles.bannerRiskDescription}>{data.description}</Text>
-
             <Text style={styles.bannerUnderLinedTitle}>{data.risksTitle}</Text>
 
             <View>
@@ -102,11 +119,11 @@ function StatisticsScreen({ navigation, route }) {
                 const ovarianRisk = index === data.risks.percentageIndex
                 const ovarianRiskOutput = riskPercentage.from ? riskPercentage.from + '-' + riskPercentage.to : riskPercentage.to
                 return (
-                  <View key={index}>
+                  <View key={risk?.text ? risk.text : risk}>
                     <CustomizedText
                       additions={<Text style={styles.fragment}>
                         {ovarianRisk && ovarianRiskOutput} {ovarianRisk && typeof riskPercentage.to === 'number' ? '%.' : ''}
-                        {risk.fixedPercentage && data.risks.fixedPercentage}
+                        {risk.fixedPercentage && risk.fixedPercentage}
                       </Text>}
                       ul
                     >{risk}
@@ -121,10 +138,8 @@ function StatisticsScreen({ navigation, route }) {
             <Text style={styles.bannerUnderLinedTitle}>{data.ageInfoTitle}</Text>
 
             <View style={styles.resultPoints}>
-              {data.ageInfo.map((reason, index) => (
-                <View
-                  key={index}
-                >
+              {data.ageInfo.values.map((reason) => (
+                <View key={reason?.text ? reason.text : reason}>
                   <CustomizedText ul>{reason}</CustomizedText>
                 </View>
               ))}
@@ -133,13 +148,16 @@ function StatisticsScreen({ navigation, route }) {
 
         </View>
       </View>
-      <Footer style={styles.footer}
+      <Footer
+        style={styles.footer}
         goBack={() => navigation.goBack()}
-        goTo={() =>
+        goTo={() => {
+          const isLynch = params.geneticResult.toLowerCase().startsWith('lynch')
           navigation.navigate(
-            routes.ANATOMY_REVIEW_SCREEN,
+            isLynch ? routes.LYNCH_STATISTICS : routes.ANATOMY_REVIEW_SCREEN,
             { ...params }
-          )}
+          )
+        }}
       />
     </Container>
   );

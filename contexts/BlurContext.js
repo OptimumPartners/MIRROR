@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const Questions = createContext()
+export const Blur = createContext()

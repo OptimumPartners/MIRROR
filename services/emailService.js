@@ -36,7 +36,6 @@ const sendEmail = async (to, result, answers) => {
 
     return await axios(config)
         .then(() => {
-            console.log('sent');
             return true
         })
         .catch(function (error) {
