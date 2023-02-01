@@ -40,7 +40,8 @@ const SurgicalOptions = ({ navigation, route }) => {
     const fillBoxData = (type) => {
         const final = []
         for (let i = 0; i < results.length; i++) {
-            const result = { ...data[[...results][i].name] };
+            const algoResult = [...results][i]
+            const result = { ...data[algoResult.name] };
 
             const allBoxData = result[type].content;
 
@@ -58,7 +59,7 @@ const SurgicalOptions = ({ navigation, route }) => {
             };
 
             result[type].content = allBoxData;
-            result.delayTo = result.delayTo + algoGroup.ageAddition || '';
+            result.delayTo = algoResult?.delayTo + (algoGroup?.ageAddition || 0) || '';
             result.color = results[i].color
             if (results[i].header) result.title = results[i].header
             final.push(result)

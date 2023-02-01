@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Linking, StyleSheet, Text, View } from 'react-native'
 import IconO from "react-native-vector-icons/Octicons";
 import { colors } from '../../assets/colors/colors';
-import InfoBox from './InfoBox';
 
 const CustomizedText = ({ children, ul = false, ol = false, olNum = 0, dotSize = 9, dotColor = colors.primaryText, textStyle = {}, style = {}, additions }) => {
     const [textResult, setTextResult] = useState('')
