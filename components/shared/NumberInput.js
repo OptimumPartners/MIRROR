@@ -3,10 +3,16 @@ import { StyleSheet, TextInput } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 
 const NumberInput = ({ value, placeholder = '', onChange, placeholderTextColor, style }) => {
+
+    const handleChange = (value) => {
+        const validValue = value.replace(/[^0-9]/g, '')
+        Number(validValue) <= 100  && onChange(validValue)
+    }
+
     return (
-        <TextInput
+        <TextInput  
             style={[styles.input, style]}
-            onChangeText={(value) => value.length < 4 && onChange(value.replace(/[^0-9]/g, ''))}
+            onChangeText={handleChange}
             value={value}
             keyboardType='numeric'
             placeholder={placeholder}

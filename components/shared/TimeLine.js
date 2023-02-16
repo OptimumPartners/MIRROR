@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { colors } from '../../assets/colors/colors'
 import { getContentfulData } from '../../client'
 import { TIME_LINE_ENTRY_ID } from '@env'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StackActions, useNavigation } from '@react-navigation/native'
+import { Questions } from '../../contexts/QuestionContext'
 
 const TimeLine = ({ currentStep, header }) => {
   const [data, setData] = useState({});
 
   const navigation = useNavigation()
+
+  const { value, setValue } = useContext(Questions)
 
   useEffect(() => {
     getData()
@@ -22,9 +25,9 @@ const TimeLine = ({ currentStep, header }) => {
 
 
   const handleStepPress = (step) => {
-    const numberToPop = currentStep - step
+    const numberToPop = step < 3 ? (navigation.getState().routes.length - 2) - step : currentStep - step
     if (numberToPop < 1) return;
-
+    if (step < 4) setValue(value.slice(0, 4))
     const popAction = StackActions.pop(numberToPop)
     navigation.dispatch(popAction);
   }
