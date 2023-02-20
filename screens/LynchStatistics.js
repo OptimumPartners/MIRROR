@@ -61,6 +61,7 @@ const LynchStatistics = ({ navigation, route }) => {
                                 options={values}
                                 onSelect={(value) => onSelect(value, question.key)}
                                 dropDownHeader={question.header}
+                                right={index > 2}
                             />
                             {index + 1 !== value.length && <View style={styles.verticalLine}></View>}
                         </React.Fragment>
