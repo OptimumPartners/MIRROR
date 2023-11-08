@@ -2,7 +2,6 @@ import axios from 'axios'
 import { SENDER_EMAIL, SENDGRID_API_KEY, EMAIL_TEMPLATE_ID } from '@env'
 
 const sendEmail = async (to, result, answers) => {
-
     const data = {
         "from": {
             "email": SENDER_EMAIL
